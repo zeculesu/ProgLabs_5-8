@@ -6,6 +6,7 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
+import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.manager.DefaultConsoleCommandEnvironmentImpl;
 
 
@@ -50,7 +51,7 @@ public class Console implements CommunicatedClient {
         } else System.out.println("Ебанат, ты что пишешь вообще, это не команда"); //todo УБРАТь
     }
 
-    class CommandIOImpl implements CommandIO{
+    class CommandIOImpl implements CommandIO {
 
         @Override
         public void print(String line) {

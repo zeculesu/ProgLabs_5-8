@@ -12,7 +12,6 @@ kotlin{
         val jvmMain by getting {
             dependencies {
                 implementation(project(":modules:data"))
-                implementation(project(":modules:user-interface"))
             }
         }
         val jvmTest by getting

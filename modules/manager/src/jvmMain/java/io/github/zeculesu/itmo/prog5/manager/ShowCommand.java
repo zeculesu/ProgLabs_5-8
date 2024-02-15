@@ -1,11 +1,13 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
+import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import org.jetbrains.annotations.NotNull;
 
 public class ShowCommand implements CommandAction{
-    @Override
-    public void execute() {
 
+    @Override
+    public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
+        return null;
     }
 
     @NotNull

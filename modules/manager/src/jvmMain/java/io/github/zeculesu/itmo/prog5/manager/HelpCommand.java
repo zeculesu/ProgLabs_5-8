@@ -1,7 +1,6 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.user_interface.CommandIO;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

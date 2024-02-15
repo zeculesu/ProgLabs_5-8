@@ -1,4 +1,4 @@
-package io.github.zeculesu.itmo.prog5.user_interface;
+package io.github.zeculesu.itmo.prog5.manager;
 
 public interface CommandIO {
     public void print(String line);

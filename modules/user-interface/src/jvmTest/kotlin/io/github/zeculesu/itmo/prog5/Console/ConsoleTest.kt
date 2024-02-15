@@ -5,7 +5,7 @@ import kotlin.test.Test
 
 import io.github.zeculesu.itmo.prog5.data.*
 import io.github.zeculesu.itmo.prog5.manager.CommandSetMapImpl
-import io.github.zeculesu.itmo.prog5.user_interface.CommandIOMemoryImpl
+import io.github.zeculesu.itmo.prog5.manager.CommandIOMemoryImpl
 import io.github.zeculesu.itmo.prog5.manager.ConsoleCommandEnvironmentTestImpl
 import kotlin.test.assertEquals
 

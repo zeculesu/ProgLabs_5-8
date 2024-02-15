@@ -1,14 +1,14 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
+import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
-import io.github.zeculesu.itmo.prog5.user_interface.CommandIO;
 import org.jetbrains.annotations.NotNull;
 
 public class RemoveByWeaponCommand implements CommandAction{
 
 
     @Override
-    public String execute(SpaceMarineCollection collectionSpaceMarine, CommandIO console, DefaultConsoleCommandEnvironmentImpl env, String[] args) {
+    public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
         return null;
     }
 

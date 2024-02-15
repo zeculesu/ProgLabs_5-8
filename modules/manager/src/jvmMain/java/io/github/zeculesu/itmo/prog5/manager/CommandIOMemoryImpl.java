@@ -1,6 +1,4 @@
-package io.github.zeculesu.itmo.prog5.user_interface;
-
-import io.github.zeculesu.itmo.prog5.user_interface.CommandIO;
+package io.github.zeculesu.itmo.prog5.manager;
 
 import java.util.Iterator;
 

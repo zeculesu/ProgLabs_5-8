@@ -1,14 +1,13 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
+import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
-import io.github.zeculesu.itmo.prog5.user_interface.CommandIO;
 import org.jetbrains.annotations.NotNull;
 
 public class FilterNameCommand  implements CommandAction{
 
     @Override
-    public String execute(SpaceMarineCollection collectionSpaceMarine, CommandIO console, String[] args) {
+    public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
         if (args.length == 0){
             return "Не введен аргумент - подстрока, с которой должны начинаться имена элементов";
         }
