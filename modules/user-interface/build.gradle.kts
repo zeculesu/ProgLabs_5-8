@@ -1,15 +1,24 @@
-plugins{
+plugins {
     kotlin("multiplatform")
 }
-kotlin{
-    jvm{
+kotlin {
+    jvm {
         withJava()
     }
     js()
-    sourceSets{
+    sourceSets {
         val commonMain by getting
         val commonTest by getting
-        val jvmMain by getting
-        val jvmTest by getting
+        val jvmMain by getting {
+            dependencies {
+                implementation(project(":modules:manager"))
+                implementation(project(":modules:data"))
+            }
+        }
+        val jvmTest by getting{
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
     }
 }
