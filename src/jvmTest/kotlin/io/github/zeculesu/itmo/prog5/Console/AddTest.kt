@@ -1,13 +1,13 @@
 package io.github.zeculesu.itmo.prog5.Console
 
-import io.github.zeculesu.itmo.prog5.manager.AddCommand
+import io.github.zeculesu.itmo.prog5.manager.command.AddCommand
 import kotlin.test.Test
 
 import io.github.zeculesu.itmo.prog5.data.*
 import io.github.zeculesu.itmo.prog5.manager.CommandSetMapImpl
 import io.github.zeculesu.itmo.prog5.manager.CommandIOMemoryImpl
 import io.github.zeculesu.itmo.prog5.manager.ConsoleCommandEnvironmentTestImpl
-import io.github.zeculesu.itmo.prog5.manager.ShowCommand
+import io.github.zeculesu.itmo.prog5.manager.command.ShowCommand
 import kotlin.test.assertEquals
 
 class AddTest {

@@ -1,17 +1,22 @@
 package io.github.zeculesu.itmo.prog5.data;
 
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
+
+import java.util.Date;
 
 public interface CollectionAction extends Iterable<SpaceMarine> {
     public String info(CommandIO console);
     public String show(CommandIO console);
     public void add(String name, Coordinates coordinates, int health,
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
-    public void update(int id, String name, Coordinates coordinates, int health,
+    public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
+                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
+    public String update(int id, String name, Coordinates coordinates, int health,
                        AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
     public String remove_by_id(int id);
     public void clear();
-    public void save();
+    public String save(String filename);
 
     public String remove_head(CommandIO console);
     public String remove_lower(SpaceMarine o);
@@ -20,3 +25,5 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
     public String filter_starts_with_name(String name, CommandIO console);
     public String print_field_descending_health();
 }
+
+

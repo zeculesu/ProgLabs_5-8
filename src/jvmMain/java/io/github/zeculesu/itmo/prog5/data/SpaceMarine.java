@@ -22,12 +22,12 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
         this(id, name, coordinates, new Date(), health, category, weaponType, meleeWeapon, chapter);
     }
 
-    public SpaceMarine(int id, String name, Coordinates coordinates, Date date, int health,
+    public SpaceMarine(int id, String name, Coordinates coordinates, Date creationDate, int health,
                        AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
-        this.creationDate = date;
+        this.creationDate = creationDate;
         this.health = health;
         this.category = category;
         this.weaponType = weaponType;

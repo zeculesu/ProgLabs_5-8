@@ -7,11 +7,20 @@ import java.util.List;
 
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment{
 
+    private boolean stage;
+
     private final CommandSet commandSetMap;
+    private String fileNameCollection;
     private final List<String> commandHistory = new ArrayList<>();
 
-    public DefaultConsoleCommandEnvironmentImpl(CommandSet commandSetMap){
+    public DefaultConsoleCommandEnvironmentImpl(CommandSet commandSetMap, String fileNameCollection){
         this.commandSetMap = commandSetMap;
+        this.fileNameCollection = fileNameCollection;
+    }
+
+    @Override
+    public String getFileNameCollection() {
+        return this.fileNameCollection;
     }
 
     @Override
@@ -27,5 +36,13 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
     @Override
     public List<String> getCommandHistory() {
         return this.commandHistory;
+    }
+
+    public boolean isStage() {
+        return stage;
+    }
+
+    public void setStage(boolean stage) {
+        this.stage = stage;
     }
 }

@@ -1,8 +1,15 @@
 package io.github.zeculesu.itmo.prog5.data;
 
+import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+import io.github.zeculesu.itmo.prog5.manager.ParseFileXML;
+import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class SpaceMarineCollection implements CollectionAction {
@@ -34,24 +41,17 @@ public class SpaceMarineCollection implements CollectionAction {
 
     public void add(String name, Coordinates coordinates, int health,
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        //todo изменить способ выдачи id
         int maxId = 1;
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getId() >= maxId) maxId = elem.getId() + 1;
         }
-        //int id = !collectionSpaceMarine.isEmpty() ? collectionSpaceMarine.size() + 1 : 1;
         SpaceMarine newElement = new SpaceMarine(maxId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
         this.collectionSpaceMarine.add(newElement);
     }
 
-    public void addFromFile(int id, String name, Coordinates coordinates, int health,
-                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, health, category, weaponType, meleeWeapon, chapter));
-    }
-
     @Override
-    public void update(int id, String name, Coordinates coordinates, int health,
-                       AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
+    public String update(int id, String name, Coordinates coordinates, int health,
+                         AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getId() == id) {
                 elem.setName(name);
@@ -61,9 +61,10 @@ public class SpaceMarineCollection implements CollectionAction {
                 elem.setWeaponType(weaponType);
                 elem.setMeleeWeapon(meleeWeapon);
                 elem.setChapter(chapter);
-                break;
+                return "Элемент успешно обновлен";
             }
         }
+        return "Элемент не найден";
     }
 
     @Override
@@ -82,15 +83,36 @@ public class SpaceMarineCollection implements CollectionAction {
         this.collectionSpaceMarine.clear();
     }
 
+    public String load(String filename) {
+        try{
+            ParseFileXML.parseFile(filename, this);
+        } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
+            return e.getMessage();
+        }
+        return "Элементы из коллекции загружены";
+    }
+
     @Override
-    public void save() {
-        //todo сделать
+    public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
+                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
+        this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, creationDate, health,
+                category, weaponType, meleeWeapon, chapter));
+    }
+
+    @Override
+    public String save(String filename) {
+        try {
+            ParseFileXML.writeFile(filename, this);
+        } catch (FileCollectionException e) {
+            return e.getMessage();
+        }
+        return "Сохранение прошло успешно";
     }
 
     @Override
     public String remove_head(CommandIO console) {
         if (collectionSpaceMarine.peek() == null) {
-            return "Коллекция пустая, из неё нечего обсуждать";
+            return "Коллекция пустая, из неё нечего удалять";
         } //todo проверить что не null
         SpaceMarine head = this.collectionSpaceMarine.peek();
         this.collectionSpaceMarine.remove(head);

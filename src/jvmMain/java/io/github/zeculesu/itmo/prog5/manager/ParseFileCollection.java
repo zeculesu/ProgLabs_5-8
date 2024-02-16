@@ -6,4 +6,5 @@ public interface ParseFileCollection {
     public static CollectionAction parseFile(String filePath, CollectionAction collection){
         return collection;
     }
+    public static void writeFile(String filePath, CollectionAction collectionAction){}
 }

@@ -1,19 +1,21 @@
-package io.github.zeculesu.itmo.prog5.manager;
+package io.github.zeculesu.itmo.prog5.manager.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.manager.CommandAction;
+import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 
-public class UpdateCommand implements CommandAction{
+public class RemoveByIdCommand implements CommandAction {
+
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
         if (args.length == 0){
-            return "Не введен аргумент - id элемента для обновления";
+            return "Не введен аргумент - id элемента для удаления";
         }
         try{
             int id = Integer.parseInt(args[0]);
-
-            //collectionSpaceMarine.update();
+            return collectionSpaceMarine.remove_by_id(id);
         }
         catch (NumberFormatException e){
             return "Неверный формат ввода id";
@@ -23,12 +25,12 @@ public class UpdateCommand implements CommandAction{
     @NotNull
     @Override
     public String getName() {
-        return "update";
+        return "remove_by_id";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "обновить значение элемента коллекции, id которого равен заданному";
+        return "remove_by_id id : удалить элемент из коллекции по его id";
     }
 }

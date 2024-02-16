@@ -6,7 +6,15 @@ import java.util.List;
 
 public interface ConsoleCommandEnvironment {
 
+    String getFileNameCollection();
+
     CommandSet getCommandSetMap();
+
     void addCommandToHistory(String command);
+
     List<String> getCommandHistory();
+
+    boolean isStage();
+
+    void setStage(boolean stage);
 }

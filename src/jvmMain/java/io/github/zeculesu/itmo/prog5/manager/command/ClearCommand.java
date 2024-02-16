@@ -1,25 +1,29 @@
-package io.github.zeculesu.itmo.prog5.manager;
+package io.github.zeculesu.itmo.prog5.manager.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.manager.CommandAction;
+import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 
-public class RemoveHeadCommand implements CommandAction{
+public class ClearCommand implements CommandAction {
 
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
-        return collectionSpaceMarine.remove_head(console);
+        collectionSpaceMarine.clear();
+        //todo проверка на ошибки
+        return "Коллекция очищена";
     }
 
     @NotNull
     @Override
     public String getName() {
-        return "remove_head";
+        return "clear";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "remove_head : вывести первый элемент коллекции и удалить его";
+        return "очистить коллекцию";
     }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<collection>
+    <element id="1">
+        <name>Arke</name>
+        <coordinates x="2" y="3"/>
+        <creationDate>03.04.2004</creationDate>
+        <health>100</health>
+        <category>SCOUT</category>
+        <weaponType>FLAMER</weaponType>
+        <meleeWeapon>CHAIN_AXE</meleeWeapon>
+        <chapter name="name_category" parentLegion="elf"/>
+    </element>
+
+</collection>

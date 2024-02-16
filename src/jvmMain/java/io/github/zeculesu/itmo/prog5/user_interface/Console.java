@@ -9,24 +9,27 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
 
 public class Console implements CommunicatedClient {
 
-    //CommandSetMap commandSetMap;
     private DefaultConsoleCommandEnvironmentImpl environment;
     private SpaceMarineCollection collectionSpaceMarine;
 
-    //в Main'e будет DefaultConsoleCommandEnvironmentImpl(CommandSetMap)
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
+        this.environment.setStage(true);
         this.collectionSpaceMarine = collectionSpaceMarine;
     }
 
     @Override
     public void run() {
         String command;
-        boolean stop = false;
-        while (!stop) {
+        while (environment.isStage()) {
             command = readlnOrNull();
-            readCommand(command);
+            if (command == null) {
+                System.out.println("команда не введена");
+            }
+            else{
+                readCommand(command);
+            }
         }
     }
 
@@ -35,16 +38,15 @@ public class Console implements CommunicatedClient {
         this.environment.addCommandToHistory(token[0]);
         CommandAction com = this.environment.getCommandSetMap().findCommand(token[0]);
         if (com != null) {
-            if (token.length == 2){
+            if (token.length == 2) {
                 String[] args = token[1].split(";");
                 com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
-            }
-            else {
+            } else {
                 String[] args = new String[0];
                 String responce = com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
                 System.out.println(responce);
             }
-        } else System.out.println("Ебанат, ты что пишешь вообще, это не команда"); //todo УБРАТь
+        } else System.out.println("Это не команда, чтобы посмотреть список всех команд напишите help");
     }
 
     class CommandIOImpl implements CommandIO {

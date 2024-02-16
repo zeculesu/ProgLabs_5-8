@@ -11,7 +11,7 @@ public class CommandSetMapImpl implements CommandSet{
     HashMap<String, CommandAction> commandSet = new HashMap<>();
 
     public CommandSetMapImpl(CommandAction... commands){
-        //заполняется в Main
+        //заполняется в io.github.zeculesu.itmo.prog5.Main
         for (CommandAction command : commands){
             this.commandSet.put(command.getName(), command);
         }
