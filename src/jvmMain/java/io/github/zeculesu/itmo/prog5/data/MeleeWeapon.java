@@ -13,9 +13,7 @@ public enum MeleeWeapon {
     MANREAPER("MANREAPER"),
     POWER_BLADE("POWER_BLADE");
     private final String meleeWeaponName;
-    private static final Map<String, MeleeWeapon> name2instance = associateBy(MeleeWeapon.values(), v -> {
-        return v.meleeWeaponName;
-    });
+    private static final Map<String, MeleeWeapon> name2instance = associateBy(MeleeWeapon.values(), v -> v.meleeWeaponName);
 
     MeleeWeapon(String meleeWeaponName) {
         this.meleeWeaponName = meleeWeaponName;

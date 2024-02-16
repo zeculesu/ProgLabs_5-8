@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ConsoleCommandEnvironment {
 
-    public CommandSet getCommandSetMap();
-    public void addCommandToHistory(String command);
-    public List<String> getCommandHistory();
+    CommandSet getCommandSetMap();
+    void addCommandToHistory(String command);
+    List<String> getCommandHistory();
 }

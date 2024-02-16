@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class SpaceMarine implements Comparable<SpaceMarine>{
-    private int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private final int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -22,7 +22,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
-        //this.creationDate = creationDate;
+        this.creationDate = new Date();
         this.health = health;
         this.category = category;
         this.weaponType = weaponType;

@@ -24,7 +24,7 @@ public class AddCommand implements CommandAction{
         AstartesCategory category = AstartesCategory.getCategoryByName(cns.readln());
 
         cns.print("Введите тип оружия (BOLTGUN, HEAVY_BOLTGUN, BOLT_RIFLE, FLAMER, MULTI_MELTA): ");
-        Weapon weapon = Weapon.getCategoryByName(cns.readln());
+        Weapon weapon = Weapon.getWeaponByName(cns.readln());
 
         cns.print("Введите оружие ближнего боя (CHAIN_SWORD, POWER_SWORD, CHAIN_AXE, MANREAPER, POWER_BLADE): ");
         MeleeWeapon meleeWeapon = MeleeWeapon.getMeleeWeaponByName(cns.readln());

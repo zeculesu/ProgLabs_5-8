@@ -38,7 +38,7 @@ public class SpaceMarineCollection implements CollectionAction {
         int maxId = 1;
         for (SpaceMarine elem : this.collectionSpaceMarine){
             if (elem.getId() >= maxId) maxId =elem.getId()+1;
-        };
+        }
         //int id = !collectionSpaceMarine.isEmpty() ? collectionSpaceMarine.size() + 1 : 1;
         SpaceMarine newElement = new SpaceMarine(maxId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
         this.collectionSpaceMarine.add(newElement);
@@ -132,7 +132,7 @@ public class SpaceMarineCollection implements CollectionAction {
         if (this.size() == 0){
             return "в коллекции пока нет ни одного элемента";
         }
-        ArrayList<Integer> heights = new ArrayList<Integer>();
+        ArrayList<Integer> heights = new ArrayList<>();
         for (SpaceMarine elem : this.collectionSpaceMarine){
             heights.add(elem.getHealth());
         }

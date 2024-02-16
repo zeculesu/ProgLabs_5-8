@@ -1,10 +1,9 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 import org.jetbrains.annotations.NotNull;
 
-public class FilterNameCommand  implements CommandAction{
+public class FilterNameCommand implements CommandAction{
 
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {

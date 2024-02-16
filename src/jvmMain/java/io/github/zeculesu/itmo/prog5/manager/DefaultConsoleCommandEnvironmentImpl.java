@@ -5,8 +5,8 @@ import java.util.List;
 
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment{
 
-    private CommandSet commandSetMap;
-    private List<String> commandHistory = new ArrayList<>();
+    private final CommandSet commandSetMap;
+    private final List<String> commandHistory = new ArrayList<>();
 
     public DefaultConsoleCommandEnvironmentImpl(CommandSet commandSetMap){
         this.commandSetMap = commandSetMap;

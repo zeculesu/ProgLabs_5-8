@@ -1,12 +1,11 @@
 package io.github.zeculesu.itmo.prog5.data;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
+
 import java.util.Map;
 
 import static kotlin.collections.ArraysKt.associateBy;
 
-import java.util.stream.Collector;
 
 public enum AstartesCategory {
     SCOUT("SCOUT"),
@@ -15,9 +14,7 @@ public enum AstartesCategory {
     HELIX("HELIX");
 
     private final String astartesCategoryName;
-    private static final Map<String, AstartesCategory> name2instance = associateBy(AstartesCategory.values(), v -> {
-        return v.astartesCategoryName;
-    });
+    private static final Map<String, AstartesCategory> name2instance = associateBy(AstartesCategory.values(), v -> v.astartesCategoryName);
 //
 //    static {
 //        Map<String, AstartesCategory> names = new HashMap<>();
@@ -31,7 +28,10 @@ public enum AstartesCategory {
         this.astartesCategoryName = astartesCategoryName;
     }
 
-    public static AstartesCategory getCategoryByName(String astartesCategoryName) {
+    public static AstartesCategory getCategoryByName(String astartesCategoryName) throws NamingEnumException{
+        if (name2instance.get(astartesCategoryName) == null){
+            throw new NamingEnumException("Неправильное имя для категория");
+        }
         return name2instance.get(astartesCategoryName);
     }
 }
