@@ -23,10 +23,10 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public String show(CommandIO console) {
-        if (this.size() == 0){
+        if (this.size() == 0) {
             return "Элементов в коллекции нет";
         }
-        for (SpaceMarine elem : this.collectionSpaceMarine){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
             console.println(elem.toString());
         }
         return "...";
@@ -36,19 +36,24 @@ public class SpaceMarineCollection implements CollectionAction {
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
         //todo изменить способ выдачи id
         int maxId = 1;
-        for (SpaceMarine elem : this.collectionSpaceMarine){
-            if (elem.getId() >= maxId) maxId =elem.getId()+1;
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getId() >= maxId) maxId = elem.getId() + 1;
         }
         //int id = !collectionSpaceMarine.isEmpty() ? collectionSpaceMarine.size() + 1 : 1;
         SpaceMarine newElement = new SpaceMarine(maxId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
         this.collectionSpaceMarine.add(newElement);
     }
 
+    public void addFromFile(int id, String name, Coordinates coordinates, int health,
+                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
+        this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, health, category, weaponType, meleeWeapon, chapter));
+    }
+
     @Override
     public void update(int id, String name, Coordinates coordinates, int health,
                        AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        for (SpaceMarine elem : this.collectionSpaceMarine){
-            if (elem.getId() == id){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getId() == id) {
                 elem.setName(name);
                 elem.setCoordinates(coordinates);
                 elem.setHealth(health);
@@ -63,8 +68,8 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public String remove_by_id(int id) {
-        for (SpaceMarine elem : this.collectionSpaceMarine){
-            if (elem.getId() == id){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getId() == id) {
                 this.collectionSpaceMarine.remove(elem);
                 return "Элемент успешно удален";
             }
@@ -84,7 +89,7 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public String remove_head(CommandIO console) {
-        if (collectionSpaceMarine.peek() == null){
+        if (collectionSpaceMarine.peek() == null) {
             return "Коллекция пустая, из неё нечего обсуждать";
         } //todo проверить что не null
         SpaceMarine head = this.collectionSpaceMarine.peek();
@@ -98,7 +103,7 @@ public class SpaceMarineCollection implements CollectionAction {
         int start = this.size();
         this.collectionSpaceMarine.removeIf(n -> (n.compareTo(o) < 0));
         int end = this.size();
-        if (start == end){
+        if (start == end) {
             return "Элементов с меньше данного в коллекции не найдено";
         }
         return "Удаление произошло успешно";
@@ -109,7 +114,7 @@ public class SpaceMarineCollection implements CollectionAction {
         int start = this.size();
         this.collectionSpaceMarine.removeIf(n -> (n.getMeleeWeapon() == meleeWeapon));
         int end = this.size();
-        if (start == end){
+        if (start == end) {
             return "Элементов с таким оружием ближнего боя в коллекции не найдено";
         }
         return "Удаление произошло успешно";
@@ -118,8 +123,8 @@ public class SpaceMarineCollection implements CollectionAction {
     @Override
     public String filter_starts_with_name(String name, CommandIO console) {
         boolean finded = false;
-        for (SpaceMarine elem : this.collectionSpaceMarine){
-            if (elem.getName().startsWith(name)){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getName().startsWith(name)) {
                 console.println(elem.toString());
                 finded = true;
             }
@@ -129,11 +134,11 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public String print_field_descending_health() {
-        if (this.size() == 0){
+        if (this.size() == 0) {
             return "в коллекции пока нет ни одного элемента";
         }
         ArrayList<Integer> heights = new ArrayList<>();
-        for (SpaceMarine elem : this.collectionSpaceMarine){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
             heights.add(elem.getHealth());
         }
         heights.sort(Comparator.reverseOrder());
@@ -146,13 +151,13 @@ public class SpaceMarineCollection implements CollectionAction {
         return this.collectionSpaceMarine.iterator();
     }
 
-    public int size(){
+    public int size() {
         return this.collectionSpaceMarine.size();
     }
 
     public SpaceMarine get_by_id(int id) {
-        for (SpaceMarine elem : this.collectionSpaceMarine){
-            if (elem.getId() == id){
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getId() == id) {
                 return elem;
             }
         }

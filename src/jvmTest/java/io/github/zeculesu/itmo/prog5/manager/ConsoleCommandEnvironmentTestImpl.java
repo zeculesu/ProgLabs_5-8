@@ -1,7 +1,6 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
-import io.github.zeculesu.itmo.prog5.manager.CommandSet;
-import io.github.zeculesu.itmo.prog5.manager.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-package io.github.zeculesu.itmo.prog5.manager;
+package io.github.zeculesu.itmo.prog5.user_interface;
+
+import io.github.zeculesu.itmo.prog5.manager.CommandSet;
 
 import java.util.List;
 

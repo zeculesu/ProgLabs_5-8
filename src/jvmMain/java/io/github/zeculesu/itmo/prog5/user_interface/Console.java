@@ -3,7 +3,6 @@ package io.github.zeculesu.itmo.prog5.user_interface;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
-import io.github.zeculesu.itmo.prog5.manager.DefaultConsoleCommandEnvironmentImpl;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
