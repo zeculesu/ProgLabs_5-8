@@ -22,6 +22,6 @@ public class SaveCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "сохранить коллекцию в файл";
+        return "save : сохранить коллекцию в файл";
     }
 }

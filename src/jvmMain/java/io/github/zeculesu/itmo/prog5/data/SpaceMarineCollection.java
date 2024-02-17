@@ -1,15 +1,14 @@
 package io.github.zeculesu.itmo.prog5.data;
 
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
+import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.manager.ParseFileXML;
-import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 
 public class SpaceMarineCollection implements CollectionAction {
@@ -94,7 +93,10 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
-                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
+                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) throws IdException {
+        for (SpaceMarine o : this.collectionSpaceMarine){
+            if (o.getId() == id) throw new IdException("id не уникальные, элемент с повторяющимся id загружен не будет");
+        }
         this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, creationDate, health,
                 category, weaponType, meleeWeapon, chapter));
     }
@@ -151,7 +153,7 @@ public class SpaceMarineCollection implements CollectionAction {
                 finded = true;
             }
         }
-        return finded ? "..." : "не нашлось ни одного элемента";
+        return finded ? "..." : "не нашлось ни одного элемента\n...";
     }
 
     @Override
@@ -177,7 +179,7 @@ public class SpaceMarineCollection implements CollectionAction {
         return this.collectionSpaceMarine.size();
     }
 
-    public SpaceMarine get_by_id(int id) {
+    public SpaceMarine getById(int id) {
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getId() == id) {
                 return elem;

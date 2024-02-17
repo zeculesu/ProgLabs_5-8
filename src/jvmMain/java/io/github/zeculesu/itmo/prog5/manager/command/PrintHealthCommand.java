@@ -22,6 +22,6 @@ public class PrintHealthCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "вывести значения поля health всех элементов в порядке убывания";
+        return "print_field_descending_health : вывести значения поля health всех элементов в порядке убывания";
     }
 }

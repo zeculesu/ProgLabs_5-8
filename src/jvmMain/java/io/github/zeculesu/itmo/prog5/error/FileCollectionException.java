@@ -4,5 +4,4 @@ public class FileCollectionException extends RuntimeException{
     public FileCollectionException(String message){
         super(message);
     }
-
 }

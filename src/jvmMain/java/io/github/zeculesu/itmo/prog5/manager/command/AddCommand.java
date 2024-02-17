@@ -35,6 +35,6 @@ public class AddCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "добавить новый элемент в коллекцию";
+        return "add {element} : добавить новый элемент в коллекцию";
     }
 }

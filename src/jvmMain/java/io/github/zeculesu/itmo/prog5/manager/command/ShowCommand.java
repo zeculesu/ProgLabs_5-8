@@ -22,6 +22,6 @@ public class ShowCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
+        return "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении";
     }
 }

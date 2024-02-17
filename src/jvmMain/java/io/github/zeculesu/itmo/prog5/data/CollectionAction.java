@@ -24,6 +24,8 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
     public String remove_all_by_melee_weapon(MeleeWeapon meleeWeapon);
     public String filter_starts_with_name(String name, CommandIO console);
     public String print_field_descending_health();
+
+    public SpaceMarine getById(int id);
 }
 
 

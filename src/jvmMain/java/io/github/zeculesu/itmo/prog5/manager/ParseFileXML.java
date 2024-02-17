@@ -2,6 +2,7 @@ package io.github.zeculesu.itmo.prog5.manager;
 
 import io.github.zeculesu.itmo.prog5.data.*;
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
+import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementForm;
 import org.xml.sax.Attributes;
@@ -18,6 +19,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,7 +33,7 @@ public class ParseFileXML implements ParseFileCollection {
         ParseFileXML.collection = collection;
         XMLOutputFactory factory = XMLOutputFactory.newFactory();
         try {
-            XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filePath));
+            XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filePath), "UTF-8");
             writeCollection(writer);
         } catch (FileNotFoundException e) {
             throw new FileCollectionException("Файл не найден");
@@ -40,7 +43,7 @@ public class ParseFileXML implements ParseFileCollection {
     }
 
     public static void writeCollection(XMLStreamWriter writer) throws XMLStreamException {
-        writer.writeStartDocument();
+        writer.writeStartDocument("UTF-8", "1.0");
 
         writer.writeStartElement("collection");
         for (SpaceMarine o : ParseFileXML.collection) {
@@ -56,7 +59,8 @@ public class ParseFileXML implements ParseFileCollection {
             writer.writeAttribute("y", Float.toString(o.getCoordinates().getY()));
 
             writer.writeStartElement("creationDate");
-            writer.writeCharacters(o.getCreationDate().toString());
+            DateFormat df = new SimpleDateFormat("dd.MMM.yyyy hh:ss");
+            writer.writeCharacters(df.format(o.getCreationDate()));
             writer.writeEndElement();
 
             writer.writeStartElement("health");
@@ -94,7 +98,7 @@ public class ParseFileXML implements ParseFileCollection {
         AdvancedXMLHandler handler = new AdvancedXMLHandler();
         try {
             parser.parse(new File(filePath), handler);
-            //return ParseFileXML.collection;
+
         } catch (SAXException | FileNotFoundException e) {
             System.out.println(e);
             throw new FileNotFoundException("Файл не найден");
@@ -196,19 +200,18 @@ public class ParseFileXML implements ParseFileCollection {
                 try {
                     int id = ElementForm.check_id(params.get("id"));
                     String name = ElementForm.check_name(params.get("name"));
-                    Coordinates coordinates = ElementForm.check_coordinates(params.get("x") + params.get("y"));
+                    Coordinates coordinates = ElementForm.check_coordinates(params.get("x") +" "+ params.get("y"));
                     int health = ElementForm.check_health(params.get("health"));
                     AstartesCategory category = ElementForm.check_category(params.get("category"));
                     Date creationDate = ElementForm.check_creationDate(params.get("creationDate"));
                     Weapon weaponType = ElementForm.check_weaponType(params.get("weaponType"));
                     MeleeWeapon meleeWeapon = ElementForm.check_meleeWeapon(params.get("meleeWeapon"));
-                    Chapter chapter = ElementForm.check_chapter(params.get("chapter_name") + params.get("parentLegion"));
+                    Chapter chapter = ElementForm.check_chapter(params.get("chapter_name") + " " + params.get("parentLegion"));
                     collection.addFromFile(id, name, coordinates, creationDate, health,
                             category, weaponType, meleeWeapon, chapter);
-                    //System.out.println(params);
                     clear_params();
-                } catch (InputFormException e) {
-                    throw e;
+                } catch (InputFormException | IdException e) {
+                    System.out.println(e.getMessage());
                 }
             } else if (!fill && qName.equals("element")) {
                 System.out.println("Неправильный ввод параметров коллекции");

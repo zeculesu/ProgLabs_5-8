@@ -18,6 +18,9 @@ public class UpdateCommand implements CommandAction {
         ElementForm form = new ElementForm();
         try {
             int id = ElementForm.check_id(args[0]);
+            if (collectionSpaceMarine.getById(id) == null){
+                return "Элемента с таким id в коллекции нет";
+            }
             form.formElementIO(console);
             return collectionSpaceMarine.update(id, form.getName(), form.getCoordinates(), form.getHealth(),
                     form.getCategory(), form.getWeaponType(), form.getMeleeWeapon(), form.getChapter());

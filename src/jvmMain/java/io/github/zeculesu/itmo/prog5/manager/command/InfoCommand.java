@@ -6,24 +6,21 @@ import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 
-public class ClearCommand implements CommandAction {
-
+public class InfoCommand implements CommandAction {
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
-        collectionSpaceMarine.clear();
-        System.out.println("Коллекция очищена");
-        return "...";
+        return collectionSpaceMarine.info(console);
     }
 
     @NotNull
     @Override
     public String getName() {
-        return "clear";
+        return "info";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return "clear : очистить коллекцию";
+        return "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов)";
     }
 }

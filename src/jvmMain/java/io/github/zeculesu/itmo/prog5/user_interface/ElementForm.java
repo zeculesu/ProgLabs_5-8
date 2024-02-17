@@ -7,6 +7,7 @@ import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ElementForm {
@@ -35,7 +36,7 @@ public class ElementForm {
             input = cns.readln();
             this.coordinates = check_coordinates(input);
 
-            cns.print("Введите количество здоровья");
+            cns.print("Введите количество здоровья: ");
             input = cns.readln();
             this.health = check_health(input);
 
@@ -93,7 +94,8 @@ public class ElementForm {
     public static Date check_creationDate(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод даты");
         try {
-            return DateFormat.getDateInstance().parse(input);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:ss");
+            return formatter.parse(input);
         }
         catch (ParseException e){
             throw new InputFormException("Невалидный ввод даты");

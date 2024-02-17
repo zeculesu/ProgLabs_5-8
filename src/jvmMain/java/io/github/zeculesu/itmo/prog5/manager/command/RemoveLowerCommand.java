@@ -33,6 +33,6 @@ public class RemoveLowerCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "удалить из коллекции все элементы, меньшие, чем заданный";
+        return "remove_lower {element} : удалить из коллекции все элементы, меньшие, чем заданный";
     }
 }

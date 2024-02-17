@@ -3,6 +3,8 @@ package io.github.zeculesu.itmo.prog5.data;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SpaceMarine implements Comparable<SpaceMarine>{
@@ -37,16 +39,19 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
 
     @Override
     public String toString() {
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
         return "SpaceMarine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
+                ", coordinates={x = " + coordinates.getX() +
+                "; y = " + coordinates.getY() + "}" +
+                ", creationDate=" + df.format(creationDate) +
                 ", health=" + health +
                 ", category=" + category +
                 ", weaponType=" + weaponType +
                 ", meleeWeapon=" + meleeWeapon +
-                ", chapter=" + chapter +
+                ", chapter={name=" + chapter.getName() +
+                "; parent_legion=" + chapter.getParentLegion() + "}" +
                 '}';
     }
 

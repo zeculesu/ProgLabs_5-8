@@ -31,7 +31,7 @@ class AddTest {
         val env = ConsoleCommandEnvironmentTestImpl(commandSet)
         comm.execute(collection, io, env, arrayOf())
         assertEquals(1, collection.size())
-        val el = collection.get_by_id(1)
+        val el = collection.getById(1)
         assertEquals("name", el.name)
         assertEquals(4, el.coordinates.x)
         assertEquals(5f, el.coordinates.y)

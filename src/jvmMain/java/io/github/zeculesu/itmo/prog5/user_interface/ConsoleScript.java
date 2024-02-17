@@ -9,13 +9,13 @@ import static kotlin.text.StringsKt.isBlank;
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
 
-public class Console implements CommunicatedClient {
+public class ConsoleScript implements CommunicatedClient {
 
     private DefaultConsoleCommandEnvironmentImpl environment;
     private SpaceMarineCollection collectionSpaceMarine;
 
 
-    public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
+    public ConsoleScript(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
         this.environment.setStage(true);
         this.collectionSpaceMarine = collectionSpaceMarine;
@@ -24,20 +24,19 @@ public class Console implements CommunicatedClient {
     @Override
     public void run() {
         String command;
-
-            while (environment.isStage()) {
-                command = readlnOrNull();
-                if (command == null) {
-                    System.out.println("Конец работы программы");
-                    return;
-                }
-                else if (command.isBlank()){
-                    System.out.println("Команда не введена");
-                }
-                else {
-                    readCommand(command);
-                }
+        while (environment.isStage()) {
+            command = readlnOrNull();
+            if (command == null) {
+                System.out.println("Конец работы программы");
+                return;
             }
+            else if (command.isBlank()){
+                System.out.println("Команда не введена");
+            }
+            else {
+                readCommand(command);
+            }
+        }
     }
 
     public void readCommand(String command) {
