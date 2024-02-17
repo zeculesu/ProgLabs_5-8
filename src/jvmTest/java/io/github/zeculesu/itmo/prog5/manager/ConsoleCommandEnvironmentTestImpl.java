@@ -15,6 +15,11 @@ public class ConsoleCommandEnvironmentTestImpl implements ConsoleCommandEnvironm
     }
 
     @Override
+    public String getFileNameCollection() {
+        return null;
+    }
+
+    @Override
     public CommandSet getCommandSetMap() {
         return this.commandSetMap;
     }
@@ -27,5 +32,15 @@ public class ConsoleCommandEnvironmentTestImpl implements ConsoleCommandEnvironm
     @Override
     public List<String> getCommandHistory() {
         return this.commandHistory;
+    }
+
+    @Override
+    public boolean isStage() {
+        return false;
+    }
+
+    @Override
+    public void setStage(boolean stage) {
+
     }
 }

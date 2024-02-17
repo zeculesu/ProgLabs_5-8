@@ -19,11 +19,11 @@ public class AddCommand implements CommandAction {
         ElementForm form = new ElementForm();
         try {
             form.formElementIO(cns);
+            collectionSpaceMarine.add(form.getName(), form.getCoordinates(), form.getHealth(), form.getCategory(), form.getWeaponType(), form.getMeleeWeapon(), form.getChapter());
+            return "Новый элемент добавлен";
         } catch (NamingEnumException | InputFormException e) {
             return e.getMessage();
         }
-        collectionSpaceMarine.add(form.getName(), form.getCoordinates(), form.getHealth(), form.getCategory(), form.getWeaponType(), form.getMeleeWeapon(), form.getChapter());
-        return "Новый элемент добавлен";
     }
 
     @NotNull

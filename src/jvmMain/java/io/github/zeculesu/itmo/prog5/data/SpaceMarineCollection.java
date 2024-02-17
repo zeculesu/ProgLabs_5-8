@@ -157,7 +157,7 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public String print_field_descending_health() {
+    public String print_field_descending_health(CommandIO console) {
         if (this.size() == 0) {
             return "в коллекции пока нет ни одного элемента";
         }
@@ -166,6 +166,9 @@ public class SpaceMarineCollection implements CollectionAction {
             heights.add(elem.getHealth());
         }
         heights.sort(Comparator.reverseOrder());
+        for (int h : heights){
+            console.println(Integer.toString(h));
+        }
         return "...";
     }
 

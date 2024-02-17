@@ -1,24 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <collection>
     <element id="1">
         <name>Arke</name>
-        <coordinates x="2" y="3"/>
-        <creationDate>17.02.3004 00:23</creationDate>
+        <coordinates x="2" y="3.0"/>
+        <creationDate>17.02.2005 12:23</creationDate>
         <health>100</health>
         <category>SCOUT</category>
         <weaponType>FLAMER</weaponType>
         <meleeWeapon>CHAIN_AXE</meleeWeapon>
         <chapter name="name_category" parentLegion="elf"/>
     </element>
-<!-- todo добавить проверку уникальности id   -->
-<!--    <element id="1">-->
-<!--        <name>Arke</name>-->
-<!--        <coordinates x="2" y="3"/>-->
-<!--        <creationDate>17.02.3004 00:23</creationDate>-->
-<!--        <health>100</health>-->
-<!--        <category>SCOUT</category>-->
-<!--        <weaponType>FLAMER</weaponType>-->
-<!--        <meleeWeapon>CHAIN_AXE</meleeWeapon>-->
-<!--        <chapter name="name_category" parentLegion="elf"/>-->
-<!--    </element>-->
 </collection>

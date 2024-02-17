@@ -11,8 +11,7 @@ public class ClearCommand implements CommandAction {
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
         collectionSpaceMarine.clear();
-        System.out.println("Коллекция очищена");
-        return "...";
+        return "Коллекция очищена";
     }
 
     @NotNull

@@ -10,7 +10,7 @@ public class PrintHealthCommand implements CommandAction {
 
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
-        return collectionSpaceMarine.print_field_descending_health();
+        return collectionSpaceMarine.print_field_descending_health(console);
     }
 
     @NotNull

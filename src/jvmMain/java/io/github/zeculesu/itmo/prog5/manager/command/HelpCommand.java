@@ -11,16 +11,6 @@ public class HelpCommand implements CommandAction {
 
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
-        // Вставить в io.github.zeculesu.itmo.prog5.Main
-//        CommandSetMap commandSetMap = new CommandSetMap(new AddCommand(), new ClearCommand(), new FilterNameCommand(), new HelpCommand(), new PrintHealthCommand(), new RemoveByIdCommand(), new RemoveByWeaponCommand(), new RemoveHeadCommand(), new RemoveLowerCommand(),
-//                new SaveCommand(), new ShowCommand(), new UpdateCommand());
-//        List<CommandAction> commandSet = kotlin.collections.CollectionsKt.arrayListOf(new AddCommand(), new ClearCommand(), new FilterNameCommand(),
-//                new PrintHealthCommand(), new RemoveByIdCommand(), new RemoveByWeaponCommand(), new RemoveHeadCommand(), new RemoveLowerCommand(),
-//                new SaveCommand(), new ShowCommand(), new UpdateCommand());
-//        HelpCommand helpCommand = new HelpCommand(commandSet);
-//        commandSet.add(helpCommand);
-//        CommandSetMap commandSetMap = new CommandSetMap((CommandAction) commandSet);
-
         for (CommandAction command : env.getCommandSetMap()) {
             console.println(command.getDescription());
         }

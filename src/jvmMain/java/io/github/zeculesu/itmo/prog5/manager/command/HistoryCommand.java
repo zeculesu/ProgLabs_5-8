@@ -17,7 +17,7 @@ public class HistoryCommand implements CommandAction {
         for (int i = 0; (i < 13 && i < history.size()); i++) {
             console.println(history.get(st + i));
         }
-        return null;
+        return "...";
     }
 
     @NotNull

@@ -48,9 +48,9 @@ public class ParseFileXML implements ParseFileCollection {
         writer.writeStartElement("collection");
         for (SpaceMarine o : ParseFileXML.collection) {
             writer.writeStartElement("element");
+            writer.writeAttribute("id", Integer.toString(o.getId()));
 
             writer.writeStartElement("name");
-            writer.writeAttribute("id", Integer.toString(o.getId()));
             writer.writeCharacters(o.getName());
             writer.writeEndElement();
 
@@ -59,7 +59,7 @@ public class ParseFileXML implements ParseFileCollection {
             writer.writeAttribute("y", Float.toString(o.getCoordinates().getY()));
 
             writer.writeStartElement("creationDate");
-            DateFormat df = new SimpleDateFormat("dd.MMM.yyyy hh:ss");
+            DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
             writer.writeCharacters(df.format(o.getCreationDate()));
             writer.writeEndElement();
 
@@ -100,7 +100,6 @@ public class ParseFileXML implements ParseFileCollection {
             parser.parse(new File(filePath), handler);
 
         } catch (SAXException | FileNotFoundException e) {
-            System.out.println(e);
             throw new FileNotFoundException("Файл не найден");
         } catch (IOException e) {
             throw new FileNotFoundException("Проблема с чтением файла");

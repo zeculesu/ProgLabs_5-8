@@ -6,10 +6,29 @@ import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class ExecuteScriptCommand implements CommandAction {
     @Override
     public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
-        return null;
+        if (args.length == 0) {
+            return "имя файла не введено";
+        }
+//        try {
+//            String scriptName = args[0];
+//            FileReader fileReader = new FileReader(scriptName);
+//            BufferedReader bufferedReader = new BufferedReader(fileReader);
+//            while (bufferedReader.ready()) {
+//                stringBuilder.append(bufferedReader.readLine());
+//            }
+//            return null;
+//        } catch (IOException e) {
+//            return "файл не найден";
+//        }
+        return "не сделано(";
     }
 
     @NotNull

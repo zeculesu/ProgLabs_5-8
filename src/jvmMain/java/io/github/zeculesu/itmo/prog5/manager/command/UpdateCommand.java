@@ -38,6 +38,6 @@ public class UpdateCommand implements CommandAction {
     @NotNull
     @Override
     public String getDescription() {
-        return "update : обновить значение элемента коллекции, id которого равен заданному";
+        return "update id : обновить значение элемента коллекции, id которого равен заданному";
     }
 }

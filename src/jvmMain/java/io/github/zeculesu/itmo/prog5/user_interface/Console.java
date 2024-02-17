@@ -3,6 +3,7 @@ package io.github.zeculesu.itmo.prog5.user_interface;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+
 import static kotlin.text.StringsKt.isBlank;
 
 
@@ -25,19 +26,19 @@ public class Console implements CommunicatedClient {
     public void run() {
         String command;
 
-            while (environment.isStage()) {
-                command = readlnOrNull();
-                if (command == null) {
-                    System.out.println("Конец работы программы");
-                    return;
-                }
-                else if (command.isBlank()){
-                    System.out.println("Команда не введена");
-                }
-                else {
-                    readCommand(command);
-                }
+        while (environment.isStage()) {
+            command = readlnOrNull();
+            if (command == null) {
+                System.out.println("Конец работы программы");
+                return;
+            } else if (command.isBlank()) {
+                System.out.println("Команда не введена");
+            } else {
+                readCommand(command);
+               // System.out.println("...");
             }
+        }
+        System.out.println("Конец работы программы");
     }
 
     public void readCommand(String command) {
@@ -47,12 +48,12 @@ public class Console implements CommunicatedClient {
         if (com != null) {
             if (token.length == 2) {
                 String[] args = token[1].split(";");
-                String response = com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
-                System.out.println(response);
+                String responce = com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
+                System.out.println(responce);
             } else {
                 String[] args = new String[0];
-                String response = com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
-                System.out.println(response);
+                String responce = com.execute(this.collectionSpaceMarine, this.new CommandIOImpl(), this.environment, args);
+                System.out.println(responce);
             }
         } else System.out.println("Это не команда, чтобы посмотреть список всех команд напишите help");
     }
