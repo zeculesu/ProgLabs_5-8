@@ -4,7 +4,7 @@ import io.github.zeculesu.itmo.prog5.data.*;
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
-import io.github.zeculesu.itmo.prog5.user_interface.ElementForm;
+import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -197,15 +197,15 @@ public class ParseFileXML implements ParseFileCollection {
                 //int id = Integer.parseInt(params.get("id"));
                 //todo доделать преобразование данных
                 try {
-                    int id = ElementForm.check_id(params.get("id"));
-                    String name = ElementForm.check_name(params.get("name"));
-                    Coordinates coordinates = ElementForm.check_coordinates(params.get("x") +" "+ params.get("y"));
-                    int health = ElementForm.check_health(params.get("health"));
-                    AstartesCategory category = ElementForm.check_category(params.get("category"));
-                    Date creationDate = ElementForm.check_creationDate(params.get("creationDate"));
-                    Weapon weaponType = ElementForm.check_weaponType(params.get("weaponType"));
-                    MeleeWeapon meleeWeapon = ElementForm.check_meleeWeapon(params.get("meleeWeapon"));
-                    Chapter chapter = ElementForm.check_chapter(params.get("chapter_name") + " " + params.get("parentLegion"));
+                    int id = ElementFormConsole.check_id(params.get("id"));
+                    String name = ElementFormConsole.check_name(params.get("name"));
+                    Coordinates coordinates = ElementFormConsole.check_coordinates(params.get("x") +" "+ params.get("y"));
+                    int health = ElementFormConsole.check_health(params.get("health"));
+                    AstartesCategory category = ElementFormConsole.check_category(params.get("category"));
+                    Date creationDate = ElementFormConsole.check_creationDate(params.get("creationDate"));
+                    Weapon weaponType = ElementFormConsole.check_weaponType(params.get("weaponType"));
+                    MeleeWeapon meleeWeapon = ElementFormConsole.check_meleeWeapon(params.get("meleeWeapon"));
+                    Chapter chapter = ElementFormConsole.check_chapter(params.get("chapter_name") + " " + params.get("parentLegion"));
                     collection.addFromFile(id, name, coordinates, creationDate, health,
                             category, weaponType, meleeWeapon, chapter);
                     clear_params();

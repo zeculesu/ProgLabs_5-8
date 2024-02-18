@@ -2,16 +2,21 @@ package io.github.zeculesu.itmo.prog5.manager.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
-import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
 public class ExitCommand implements CommandAction {
 
+    boolean acceptsElement = false;
+
     @Override
-    public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
+    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
+        Response response = new Response();
         env.setStage(false);
-        return "Конец работы программы";
+        response.setMessage("Конец работы программы");
+        return response;
     }
 
     @NotNull
@@ -24,5 +29,11 @@ public class ExitCommand implements CommandAction {
     @Override
     public String getDescription() {
         return "exit : завершить программу (без сохранения в файл)";
+    }
+
+
+    @Override
+    public boolean isAcceptsElement() {
+        return this.acceptsElement;
     }
 }

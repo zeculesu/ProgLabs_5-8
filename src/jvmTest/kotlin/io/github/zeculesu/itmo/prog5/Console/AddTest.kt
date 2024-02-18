@@ -8,6 +8,7 @@ import io.github.zeculesu.itmo.prog5.manager.CommandSetMapImpl
 import io.github.zeculesu.itmo.prog5.manager.CommandIOMemoryImpl
 import io.github.zeculesu.itmo.prog5.manager.ConsoleCommandEnvironmentTestImpl
 import io.github.zeculesu.itmo.prog5.manager.command.ShowCommand
+import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole
 import kotlin.test.assertEquals
 
 class AddTest {
@@ -24,14 +25,15 @@ class AddTest {
                 "name parentLegion"
             )
         )
+        val elem = ElementFormConsole(io)
         val collection = SpaceMarineCollection()
         val comm = AddCommand()
         val comm_show = ShowCommand()
         val commandSet = CommandSetMapImpl(comm, comm_show)
         val env = ConsoleCommandEnvironmentTestImpl(commandSet)
-        comm.execute(collection, io, env, arrayOf())
+        comm.execute(collection, env, arrayOf(), elem)
         assertEquals(1, collection.size())
-        val el = collection.getById(1)
+        val el = collection.findById(1)
         assertEquals("name", el.name)
         assertEquals(4, el.coordinates.x)
         assertEquals(5f, el.coordinates.y)

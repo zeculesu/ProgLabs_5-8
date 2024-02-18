@@ -1,5 +1,7 @@
 package io.github.zeculesu.itmo.prog5.data;
 
+import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
+import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
@@ -20,24 +22,27 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public String info(CommandIO console) {
-        console.println("Тип коллекции: " + this.collectionSpaceMarine.getClass().getName());
-        console.println("Дата инициализации: " + this.dateInitialization.toString());
-        console.println("Количество элементов: " + this.collectionSpaceMarine.toArray().length);
-        return "...";
+    public ArrayList<String> info() {
+        ArrayList<String> info = new ArrayList<>();
+        info.add("Тип коллекции: " + this.collectionSpaceMarine.getClass().getName());
+        info.add("Дата инициализации: " + this.dateInitialization.toString());
+        info.add("Количество элементов: " + this.collectionSpaceMarine.toArray().length);
+        return info;
     }
 
     @Override
-    public String show(CommandIO console) {
+    public ArrayList<SpaceMarine> show() throws EmptyCollectionException {
         if (this.size() == 0) {
-            return "Элементов в коллекции нет";
+            throw new EmptyCollectionException();
         }
+        ArrayList<SpaceMarine> showCollection = new ArrayList<>();
         for (SpaceMarine elem : this.collectionSpaceMarine) {
-            console.println(elem.toString());
+            showCollection.add(elem);
         }
-        return "...";
+        return showCollection;
     }
 
+    @Override
     public void add(String name, Coordinates coordinates, int health,
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
         int maxId = 1;
@@ -49,32 +54,28 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public String update(int id, String name, Coordinates coordinates, int health,
-                         AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            if (elem.getId() == id) {
-                elem.setName(name);
-                elem.setCoordinates(coordinates);
-                elem.setHealth(health);
-                elem.setCategory(category);
-                elem.setWeaponType(weaponType);
-                elem.setMeleeWeapon(meleeWeapon);
-                elem.setChapter(chapter);
-                return "Элемент успешно обновлен";
-            }
-        }
-        return "Элемент не найден";
+    public void update(int id, String name, Coordinates coordinates, int health,
+                         AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) throws ElementNotFound {
+        SpaceMarine elem = findById(id);
+        elem.setName(name);
+        elem.setCoordinates(coordinates);
+        elem.setHealth(health);
+        elem.setCategory(category);
+        elem.setWeaponType(weaponType);
+        elem.setMeleeWeapon(meleeWeapon);
+        elem.setChapter(chapter);
     }
 
     @Override
-    public String remove_by_id(int id) {
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            if (elem.getId() == id) {
-                this.collectionSpaceMarine.remove(elem);
-                return "Элемент успешно удален";
-            }
-        }
-        return "Элемент с таким id не найден";
+    public void remove_by_id(int id) throws ElementNotFound {
+        this.collectionSpaceMarine.remove(findById(id));
+//        for (SpaceMarine elem : this.collectionSpaceMarine) {
+//            if (elem.getId() == id) {
+//                this.collectionSpaceMarine.remove(elem);
+//                return "Элемент успешно удален";
+//            }
+//        }
+//        return "Элемент с таким id не найден";
     }
 
     @Override
@@ -83,7 +84,7 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     public String load(String filename) {
-        try{
+        try {
             ParseFileXML.parseFile(filename, this);
         } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
             return e.getMessage();
@@ -94,82 +95,66 @@ public class SpaceMarineCollection implements CollectionAction {
     @Override
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
                             AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) throws IdException {
-        for (SpaceMarine o : this.collectionSpaceMarine){
-            if (o.getId() == id) throw new IdException("id не уникальные, элемент с повторяющимся id загружен не будет");
+        for (SpaceMarine o : this.collectionSpaceMarine) {
+            if (o.getId() == id)
+                throw new IdException("id не уникальные, элемент с повторяющимся id загружен не будет");
         }
         this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, creationDate, health,
                 category, weaponType, meleeWeapon, chapter));
     }
 
     @Override
-    public String save(String filename) {
-        try {
-            ParseFileXML.writeFile(filename, this);
-        } catch (FileCollectionException e) {
-            return e.getMessage();
-        }
-        return "Сохранение прошло успешно";
+    public void save(String filename) throws FileCollectionException {
+        //todo проверить что без try catch пробрасывает
+        ParseFileXML.writeFile(filename, this);
     }
 
     @Override
-    public String remove_head(CommandIO console) {
+    public SpaceMarine remove_head() throws EmptyCollectionException {
         if (collectionSpaceMarine.peek() == null) {
-            return "Коллекция пустая, из неё нечего удалять";
-        } //todo проверить что не null
+            throw new EmptyCollectionException();
+        }
         SpaceMarine head = this.collectionSpaceMarine.peek();
         this.collectionSpaceMarine.remove(head);
-        console.println(head.toString());
-        return "...";
+        return head;
     }
 
     @Override
-    public String remove_lower(SpaceMarine o) {
-        int start = this.size();
+    public void remove_lower(SpaceMarine o) {
         this.collectionSpaceMarine.removeIf(n -> (n.compareTo(o) < 0));
-        int end = this.size();
-        if (start == end) {
-            return "Элементов с меньше данного в коллекции не найдено";
-        }
-        return "Удаление произошло успешно";
     }
 
     @Override
-    public String remove_all_by_melee_weapon(MeleeWeapon meleeWeapon) {
-        int start = this.size();
+    public void remove_all_by_melee_weapon(MeleeWeapon meleeWeapon) {
         this.collectionSpaceMarine.removeIf(n -> (n.getMeleeWeapon() == meleeWeapon));
-        int end = this.size();
-        if (start == end) {
-            return "Элементов с таким оружием ближнего боя в коллекции не найдено";
-        }
-        return "Удаление произошло успешно";
     }
 
     @Override
-    public String filter_starts_with_name(String name, CommandIO console) {
-        boolean finded = false;
+    public ArrayList<SpaceMarine> filter_starts_with_name(String name) {
+        ArrayList<SpaceMarine> finded = new ArrayList<>();
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getName().startsWith(name)) {
-                console.println(elem.toString());
-                finded = true;
+                finded.add(elem);
             }
         }
-        return finded ? "..." : "не нашлось ни одного элемента\n...";
+        return finded;
     }
 
     @Override
-    public String print_field_descending_health(CommandIO console) {
+    public String print_field_descending_health() throws EmptyCollectionException {
         if (this.size() == 0) {
-            return "в коллекции пока нет ни одного элемента";
+            throw new EmptyCollectionException();
         }
         ArrayList<Integer> heights = new ArrayList<>();
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             heights.add(elem.getHealth());
         }
         heights.sort(Comparator.reverseOrder());
-        for (int h : heights){
-            console.println(Integer.toString(h));
+        StringBuilder heightsLine = new StringBuilder();
+        for (int h : heights) {
+            heightsLine.append(h).append("\n");
         }
-        return "...";
+        return heightsLine.toString();
     }
 
     @NotNull
@@ -178,16 +163,18 @@ public class SpaceMarineCollection implements CollectionAction {
         return this.collectionSpaceMarine.iterator();
     }
 
+    @Override
     public int size() {
         return this.collectionSpaceMarine.size();
     }
 
-    public SpaceMarine getById(int id) {
+    @Override
+    public SpaceMarine findById(int id) throws ElementNotFound {
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getId() == id) {
                 return elem;
             }
         }
-        return null;
+        throw new ElementNotFound("Элемента с таким id нет в коллекции");
     }
 }

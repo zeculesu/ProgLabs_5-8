@@ -4,25 +4,37 @@ import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.MeleeWeapon;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
-import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
 public class RemoveByWeaponCommand implements CommandAction {
 
-
+    boolean acceptsElement = false;
     @Override
-    public String execute(CollectionAction collectionSpaceMarine, CommandIO console, ConsoleCommandEnvironment env, String[] args) {
+    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
+        Response response = new Response();
         if (args.length == 0){
-            return "Не введен аргумент - оружие ближнего боя";
+            response.setMessage("Не введен аргумент - оружие ближнего боя");
+            //return response todo проверить надо ли писать или нет
         }
         try{
             MeleeWeapon meleeWeapon = MeleeWeapon.getMeleeWeaponByName(args[0]);
-            return collectionSpaceMarine.remove_all_by_melee_weapon(meleeWeapon);
+            int start = collectionSpaceMarine.size();
+            collectionSpaceMarine.remove_all_by_melee_weapon(meleeWeapon);
+            int end = collectionSpaceMarine.size();
+            if (start == end) {
+                response.setMessage("Элементов с таким оружием ближнего боя в коллекции не найдено");
+            }
+            else {
+                response.setMessage("Удаление произошло успешно");
+            }
         }
         catch (NamingEnumException e){
-            return e.getMessage();
+            response.setMessage(e.getMessage());
         }
+        return response;
     }
 
     @NotNull
@@ -35,5 +47,10 @@ public class RemoveByWeaponCommand implements CommandAction {
     @Override
     public String getDescription() {
         return "remove_all_by_melee_weapon meleeWeapon : удалить из коллекции все элементы, значение поля meleeWeapon которого эквивалентно заданному";
+    }
+
+    @Override
+    public boolean isAcceptsElement() {
+        return acceptsElement;
     }
 }
