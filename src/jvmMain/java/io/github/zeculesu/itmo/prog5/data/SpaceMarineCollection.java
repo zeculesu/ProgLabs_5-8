@@ -105,7 +105,6 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public void save(String filename) throws FileCollectionException {
-        //todo проверить что без try catch пробрасывает
         ParseFileXML.writeFile(filename, this);
     }
 
@@ -154,6 +153,8 @@ public class SpaceMarineCollection implements CollectionAction {
         for (int h : heights) {
             heightsLine.append(h).append("\n");
         }
+        heightsLine.deleteCharAt(heightsLine.length() -1);
+        heightsLine.deleteCharAt(heightsLine.length() -1);
         return heightsLine.toString();
     }
 

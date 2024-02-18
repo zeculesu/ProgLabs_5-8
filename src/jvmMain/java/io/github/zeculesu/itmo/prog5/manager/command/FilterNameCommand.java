@@ -22,9 +22,8 @@ public class FilterNameCommand implements CommandAction {
             return response;
         }
         String name = args[0];
-        //"не нашлось ни одного элемента\n..."
-        ArrayList<SpaceMarine> res = collectionSpaceMarine.filter_starts_with_name(name);
-        //todo переделать
+        response.setOutputElement(collectionSpaceMarine.filter_starts_with_name(name));
+        if (!response.isOutputElement()) response.setMessage("Не нашлось ни одного элемента");
         return response;
     }
 

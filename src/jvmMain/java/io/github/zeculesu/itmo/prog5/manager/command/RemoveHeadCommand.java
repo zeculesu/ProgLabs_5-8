@@ -17,6 +17,7 @@ public class RemoveHeadCommand implements CommandAction {
         Response response = new Response();
         try{
             response.addElement(collectionSpaceMarine.remove_head());
+            response.setMessage("Элемент успешно удален");
         }
         catch (EmptyCollectionException e){
             response.setMessage(e.getMessage());

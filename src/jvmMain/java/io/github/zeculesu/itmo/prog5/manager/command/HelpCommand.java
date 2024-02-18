@@ -14,6 +14,7 @@ public class HelpCommand implements CommandAction {
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
+        response.addLineOutput("Список доступных команд:");
         for (CommandAction command : env.getCommandSetMap()) {
             response.addLineOutput(command.getDescription());
         }

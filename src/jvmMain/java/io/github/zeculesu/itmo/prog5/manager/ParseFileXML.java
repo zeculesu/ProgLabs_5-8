@@ -4,6 +4,7 @@ import io.github.zeculesu.itmo.prog5.data.*;
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
+import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -194,8 +195,6 @@ public class ParseFileXML implements ParseFileCollection {
             }
             boolean fill = valuesNull.isEmpty();
             if (fill && qName.equals("element")) {
-                //int id = Integer.parseInt(params.get("id"));
-                //todo доделать преобразование данных
                 try {
                     int id = ElementFormConsole.check_id(params.get("id"));
                     String name = ElementFormConsole.check_name(params.get("name"));

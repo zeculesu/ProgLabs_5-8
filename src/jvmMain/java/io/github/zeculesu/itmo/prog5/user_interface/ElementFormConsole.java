@@ -24,7 +24,6 @@ public class ElementFormConsole {
     public ElementFormConsole(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException {
         String input;
         console.print("Введите имя: ");
-        //todo проверка на null
         input = console.readln();
         this.name = check_name(input);
 
@@ -73,7 +72,6 @@ public class ElementFormConsole {
         if (coord.length != 2) throw new InputFormException("Неправильный ввод координат");
 
         try {
-            // todo проверка на -67
             Long x = Long.parseLong(coord[0]);
             Float y = Float.parseFloat(coord[1]);
             if (y < -67) throw new InputFormException("y должен быть больше -67");
@@ -102,21 +100,33 @@ public class ElementFormConsole {
         }
     }
 
-    public static AstartesCategory check_category(String input) throws InputFormException, NamingEnumException {
+    public static AstartesCategory check_category(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод категории");
-        return AstartesCategory.getCategoryByName(input);
+        try {
+            return AstartesCategory.getCategoryByName(input);
+        } catch (NamingEnumException e) {
+            throw new InputFormException(e.getMessage());
+        }
     }
 
     //todo переделать названия на нормальные check_category -> checkCategory
 
-    public static Weapon check_weaponType(String input) throws InputFormException, NamingEnumException {
+    public static Weapon check_weaponType(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод оружия");
-        return Weapon.getWeaponByName(input);
+        try {
+            return Weapon.getWeaponByName(input);
+        } catch (NamingEnumException e) {
+            throw new InputFormException(e.getMessage());
+        }
     }
 
-    public static MeleeWeapon check_meleeWeapon(String input) throws InputFormException, NamingEnumException {
+    public static MeleeWeapon check_meleeWeapon(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод оружия ближнего боя");
-        return MeleeWeapon.getMeleeWeaponByName(input);
+        try {
+            return MeleeWeapon.getMeleeWeaponByName(input);
+        } catch (NamingEnumException e) {
+            throw new InputFormException(e.getMessage());
+        }
     }
 
     public static Chapter check_chapter(String input) throws InputFormException {

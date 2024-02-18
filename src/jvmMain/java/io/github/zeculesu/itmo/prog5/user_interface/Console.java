@@ -1,5 +1,6 @@
 package io.github.zeculesu.itmo.prog5.user_interface;
 
+import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -7,6 +8,7 @@ import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import org.jetbrains.annotations.NotNull;
+
 
 //import static kotlin.text.StringsKt.isBlank;
 
@@ -16,8 +18,8 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
 
 public class Console implements CommunicatedClient {
 
-    private DefaultConsoleCommandEnvironmentImpl environment;
-    private SpaceMarineCollection collectionSpaceMarine;
+    private final DefaultConsoleCommandEnvironmentImpl environment;
+    private final SpaceMarineCollection collectionSpaceMarine;
 
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
@@ -28,9 +30,19 @@ public class Console implements CommunicatedClient {
 
     @Override
     public void run() {
-        String command;
+        System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
+        String fileName = environment.getFileNameCollection();
+        if (fileName == null){
+            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+        }
+        else {
+            System.out.println("Файл с коллекцией: " + fileName);
+            System.out.println(collectionSpaceMarine.load(fileName));
+        }
 
+        String command;
         while (environment.isStage()) {
+            System.out.print("> ");
             command = readlnOrNull();
             if (command == null) {
                 System.out.println("Конец работы программы");
@@ -39,15 +51,12 @@ public class Console implements CommunicatedClient {
                 System.out.println("Команда не введена");
             } else {
                 readCommand(command);
-                // System.out.println("...");
             }
         }
-        System.out.println("Конец работы программы");
     }
 
     public void readCommand(@NotNull String command) {
         String[] token = command.split(" ");
-        this.environment.addCommandToHistory(token[0]);
         CommandAction com = this.environment.getCommandSetMap().findCommand(token[0]);
         if (com != null) {
             //todo доделать реализацию множественных аргументов
@@ -56,19 +65,32 @@ public class Console implements CommunicatedClient {
                 try {
                     ElementFormConsole element = new ElementFormConsole(new CommandIOImpl());
                     Response response = com.execute(this.collectionSpaceMarine, this.environment, args, element);
-                    System.out.println(response);
-                }
-                catch (NullPointerException e){
+                    outputResponse(response);
+                } catch (NullPointerException e) {
                     this.environment.setStage(false);
-                }
-                catch (InputFormException|NamingEnumException e){
+                } catch (InputFormException | NamingEnumException e) {
                     System.out.println(e.getMessage());
                 }
             } else {
                 Response response = com.execute(this.collectionSpaceMarine, this.environment, args);
-                System.out.println(response);
+                outputResponse(response);
             }
-        } else System.out.println("Это не команда, чтобы посмотреть список всех команд напишите help");
+        } else System.out.println("Неизвестная команда. Введите 'help' для получения справки.");
+        this.environment.addCommandToHistory(token[0]);
+    }
+
+    public void outputResponse(Response response) {
+        if (response.isOutputElement()) {
+            for (SpaceMarine line : response.getOutputElement()) {
+                System.out.println(line);
+            }
+        }
+        if (response.isOutput()) {
+            for (String line : response.getOutput()) {
+                System.out.println(line);
+            }
+        }
+        if (response.isMessage()) System.out.println(response.getMessage());
     }
 
     class CommandIOImpl implements CommandIO {

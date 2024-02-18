@@ -17,9 +17,6 @@ public class Main {
         String fileName = System.getenv("FILENAME");
         DefaultConsoleCommandEnvironmentImpl env = new DefaultConsoleCommandEnvironmentImpl(commandSetMap, fileName);
         SpaceMarineCollection collectionSpaceMarine = new SpaceMarineCollection();
-        System.out.println("Файл с коллекцией:");
-        System.out.println(collectionSpaceMarine.load(fileName));
-        System.out.println("...");
         CommunicatedClient console = new Console(env, collectionSpaceMarine);
         console.run();
     }

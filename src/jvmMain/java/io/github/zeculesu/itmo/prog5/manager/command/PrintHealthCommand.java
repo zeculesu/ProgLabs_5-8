@@ -14,7 +14,6 @@ public class PrintHealthCommand implements CommandAction {
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
-        //todo проверить как ошибка обрабатывается
         try{
             response.addLineOutput(collectionSpaceMarine.print_field_descending_health());
         }

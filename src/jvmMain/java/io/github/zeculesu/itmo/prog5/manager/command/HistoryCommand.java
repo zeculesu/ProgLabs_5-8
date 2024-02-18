@@ -21,6 +21,7 @@ public class HistoryCommand implements CommandAction {
         for (int i = 0; (i < 13 && i < history.size()); i++) {
             response.addLineOutput(history.get(start + i));
         }
+        if (!response.isOutput()) response.setMessage("История команд пуста");
         return response;
     }
 

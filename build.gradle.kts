@@ -19,7 +19,11 @@ kotlin {
     sourceSets {
         val commonMain by getting
         val commonTest by getting
-        val jvmMain by getting
+        val jvmMain by getting{
+            dependencies {
+                implementation("org.fusesource.jansi:jansi:2.3.2")
+            }
+        }
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))

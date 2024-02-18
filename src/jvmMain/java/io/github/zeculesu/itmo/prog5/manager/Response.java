@@ -47,4 +47,15 @@ public class Response {
     public void addElement(SpaceMarine elem) {
         this.outputElement.add(elem);
     }
+
+    public boolean isMessage(){
+        return (this.message != null) && !this.message.isEmpty();
+    }
+
+    public boolean isOutput(){
+        return !this.output.isEmpty();
+    }
+    public boolean isOutputElement(){
+        return !this.outputElement.isEmpty();
+    }
 }

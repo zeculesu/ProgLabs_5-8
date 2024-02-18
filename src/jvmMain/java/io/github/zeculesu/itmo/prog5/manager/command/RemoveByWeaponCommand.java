@@ -17,7 +17,7 @@ public class RemoveByWeaponCommand implements CommandAction {
         Response response = new Response();
         if (args.length == 0){
             response.setMessage("Не введен аргумент - оружие ближнего боя");
-            //return response todo проверить надо ли писать или нет
+            return response;
         }
         try{
             MeleeWeapon meleeWeapon = MeleeWeapon.getMeleeWeaponByName(args[0]);
