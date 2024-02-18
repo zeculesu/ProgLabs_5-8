@@ -5,6 +5,7 @@ import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
+import io.github.zeculesu.itmo.prog5.user_interface.ScriptConsole;
 import org.jetbrains.annotations.NotNull;
 
 public class ExecuteScriptCommand implements CommandAction {
@@ -16,17 +17,8 @@ public class ExecuteScriptCommand implements CommandAction {
         if (args.length == 0) {
             response.setMessage("имя файла не введено");
         }
-//        try {
-//            String scriptName = args[0];
-//            FileReader fileReader = new FileReader(scriptName);
-//            BufferedReader bufferedReader = new BufferedReader(fileReader);
-//            while (bufferedReader.ready()) {
-//                stringBuilder.append(bufferedReader.readLine());
-//            }
-//            return null;
-//        } catch (IOException e) {
-//            return "файл не найден";
-//        }
+        ScriptConsole console = new ScriptConsole(env, collectionSpaceMarine, args[0]);
+        console.run();
         return response;
     }
 

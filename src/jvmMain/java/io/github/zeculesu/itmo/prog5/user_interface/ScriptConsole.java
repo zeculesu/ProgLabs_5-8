@@ -1,7 +1,7 @@
 package io.github.zeculesu.itmo.prog5.user_interface;
 
+import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
@@ -13,47 +13,48 @@ import org.jetbrains.annotations.NotNull;
 //import static kotlin.text.StringsKt.isBlank;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
 
-public class Console implements CommunicatedClient {
+public class ScriptConsole implements CommunicatedClient {
 
-    private final DefaultConsoleCommandEnvironmentImpl environment;
-    private final SpaceMarineCollection collectionSpaceMarine;
+    private final ConsoleCommandEnvironment environment;
+    private final CollectionAction collectionSpaceMarine;
+    private String fileInput;
+    BufferedReader bufferedReader;
 
 
-    public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
+    public ScriptConsole(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine, String fileInput) {
         this.environment = environment;
         this.environment.setStage(true);
         this.collectionSpaceMarine = collectionSpaceMarine;
+        this.fileInput = fileInput;
     }
 
     @Override
     public void run() {
-        System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
-        String fileName = environment.getFileNameCollection();
-        if (fileName == null){
-            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
-        }
-        else {
-            System.out.println("Файл с коллекцией: " + fileName);
-            System.out.println(collectionSpaceMarine.load(fileName));
-        }
-
-        String command;
-        while (environment.isStage()) {
-            System.out.print("> ");
-            command = readlnOrNull();
-            if (command == null) {
-                System.out.println("Конец работы программы");
-                return;
-            } else if (command.isBlank()) {
-                System.out.println("Команда не введена");
-            } else {
-                readCommand(command);
+        try {
+            FileReader fileReader = new FileReader(fileInput);
+            this.bufferedReader = new BufferedReader(fileReader);
+            String command;
+            while (bufferedReader.ready()) {
+                System.out.print("> ");
+                command = bufferedReader.readLine();
+                if (command == null) {
+                    System.out.println("Конец работы программы");
+                    return;
+                } else if (command.isBlank()) {
+                    System.out.println("Команда не введена");
+                } else {
+                    readCommand(command);
+                }
             }
+        } catch (IOException e) {
+            System.out.println("файл не найден");
         }
     }
 
@@ -65,7 +66,7 @@ public class Console implements CommunicatedClient {
             String[] args = token.length == 2 ? token[1].split(";") : new String[0];
             if (com.isAcceptsElement()) {
                 try {
-                    ElementFormConsole element = new ElementFormConsole(new CommandIOImpl());
+                    ElementFormConsole element = new ElementFormConsole(new CommandIOImpl(bufferedReader));
                     Response response = com.execute(this.collectionSpaceMarine, this.environment, args, element);
                     outputResponse(response);
                 } catch (NullPointerException e) {
@@ -96,6 +97,11 @@ public class Console implements CommunicatedClient {
     }
 
     class CommandIOImpl implements CommandIO {
+        BufferedReader bufferedReader;
+        public  CommandIOImpl(BufferedReader bufferedReader){
+            this.bufferedReader = bufferedReader;
+        }
+
         @Override
         public void print(String line) {
             System.out.print(line);
@@ -107,8 +113,8 @@ public class Console implements CommunicatedClient {
         }
 
         @Override
-        public String readln() {
-            return readlnOrNull();
+        public String readln() throws IOException {
+            return this.bufferedReader.readLine();
         }
     }
 }

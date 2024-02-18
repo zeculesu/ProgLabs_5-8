@@ -5,6 +5,7 @@ import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +22,7 @@ public class ElementFormConsole {
     private MeleeWeapon meleeWeapon; //Поле не может быть null
     private Chapter chapter; //Поле не может быть null
 
-    public ElementFormConsole(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException {
+    public ElementFormConsole(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException, IOException {
         String input;
         console.print("Введите имя: ");
         input = console.readln();
