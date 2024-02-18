@@ -59,7 +59,6 @@ public class Console implements CommunicatedClient {
     }
 
     class CommandIOImpl implements CommandIO {
-
         @Override
         public void print(String line) {
             System.out.print(line);
