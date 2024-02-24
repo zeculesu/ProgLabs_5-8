@@ -5,6 +5,7 @@ plugins {
 tasks.withType<JavaCompile>{
     options.encoding="utf-8"
 }
+
 allprojects {
     repositories {
         mavenCentral()
