@@ -22,7 +22,7 @@ public class RemoveByWeaponCommand implements CommandAction {
         try{
             MeleeWeapon meleeWeapon = MeleeWeapon.getMeleeWeaponByName(args[0]);
             int start = collectionSpaceMarine.size();
-            collectionSpaceMarine.remove_all_by_melee_weapon(meleeWeapon);
+            collectionSpaceMarine.removeAllByMeleeWeapon(meleeWeapon);
             int end = collectionSpaceMarine.size();
             if (start == end) {
                 response.setMessage("Элементов с таким оружием ближнего боя в коллекции не найдено");

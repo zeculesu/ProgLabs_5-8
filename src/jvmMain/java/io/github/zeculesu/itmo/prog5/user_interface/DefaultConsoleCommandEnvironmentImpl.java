@@ -8,7 +8,7 @@ import java.util.List;
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment{
 
     private boolean stage;
-
+    private String fileScriptName;
     private final CommandSet commandSetMap;
     private String fileNameCollection;
     private final List<String> commandHistory = new ArrayList<>();
@@ -44,5 +44,13 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
 
     public void setStage(boolean stage) {
         this.stage = stage;
+    }
+
+    public String getFileScriptName() {
+        return fileScriptName;
+    }
+
+    public void setFileScriptName(String fileScriptName) {
+        this.fileScriptName = fileScriptName;
     }
 }

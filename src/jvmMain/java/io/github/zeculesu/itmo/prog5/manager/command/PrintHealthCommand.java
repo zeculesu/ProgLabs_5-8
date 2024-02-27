@@ -15,7 +15,7 @@ public class PrintHealthCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         try{
-            response.addLineOutput(collectionSpaceMarine.print_field_descending_health());
+            response.addLineOutput(collectionSpaceMarine.printFieldDescendingHealth());
         }
         catch (EmptyCollectionException e){
             response.setMessage(e.getMessage());

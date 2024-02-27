@@ -1,9 +1,5 @@
 package io.github.zeculesu.itmo.prog5.data;
 
-import io.github.zeculesu.itmo.prog5.manager.CommandIO;
-import io.github.zeculesu.itmo.prog5.user_interface.Console;
-import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,21 +17,21 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
     public void update(int id, String name, Coordinates coordinates, int health,
                          AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
 
-    public void remove_by_id(int id);
+    public void removeById(int id);
 
     public void clear();
 
     public void save(String filename);
 
-    public SpaceMarine remove_head();
+    public SpaceMarine removeHead();
 
-    public void remove_lower(SpaceMarine o);
+    public void removeLower(SpaceMarine o);
 
-    public void remove_all_by_melee_weapon(MeleeWeapon meleeWeapon);
+    public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon);
 
-    public ArrayList<SpaceMarine> filter_starts_with_name(String name);
+    public ArrayList<SpaceMarine> filterStartsWithName(String name);
 
-    public String print_field_descending_health();
+    public String printFieldDescendingHealth();
 
     public int size();
 

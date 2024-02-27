@@ -23,7 +23,7 @@ public class UpdateCommand implements CommandAction {
         }
         ElementFormConsole elem = element[0];
         try {
-            int id = ElementFormConsole.check_id(args[0]);
+            int id = ElementFormConsole.checkId(args[0]);
             collectionSpaceMarine.update(id, elem.getName(), elem.getCoordinates(), elem.getHealth(),
                     elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
         } catch (NamingEnumException | InputFormException | ElementNotFound e) {

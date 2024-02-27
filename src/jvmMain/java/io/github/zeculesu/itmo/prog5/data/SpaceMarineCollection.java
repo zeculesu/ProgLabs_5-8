@@ -67,7 +67,7 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public void remove_by_id(int id) throws ElementNotFound {
+    public void removeById(int id) throws ElementNotFound {
         this.collectionSpaceMarine.remove(findById(id));
 //        for (SpaceMarine elem : this.collectionSpaceMarine) {
 //            if (elem.getId() == id) {
@@ -109,7 +109,7 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public SpaceMarine remove_head() throws EmptyCollectionException {
+    public SpaceMarine removeHead() throws EmptyCollectionException {
         if (collectionSpaceMarine.peek() == null) {
             throw new EmptyCollectionException();
         }
@@ -119,17 +119,17 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public void remove_lower(SpaceMarine o) {
+    public void removeLower(SpaceMarine o) {
         this.collectionSpaceMarine.removeIf(n -> (n.compareTo(o) < 0));
     }
 
     @Override
-    public void remove_all_by_melee_weapon(MeleeWeapon meleeWeapon) {
+    public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon) {
         this.collectionSpaceMarine.removeIf(n -> (n.getMeleeWeapon() == meleeWeapon));
     }
 
     @Override
-    public ArrayList<SpaceMarine> filter_starts_with_name(String name) {
+    public ArrayList<SpaceMarine> filterStartsWithName(String name) {
         ArrayList<SpaceMarine> finded = new ArrayList<>();
         for (SpaceMarine elem : this.collectionSpaceMarine) {
             if (elem.getName().startsWith(name)) {
@@ -140,7 +140,7 @@ public class SpaceMarineCollection implements CollectionAction {
     }
 
     @Override
-    public String print_field_descending_health() throws EmptyCollectionException {
+    public String printFieldDescendingHealth() throws EmptyCollectionException {
         if (this.size() == 0) {
             throw new EmptyCollectionException();
         }

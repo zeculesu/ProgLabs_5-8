@@ -33,19 +33,15 @@ public class Console implements CommunicatedClient {
     @Override
     public void run() {
         System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
-        String fileName = environment.getFileNameCollection();
-        if (fileName == null){
-            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
-        }
-        else {
-            System.out.println("Файл с коллекцией: " + fileName);
-            System.out.println(collectionSpaceMarine.load(fileName));
-        }
+        load_file();
 
         String command;
         while (environment.isStage()) {
+
             System.out.print("> ");
+
             command = readlnOrNull();
+
             if (command == null) {
                 System.out.println("Конец работы программы");
                 return;
@@ -93,6 +89,18 @@ public class Console implements CommunicatedClient {
             }
         }
         if (response.isMessage()) System.out.println(response.getMessage());
+    }
+
+    public void load_file(){
+        String fileName = environment.getFileNameCollection();
+        if (fileName == null){
+            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+        }
+        else {
+            System.out.println("Файл с коллекцией: " + fileName);
+            //todo переделать вывод загрузки файла на RESPONSE
+            System.out.println(collectionSpaceMarine.load(fileName));
+        }
     }
 
     class CommandIOImpl implements CommandIO {

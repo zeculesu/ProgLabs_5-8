@@ -10,8 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static kotlin.io.ConsoleKt.readlnOrNull;
-
 public class ElementFormConsole {
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -26,34 +24,34 @@ public class ElementFormConsole {
         String input;
         console.print("Введите имя: ");
         input = console.readln();
-        this.name = check_name(input);
+        this.name = checkName(input);
 
         console.print("Введите координату (x и y через пробел): ");
         input = console.readln();
-        this.coordinates = check_coordinates(input);
+        this.coordinates = checkCoordinates(input);
 
         console.print("Введите количество здоровья: ");
         input = console.readln();
-        this.health = check_health(input);
+        this.health = checkHealth(input);
 
         console.print("Введите категорию (SCOUT, SUPPRESSOR, LIBRARIAN, HELIX): ");
         input = console.readln();
-        this.category = check_category(input);
+        this.category = checkCategory(input);
 
         console.print("Введите тип оружия (BOLTGUN, HEAVY_BOLTGUN, BOLT_RIFLE, FLAMER, MULTI_MELTA): ");
         input = console.readln();
-        this.weaponType = check_weaponType(input);
+        this.weaponType = checkWeaponType(input);
 
         console.print("Введите оружие ближнего боя (CHAIN_SWORD, POWER_SWORD, CHAIN_AXE, MANREAPER, POWER_BLADE): ");
         input = console.readln();
-        this.meleeWeapon = check_meleeWeapon(input);
+        this.meleeWeapon = checkMeleeWeapon(input);
 
         console.print("Введите орден (имя и родительским легион через пробел): ");
         input = console.readln();
-        this.chapter = check_chapter(input);
+        this.chapter = checkChapter(input);
     }
 
-    public static int check_id(String input) throws InputFormException {
+    public static int checkId(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод id");
         try {
             return Integer.parseInt(input);
@@ -62,12 +60,12 @@ public class ElementFormConsole {
         }
     }
 
-    public static String check_name(String input) throws InputFormException {
+    public static String checkName(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод имени");
         return input;
     }
 
-    public static Coordinates check_coordinates(String input) throws InputFormException {
+    public static Coordinates checkCoordinates(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод координат");
         String[] coord = input.split(" ");
         if (coord.length != 2) throw new InputFormException("Неправильный ввод координат");
@@ -82,7 +80,7 @@ public class ElementFormConsole {
         }
     }
 
-    public static Date check_creationDate(String input) throws InputFormException {
+    public static Date checkCreationDate(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод даты");
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy hh:ss");
@@ -92,7 +90,7 @@ public class ElementFormConsole {
         }
     }
 
-    public static int check_health(String input) throws InputFormException {
+    public static int checkHealth(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод количества здоровья");
         try {
             return Integer.parseInt(input);
@@ -101,7 +99,7 @@ public class ElementFormConsole {
         }
     }
 
-    public static AstartesCategory check_category(String input) throws InputFormException {
+    public static AstartesCategory checkCategory(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод категории");
         try {
             return AstartesCategory.getCategoryByName(input);
@@ -110,9 +108,7 @@ public class ElementFormConsole {
         }
     }
 
-    //todo переделать названия на нормальные check_category -> checkCategory
-
-    public static Weapon check_weaponType(String input) throws InputFormException {
+    public static Weapon checkWeaponType(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод оружия");
         try {
             return Weapon.getWeaponByName(input);
@@ -121,7 +117,7 @@ public class ElementFormConsole {
         }
     }
 
-    public static MeleeWeapon check_meleeWeapon(String input) throws InputFormException {
+    public static MeleeWeapon checkMeleeWeapon(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод оружия ближнего боя");
         try {
             return MeleeWeapon.getMeleeWeaponByName(input);
@@ -130,7 +126,7 @@ public class ElementFormConsole {
         }
     }
 
-    public static Chapter check_chapter(String input) throws InputFormException {
+    public static Chapter checkChapter(String input) throws InputFormException {
         if (input.isEmpty()) throw new InputFormException("Неправильный ввод ордена");
         String[] ch = input.split(" ");
         if (ch.length != 2) throw new InputFormException("Неправильный ввод ордена");

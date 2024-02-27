@@ -23,7 +23,7 @@ public class RemoveLowerCommand implements CommandAction {
                     elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
             int startSize = collectionSpaceMarine.size();
 
-            collectionSpaceMarine.remove_lower(o);
+            collectionSpaceMarine.removeLower(o);
 
             int endSize = collectionSpaceMarine.size();
             if (startSize == endSize) {

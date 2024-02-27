@@ -24,21 +24,18 @@ public class ScriptConsole implements CommunicatedClient {
 
     private final ConsoleCommandEnvironment environment;
     private final CollectionAction collectionSpaceMarine;
-    private String fileInput;
     BufferedReader bufferedReader;
 
-
-    public ScriptConsole(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine, String fileInput) {
+    public ScriptConsole(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine) {
         this.environment = environment;
         this.environment.setStage(true);
         this.collectionSpaceMarine = collectionSpaceMarine;
-        this.fileInput = fileInput;
     }
 
     @Override
     public void run() {
         try {
-            FileReader fileReader = new FileReader(fileInput);
+            FileReader fileReader = new FileReader(environment.getFileScriptName());
             this.bufferedReader = new BufferedReader(fileReader);
             String command;
             while (bufferedReader.ready()) {

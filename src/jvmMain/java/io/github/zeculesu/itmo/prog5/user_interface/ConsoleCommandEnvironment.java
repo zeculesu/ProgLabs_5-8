@@ -17,4 +17,8 @@ public interface ConsoleCommandEnvironment {
     boolean isStage();
 
     void setStage(boolean stage);
+
+    public String getFileScriptName();
+
+    public void setFileScriptName(String fileScriptName);
 }

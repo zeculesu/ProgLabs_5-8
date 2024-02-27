@@ -17,7 +17,8 @@ public class ExecuteScriptCommand implements CommandAction {
         if (args.length == 0) {
             response.setMessage("имя файла не введено");
         }
-        ScriptConsole console = new ScriptConsole(env, collectionSpaceMarine, args[0]);
+        env.setFileScriptName(args[0]);
+        ScriptConsole console = new ScriptConsole(env, collectionSpaceMarine);
         console.run();
         return response;
     }

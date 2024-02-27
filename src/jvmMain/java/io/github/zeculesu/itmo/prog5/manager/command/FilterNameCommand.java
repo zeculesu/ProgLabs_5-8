@@ -1,14 +1,11 @@
 package io.github.zeculesu.itmo.prog5.manager.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class FilterNameCommand implements CommandAction {
 
@@ -22,7 +19,7 @@ public class FilterNameCommand implements CommandAction {
             return response;
         }
         String name = args[0];
-        response.setOutputElement(collectionSpaceMarine.filter_starts_with_name(name));
+        response.setOutputElement(collectionSpaceMarine.filterStartsWithName(name));
         if (!response.isOutputElement()) response.setMessage("Не нашлось ни одного элемента");
         return response;
     }

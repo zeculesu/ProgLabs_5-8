@@ -21,7 +21,7 @@ public class RemoveByIdCommand implements CommandAction {
         }
         try{
             int id = Integer.parseInt(args[0]);
-            collectionSpaceMarine.remove_by_id(id);
+            collectionSpaceMarine.removeById(id);
         }
         catch (ElementNotFound e){
             response.setMessage(e.getMessage());
