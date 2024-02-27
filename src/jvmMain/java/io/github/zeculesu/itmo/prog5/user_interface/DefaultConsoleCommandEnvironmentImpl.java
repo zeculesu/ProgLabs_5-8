@@ -9,7 +9,7 @@ import java.util.List;
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment{
 
     private boolean stage;
-    private boolean startScript;
+    private int startScript; //0 - обычный, 1 - переходный из обычный в скрипт, 2 - скрипт, 3 - переходный в обычный
     private BufferedReader bufferReaderScript;
     private final CommandSet commandSetMap;
     private String fileNameCollection;
@@ -48,11 +48,11 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
         this.stage = stage;
     }
 
-    public boolean isStartScript() {
+    public int getStartScript() {
         return startScript;
     }
 
-    public void setStartScript(boolean startScript) {
+    public void setStartScript(int startScript) {
         this.startScript = startScript;
     }
 

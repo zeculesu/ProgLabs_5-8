@@ -19,16 +19,16 @@ public class ExecuteScriptCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0) {
-            response.setMessage("имя файла не введено");
+            response.setMessage("Имя файла не введено");
             return response;
         }
         try {
             //todo проверка на расширение файла
             FileReader fileReader = new FileReader(args[0]);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            env.setStartScript(true);
             env.setBufferReaderScript(bufferedReader);
             response.addLineOutput("Начало выполнения скрипта: ");
+            env.setStartScript(1);
         } catch (FileNotFoundException e) {
             response.setMessage("Не удалось открыть файл");
         }

@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 //import static kotlin.text.StringsKt.isBlank;
 
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -26,36 +25,38 @@ public class Console implements CommunicatedClient {
     private final DefaultConsoleCommandEnvironmentImpl environment;
     private final SpaceMarineCollection collectionSpaceMarine;
 
-    private Boolean stateInputChangeToConsole = false;
-
+    private CommandIOConsole console;
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
         this.environment.setStage(true);
         this.collectionSpaceMarine = collectionSpaceMarine;
+        this.console = new CommandIOConsole();
     }
 
     @Override
     public void run() {
-        System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
-        load_file();
+        // todo разукрасить текст
+        // System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
+
+        loadFile(this.environment.getFileNameCollection());
 
         String command;
+
         while (environment.isStage()) {
 
-            System.out.print("> ");
+            console.print("> ");
 
             command = readlnOrNullCommand();
 
-            if (this.stateInputChangeToConsole) {
-                System.out.println("Конец скрипта");
-                this.stateInputChangeToConsole = false;
-            }
-            else if (command == null) {
-                System.out.println("Конец работы программы");
+            if (this.environment.getStartScript() == 3) {
+                console.println("Конец скрипта");
+                this.environment.setStartScript(0);
+            } else if (command == null) {
+                console.println("Конец работы программы");
                 return;
             } else if (command.isBlank()) {
-                System.out.println("Команда не введена");
+                console.println("Команда не введена");
             } else {
                 readCommand(command);
             }
@@ -70,84 +71,92 @@ public class Console implements CommunicatedClient {
             String[] args = token.length == 2 ? token[1].split(";") : new String[0];
             if (com.isAcceptsElement()) {
                 try {
-                    ElementFormConsole element = new ElementFormConsole(new CommandIOImpl());
+                    ElementFormConsole element = new ElementFormConsole(new CommandIOConsole());
                     Response response = com.execute(this.collectionSpaceMarine, this.environment, args, element);
                     outputResponse(response);
                 } catch (NullPointerException e) {
                     this.environment.setStage(false);
                 } catch (InputFormException | NamingEnumException | IOException e) {
-                    System.out.println(e.getMessage());
+                    console.println(e.getMessage());
                 }
             } else {
                 Response response = com.execute(this.collectionSpaceMarine, this.environment, args);
                 outputResponse(response);
             }
-        } else System.out.println("Неизвестная команда. Введите 'help' для получения справки.");
+        } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
         this.environment.addCommandToHistory(token[0]);
+        if (this.environment.getStartScript() == 1){
+            this.environment.setStartScript(2);
+        }
     }
 
     public void outputResponse(Response response) {
         if (response.isOutputElement()) {
             for (SpaceMarine line : response.getOutputElement()) {
-                System.out.println(line);
+                console.println(line.toString());
             }
         }
         if (response.isOutput()) {
             for (String line : response.getOutput()) {
-                System.out.println(line);
+                console.println(line);
             }
         }
-        if (response.isMessage()) System.out.println(response.getMessage());
+        if (response.isMessage()) console.println(response.getMessage());
     }
 
     public String readlnOrNullCommand() {
-        if (this.environment.isStartScript()) {
+        //todo переделать на Enum состояния скрипта
+        if (this.environment.getStartScript() == 2) {
             try {
                 if (!this.environment.getBufferReaderScript().ready()) {
-                    this.environment.setStartScript(false);
-                    this.stateInputChangeToConsole = true;
+                    this.environment.setStartScript(3);
+                    console.println("");
                     return null;
                 }
-                String command =this.environment.getBufferReaderScript().readLine();
-                System.out.println(command);
-                return command;
+                return console.readln();
             } catch (IOException e) {
-                System.out.println("Проблемы с чтением файла скрипта");
+                console.println("Проблемы с чтением файла скрипта");
             }
         }
         return readlnOrNull();
     }
 
-    public void load_file() {
-        String fileName = environment.getFileNameCollection();
+    public void loadFile(String fileName) {
         if (fileName == null) {
-            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+            console.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
         } else {
-            System.out.println("Файл с коллекцией: " + fileName);
+            console.println("Файл с коллекцией: " + fileName);
             //todo переделать вывод загрузки файла на RESPONSE
-            System.out.println(collectionSpaceMarine.load(fileName));
+            console.println(collectionSpaceMarine.load(fileName));
         }
     }
 
-    class CommandIOImpl implements CommandIO {
+    class CommandIOConsole implements CommandIO {
         @Override
         public void print(String line) {
-            System.out.print(line);
+            System.out.print(conversionForScriptOutput(line));
         }
 
         @Override
         public void println(String line) {
-            System.out.println(line);
+            System.out.println(conversionForScriptOutput(line));
         }
 
         @Override
         public String readln() throws IOException {
-            if (Console.this.environment.isStartScript()) {
+            if (Console.this.environment.getStartScript() == 2) {
                 String input = Console.this.environment.getBufferReaderScript().readLine();
                 System.out.println(input);
                 return input;
             }
             return readlnOrNull();
+        }
+
+        public String conversionForScriptOutput(String line) {
+            if (Console.this.environment.getStartScript() == 2) {
+                return "\t" + line;
+            }
+            return line;
         }
     }
 }

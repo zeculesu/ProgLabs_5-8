@@ -19,9 +19,9 @@ public interface ConsoleCommandEnvironment {
 
     void setStage(boolean stage);
 
-    public boolean isStartScript();
+    public int getStartScript();
 
-    public void setStartScript(boolean startScript);
+    public void setStartScript(int startScript);
 
     public BufferedReader getBufferReaderScript();
     public void setBufferReaderScript(BufferedReader bufferedReader);
