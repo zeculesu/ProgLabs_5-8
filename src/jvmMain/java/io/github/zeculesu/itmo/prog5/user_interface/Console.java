@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 //import static kotlin.text.StringsKt.isBlank;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -20,8 +21,12 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
 
 public class Console implements CommunicatedClient {
 
+    //todo добавить проверку на рекурсию в скриптах
+
     private final DefaultConsoleCommandEnvironmentImpl environment;
     private final SpaceMarineCollection collectionSpaceMarine;
+
+    private Boolean stateInputChangeToConsole = false;
 
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
@@ -40,9 +45,13 @@ public class Console implements CommunicatedClient {
 
             System.out.print("> ");
 
-            command = readlnOrNull();
+            command = readlnOrNullCommand();
 
-            if (command == null) {
+            if (this.stateInputChangeToConsole) {
+                System.out.println("Конец скрипта");
+                this.stateInputChangeToConsole = false;
+            }
+            else if (command == null) {
                 System.out.println("Конец работы программы");
                 return;
             } else if (command.isBlank()) {
@@ -91,12 +100,29 @@ public class Console implements CommunicatedClient {
         if (response.isMessage()) System.out.println(response.getMessage());
     }
 
-    public void load_file(){
-        String fileName = environment.getFileNameCollection();
-        if (fileName == null){
-            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+    public String readlnOrNullCommand() {
+        if (this.environment.isStartScript()) {
+            try {
+                if (!this.environment.getBufferReaderScript().ready()) {
+                    this.environment.setStartScript(false);
+                    this.stateInputChangeToConsole = true;
+                    return null;
+                }
+                String command =this.environment.getBufferReaderScript().readLine();
+                System.out.println(command);
+                return command;
+            } catch (IOException e) {
+                System.out.println("Проблемы с чтением файла скрипта");
+            }
         }
-        else {
+        return readlnOrNull();
+    }
+
+    public void load_file() {
+        String fileName = environment.getFileNameCollection();
+        if (fileName == null) {
+            System.out.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+        } else {
             System.out.println("Файл с коллекцией: " + fileName);
             //todo переделать вывод загрузки файла на RESPONSE
             System.out.println(collectionSpaceMarine.load(fileName));
@@ -115,7 +141,12 @@ public class Console implements CommunicatedClient {
         }
 
         @Override
-        public String readln() {
+        public String readln() throws IOException {
+            if (Console.this.environment.isStartScript()) {
+                String input = Console.this.environment.getBufferReaderScript().readLine();
+                System.out.println(input);
+                return input;
+            }
             return readlnOrNull();
         }
     }

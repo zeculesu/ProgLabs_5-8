@@ -2,13 +2,15 @@ package io.github.zeculesu.itmo.prog5.user_interface;
 
 import io.github.zeculesu.itmo.prog5.manager.CommandSet;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment{
 
     private boolean stage;
-    private String fileScriptName;
+    private boolean startScript;
+    private BufferedReader bufferReaderScript;
     private final CommandSet commandSetMap;
     private String fileNameCollection;
     private final List<String> commandHistory = new ArrayList<>();
@@ -46,11 +48,21 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
         this.stage = stage;
     }
 
-    public String getFileScriptName() {
-        return fileScriptName;
+    public boolean isStartScript() {
+        return startScript;
     }
 
-    public void setFileScriptName(String fileScriptName) {
-        this.fileScriptName = fileScriptName;
+    public void setStartScript(boolean startScript) {
+        this.startScript = startScript;
+    }
+
+    @Override
+    public BufferedReader getBufferReaderScript() {
+        return bufferReaderScript;
+    }
+
+    @Override
+    public void setBufferReaderScript(BufferedReader bufferReaderScript) {
+        this.bufferReaderScript = bufferReaderScript;
     }
 }

@@ -1,2 +1,9 @@
+add
+name
+4 5
+500
+HELI
+HEAVY_BOLTGUN
+POWER_SWORD
+orden parent
 info
-help

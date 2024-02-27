@@ -2,6 +2,7 @@ package io.github.zeculesu.itmo.prog5.user_interface;
 
 import io.github.zeculesu.itmo.prog5.manager.CommandSet;
 
+import java.io.BufferedReader;
 import java.util.List;
 
 public interface ConsoleCommandEnvironment {
@@ -18,7 +19,10 @@ public interface ConsoleCommandEnvironment {
 
     void setStage(boolean stage);
 
-    public String getFileScriptName();
+    public boolean isStartScript();
 
-    public void setFileScriptName(String fileScriptName);
+    public void setStartScript(boolean startScript);
+
+    public BufferedReader getBufferReaderScript();
+    public void setBufferReaderScript(BufferedReader bufferedReader);
 }
