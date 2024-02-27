@@ -5,6 +5,7 @@ import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
+import io.github.zeculesu.itmo.prog5.user_interface.StateIO;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -28,7 +29,7 @@ public class ExecuteScriptCommand implements CommandAction {
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             env.setBufferReaderScript(bufferedReader);
             response.addLineOutput("Начало выполнения скрипта: ");
-            env.setStartScript(1);
+            env.setStateIO(StateIO.CONSOLE_TO_SCRIPT);
         } catch (FileNotFoundException e) {
             response.setMessage("Не удалось открыть файл");
         }

@@ -10,9 +10,6 @@ import io.github.zeculesu.itmo.prog5.manager.Response;
 import org.jetbrains.annotations.NotNull;
 
 
-//import static kotlin.text.StringsKt.isBlank;
-
-
 import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -25,7 +22,7 @@ public class Console implements CommunicatedClient {
     private final DefaultConsoleCommandEnvironmentImpl environment;
     private final SpaceMarineCollection collectionSpaceMarine;
 
-    private CommandIOConsole console;
+    private final CommandIOConsole console;
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
@@ -49,9 +46,9 @@ public class Console implements CommunicatedClient {
 
             command = readlnOrNullCommand();
 
-            if (this.environment.getStartScript() == 3) {
+            if (this.environment.getStateIO() == StateIO.SCRIPT_TO_CONSOLE) {
                 console.println("Конец скрипта");
-                this.environment.setStartScript(0);
+                this.environment.setStateIO(StateIO.CONSOLE);
             } else if (command == null) {
                 console.println("Конец работы программы");
                 return;
@@ -85,8 +82,8 @@ public class Console implements CommunicatedClient {
             }
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
         this.environment.addCommandToHistory(token[0]);
-        if (this.environment.getStartScript() == 1){
-            this.environment.setStartScript(2);
+        if (this.environment.getStateIO() == StateIO.CONSOLE_TO_SCRIPT){
+            this.environment.setStateIO(StateIO.SCRIPT);
         }
     }
 
@@ -105,11 +102,10 @@ public class Console implements CommunicatedClient {
     }
 
     public String readlnOrNullCommand() {
-        //todo переделать на Enum состояния скрипта
-        if (this.environment.getStartScript() == 2) {
+        if (this.environment.getStateIO() == StateIO.SCRIPT) {
             try {
                 if (!this.environment.getBufferReaderScript().ready()) {
-                    this.environment.setStartScript(3);
+                    this.environment.setStateIO(StateIO.SCRIPT_TO_CONSOLE);
                     console.println("");
                     return null;
                 }
@@ -144,7 +140,7 @@ public class Console implements CommunicatedClient {
 
         @Override
         public String readln() throws IOException {
-            if (Console.this.environment.getStartScript() == 2) {
+            if (Console.this.environment.getStateIO() == StateIO.SCRIPT) {
                 String input = Console.this.environment.getBufferReaderScript().readLine();
                 System.out.println(input);
                 return input;
@@ -153,7 +149,7 @@ public class Console implements CommunicatedClient {
         }
 
         public String conversionForScriptOutput(String line) {
-            if (Console.this.environment.getStartScript() == 2) {
+            if (Console.this.environment.getStateIO() == StateIO.SCRIPT) {
                 return "\t" + line;
             }
             return line;
