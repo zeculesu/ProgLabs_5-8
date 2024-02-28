@@ -39,50 +39,75 @@ public class ParseFileXML implements ParseFileCollection {
             throw new FileCollectionException("Файл не найден");
         } catch (XMLStreamException e) {
             throw new FileCollectionException("Ошибка с файлом");
+        } catch (NullPointerException e) {
+            throw new FileCollectionException("Имя файла для записи не указано в переменной окружения FILENAME");
         }
     }
 
     public static void writeCollection(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeStartDocument("UTF-8", "1.0");
 
+        writer.writeCharacters("\n");
         writer.writeStartElement("collection");
         for (SpaceMarine o : ParseFileXML.collection) {
+            writer.writeCharacters("\n");
+
+            writer.writeCharacters("\t");
             writer.writeStartElement("element");
             writer.writeAttribute("id", Integer.toString(o.getId()));
+            writer.writeCharacters("\n");
 
+
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("name");
             writer.writeCharacters(o.getName());
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeEmptyElement("coordinates");
             writer.writeAttribute("x", Long.toString(o.getCoordinates().getX()));
             writer.writeAttribute("y", Float.toString(o.getCoordinates().getY()));
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("creationDate");
             DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
             writer.writeCharacters(df.format(o.getCreationDate()));
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("health");
             writer.writeCharacters(Integer.toString(o.getHealth()));
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("category");
             writer.writeCharacters(o.getCategory().toString());
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("weaponType");
             writer.writeCharacters(o.getWeaponType().toString());
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeStartElement("meleeWeapon");
             writer.writeCharacters(o.getMeleeWeapon().toString());
             writer.writeEndElement();
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t\t");
             writer.writeEmptyElement("chapter");
             writer.writeAttribute("name", o.getChapter().getName());
             writer.writeAttribute("parentLegion", o.getChapter().getParentLegion());
+            writer.writeCharacters("\n");
 
+            writer.writeCharacters("\t");
             writer.writeEndElement();
 
         }
@@ -197,7 +222,7 @@ public class ParseFileXML implements ParseFileCollection {
                 try {
                     int id = ElementFormConsole.checkId(params.get("id"));
                     String name = ElementFormConsole.checkName(params.get("name"));
-                    Coordinates coordinates = ElementFormConsole.checkCoordinates(params.get("x") +" "+ params.get("y"));
+                    Coordinates coordinates = ElementFormConsole.checkCoordinates(params.get("x") + " " + params.get("y"));
                     int health = ElementFormConsole.checkHealth(params.get("health"));
                     AstartesCategory category = ElementFormConsole.checkCategory(params.get("category"));
                     Date creationDate = ElementFormConsole.checkCreationDate(params.get("creationDate"));

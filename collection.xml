@@ -20,4 +20,24 @@
         <meleeWeapon>POWER_SWORD</meleeWeapon>
         <chapter name="name" parentLegion="orden"/>
     </element>
+    <element id="3">
+        <name>name2</name>
+        <coordinates x="4" y="5.0"/>
+        <creationDate>28.02.2024 01:11</creationDate>
+        <health>500</health>
+        <category>HELIX</category>
+        <weaponType>HEAVY_BOLTGUN</weaponType>
+        <meleeWeapon>POWER_SWORD</meleeWeapon>
+        <chapter name="orden" parentLegion="parent"/>
+    </element>
+    <element id="4">
+        <name>name</name>
+        <coordinates x="4" y="5.0"/>
+        <creationDate>28.02.2024 01:11</creationDate>
+        <health>500</health>
+        <category>HELIX</category>
+        <weaponType>HEAVY_BOLTGUN</weaponType>
+        <meleeWeapon>POWER_SWORD</meleeWeapon>
+        <chapter name="orden" parentLegion="parent"/>
+    </element>
 </collection>

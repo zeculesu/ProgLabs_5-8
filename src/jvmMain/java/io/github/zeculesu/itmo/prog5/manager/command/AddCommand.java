@@ -19,7 +19,6 @@ public class AddCommand implements CommandAction {
         Response response = new Response();
         ElementFormConsole elem = element[0];
         try {
-           // form.formElementIO(cns);
             collectionSpaceMarine.add(elem.getName(), elem.getCoordinates(), elem.getHealth(), elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
             response.setMessage("Новый элемент добавлен");
             return response;
