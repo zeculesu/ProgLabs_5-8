@@ -14,16 +14,30 @@ allprojects {
 
 kotlin {
     jvm {
+        jvmToolchain(17)
         withJava()
+        compilations.all{kotlinOptions.jvmTarget="17"}
+        tasks.register<Jar>("fatJar"){
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+            group = "build"
+            this.archiveBaseName = "proglab5"
+            manifest{
+                attributes["Main-Class"] = "io.github.zeculesu.itmo.prog5.Main"
+            }
+            from(
+                compilations["main"].runtimeDependencyFiles
+                    .filter {f -> f.exists() }
+                    .map{ d -> if (d.isDirectory) d else zipTree(d)}
+            )
+            with(tasks.jar.get() as CopySpec)
+            destinationDirectory = rootProject.projectDir.resolve("out")
+        }
     }
     js()
     sourceSets {
         val commonMain by getting
         val commonTest by getting
         val jvmMain by getting{
-            dependencies {
-                implementation("org.fusesource.jansi:jansi:2.3.2")
-            }
         }
         val jvmTest by getting {
             dependencies {

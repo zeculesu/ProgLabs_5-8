@@ -34,7 +34,7 @@ public class Console implements CommunicatedClient {
     @Override
     public void run() {
         // todo разукрасить текст
-        System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
+        //System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
         this.environment.setRun(true);
 
         loadFile(this.environment.getFileNameCollection());
