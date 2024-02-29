@@ -19,8 +19,6 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
  */
 public class Console implements CommunicatedClient {
 
-    //todo добавить проверку на рекурсию в скриптах
-
     private final DefaultConsoleCommandEnvironmentImpl environment;
     private final SpaceMarineCollection collectionSpaceMarine;
 
@@ -68,8 +66,7 @@ public class Console implements CommunicatedClient {
         String[] token = command.split(" ");
         CommandAction com = this.environment.getCommandSetMap().findCommand(token[0]);
         if (com != null) {
-            //todo доделать реализацию множественных аргументов
-            String[] args = token.length == 2 ? token[1].split(";") : new String[0];
+            String[] args = token.length == 2 ? token[1].split(" ") : new String[0];
             if (com.isAcceptsElement()) {
                 try {
                     ElementFormConsole element = new ElementFormConsole(new CommandIOConsole());
