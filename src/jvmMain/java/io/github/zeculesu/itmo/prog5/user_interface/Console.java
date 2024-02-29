@@ -14,7 +14,9 @@ import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
-
+/**
+ * Реализует консоль, взаимодействие с пользователем
+ */
 public class Console implements CommunicatedClient {
 
     //todo добавить проверку на рекурсию в скриптах

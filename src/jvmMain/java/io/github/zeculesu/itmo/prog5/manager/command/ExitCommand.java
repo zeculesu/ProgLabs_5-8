@@ -7,6 +7,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Завершение работы
+ */
 public class ExitCommand implements CommandAction {
 
     boolean acceptsElement = false;

@@ -7,6 +7,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Достать элементы из коллекции, у которых имя начинается на заданную подстроку
+ */
 public class FilterNameCommand implements CommandAction {
 
     boolean acceptsElement = false;

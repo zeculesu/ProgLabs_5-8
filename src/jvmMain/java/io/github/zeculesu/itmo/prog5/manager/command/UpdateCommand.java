@@ -10,6 +10,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Обновление полей элемента по его id
+ */
 public class UpdateCommand implements CommandAction {
 
     boolean acceptsElement = true;

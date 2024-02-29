@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Окружение для работы
+ */
 public interface ConsoleCommandEnvironment {
 
     String getFileNameCollection();

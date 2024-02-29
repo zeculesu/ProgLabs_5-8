@@ -8,7 +8,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.CommunicatedClient;
 import io.github.zeculesu.itmo.prog5.user_interface.Console;
 import io.github.zeculesu.itmo.prog5.user_interface.DefaultConsoleCommandEnvironmentImpl;
 
-
+/**
+ * Главный класс, который запускает всё
+ */
 public class Main {
     public static void main(String[] args) {
         CommandSet commandSetMap = new CommandSetMapImpl(new AddCommand(), new ClearCommand(), new FilterNameCommand(),

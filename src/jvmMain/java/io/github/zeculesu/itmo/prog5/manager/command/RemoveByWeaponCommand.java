@@ -9,6 +9,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Удаление элемента из коллекции по его оружию ближнего боя
+ */
 public class RemoveByWeaponCommand implements CommandAction {
 
     boolean acceptsElement = false;

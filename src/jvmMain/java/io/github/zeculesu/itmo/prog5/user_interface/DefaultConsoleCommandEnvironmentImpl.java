@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Дефолтное окружение консоли для работы
+ */
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment {
 
     private boolean run;

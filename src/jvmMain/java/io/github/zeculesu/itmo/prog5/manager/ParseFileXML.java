@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Парсинг из .xml
+ */
 
 public class ParseFileXML implements ParseFileCollection {
     private static CollectionAction collection;
@@ -119,7 +122,7 @@ public class ParseFileXML implements ParseFileCollection {
         writer.writeEndDocument();
     }
 
-    public static CollectionAction parseFile(String filePath, CollectionAction collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
+    public static void parseFile(String filePath, CollectionAction collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
         ParseFileXML.collection = collection;
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
@@ -132,7 +135,6 @@ public class ParseFileXML implements ParseFileCollection {
         } catch (IOException e) {
             throw new FileNotFoundException("Проблема с чтением файла");
         }
-        return collection;
     }
 
 

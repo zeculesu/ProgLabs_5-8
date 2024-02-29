@@ -8,6 +8,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Получение всех полей здоровья из коллекции
+ */
 public class PrintHealthCommand implements CommandAction {
     boolean acceptsElement = false;
 

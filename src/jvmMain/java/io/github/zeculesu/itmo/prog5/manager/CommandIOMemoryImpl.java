@@ -2,6 +2,9 @@ package io.github.zeculesu.itmo.prog5.manager;
 
 import java.util.Iterator;
 
+/**
+ * Ввод команд из итерируемого объекта
+ */
 public class CommandIOMemoryImpl implements CommandIO{
 
     final Iterator<String> input;

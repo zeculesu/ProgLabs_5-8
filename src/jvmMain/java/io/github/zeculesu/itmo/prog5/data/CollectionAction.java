@@ -3,6 +3,9 @@ package io.github.zeculesu.itmo.prog5.data;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Действия, реализуемые с коллекцией
+ */
 public interface CollectionAction extends Iterable<SpaceMarine> {
     public ArrayList<String> info();
 

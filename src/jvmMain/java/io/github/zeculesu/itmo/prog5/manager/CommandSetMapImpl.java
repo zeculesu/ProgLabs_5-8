@@ -6,6 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * Множество команд, методы для работы с ними
+ */
 public class CommandSetMapImpl implements CommandSet{
 
     HashMap<String, CommandAction> commandSet = new HashMap<>();

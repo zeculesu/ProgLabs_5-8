@@ -6,6 +6,9 @@ import java.util.Map;
 
 import static kotlin.collections.ArraysKt.associateBy;
 
+/**
+ * Варианты оружия ближнего боя для SpaceMarine
+ */
 public enum MeleeWeapon {
     CHAIN_SWORD("CHAIN_SWORD"),
     POWER_SWORD("POWER_SWORD"),

@@ -7,6 +7,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Вывод всех возможных команд
+ */
 public class HelpCommand implements CommandAction {
 
     boolean acceptsElement = false;

@@ -12,6 +12,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+/**
+ * Выполнение скрипта из файла
+ */
 public class ExecuteScriptCommand implements CommandAction {
 
     boolean acceptsElement = false;
@@ -24,7 +27,6 @@ public class ExecuteScriptCommand implements CommandAction {
             return response;
         }
         try {
-            //todo проверка на расширение файла
             String fileName = args[0];
             if (env.checkRecursionScript(fileName)){
                 response.setMessage("Вы создаете рекурсию из скриптов, ата-та");

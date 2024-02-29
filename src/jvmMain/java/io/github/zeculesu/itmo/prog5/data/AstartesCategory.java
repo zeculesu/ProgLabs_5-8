@@ -6,7 +6,9 @@ import java.util.Map;
 
 import static kotlin.collections.ArraysKt.associateBy;
 
-
+/**
+ * Описывает возможные категории для SpaceMarine
+ */
 public enum AstartesCategory {
     SCOUT("SCOUT"),
     SUPPRESSOR("SUPPRESSOR"),

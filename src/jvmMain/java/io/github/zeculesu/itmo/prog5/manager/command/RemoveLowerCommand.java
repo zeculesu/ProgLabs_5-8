@@ -10,6 +10,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Удаление элементов меньше заданного
+ */
 public class RemoveLowerCommand implements CommandAction {
 
     boolean acceptsElement = true;

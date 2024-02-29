@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * Вывод истории команд
+ */
 public class HistoryCommand implements CommandAction {
 
     boolean acceptsElement = false;

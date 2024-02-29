@@ -6,6 +6,9 @@ import java.util.Map;
 
 import static kotlin.collections.ArraysKt.associateBy;
 
+/**
+ * Возможные типы оружия для SpaceMarine
+ */
 public enum Weapon {
     BOLTGUN("BOLTGUN"),
 

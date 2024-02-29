@@ -8,6 +8,9 @@ import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Сохранение в файл
+ */
 public class SaveCommand implements CommandAction {
 
     boolean acceptsElement = false;

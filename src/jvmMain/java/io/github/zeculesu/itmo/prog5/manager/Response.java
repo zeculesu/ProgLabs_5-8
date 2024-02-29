@@ -4,6 +4,9 @@ import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 
 import java.util.ArrayList;
 
+/**
+ * Ответ получаемый после выполнения команды
+ */
 public class Response {
 
     String message; // что-то успешно добавлено или наоборот неуспешно, какая-то ошибка была
