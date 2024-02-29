@@ -10,7 +10,7 @@
         <meleeWeapon>CHAIN_AXE</meleeWeapon>
         <chapter name="name_category" parentLegion="elf"/>
     </element>
-    <element id="2">
+    <element id="1">
         <name>Arke2</name>
         <coordinates x="3" y="0.0"/>
         <creationDate>18.02.2024 05:47</creationDate>

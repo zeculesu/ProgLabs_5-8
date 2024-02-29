@@ -14,7 +14,7 @@ public class ExitCommand implements CommandAction {
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
-        env.setStage(false);
+        env.setRun(false);
         response.setMessage("Конец работы программы");
         return response;
     }

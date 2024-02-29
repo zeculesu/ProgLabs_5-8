@@ -26,7 +26,7 @@ public class Console implements CommunicatedClient {
 
     public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
-        this.environment.setStage(true);
+
         this.collectionSpaceMarine = collectionSpaceMarine;
         this.console = new CommandIOConsole();
     }
@@ -34,13 +34,14 @@ public class Console implements CommunicatedClient {
     @Override
     public void run() {
         // todo разукрасить текст
-        // System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
+        System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
+        this.environment.setRun(true);
 
         loadFile(this.environment.getFileNameCollection());
 
         String command;
 
-        while (environment.isStage()) {
+        while (environment.isRun()) {
 
             console.print("> ");
 
@@ -49,6 +50,7 @@ public class Console implements CommunicatedClient {
             if (this.environment.getStateIO() == StateIO.SCRIPT_TO_CONSOLE) {
                 console.println("Конец скрипта");
                 this.environment.setStateIO(StateIO.CONSOLE);
+                this.environment.clearScriptQueue();
             } else if (command == null) {
                 console.println("Конец работы программы");
                 return;
@@ -72,7 +74,7 @@ public class Console implements CommunicatedClient {
                     Response response = com.execute(this.collectionSpaceMarine, this.environment, args, element);
                     outputResponse(response);
                 } catch (NullPointerException e) {
-                    this.environment.setStage(false);
+                    this.environment.setRun(false);
                 } catch (InputFormException | NamingEnumException | IOException e) {
                     console.println(e.getMessage());
                 }
@@ -82,7 +84,7 @@ public class Console implements CommunicatedClient {
             }
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
         this.environment.addCommandToHistory(token[0]);
-        if (this.environment.getStateIO() == StateIO.CONSOLE_TO_SCRIPT){
+        if (this.environment.getStateIO() == StateIO.CONSOLE_TO_SCRIPT) {
             this.environment.setStateIO(StateIO.SCRIPT);
         }
     }

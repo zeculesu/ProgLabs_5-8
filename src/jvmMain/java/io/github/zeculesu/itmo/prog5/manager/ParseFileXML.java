@@ -42,6 +42,9 @@ public class ParseFileXML implements ParseFileCollection {
         } catch (NullPointerException e) {
             throw new FileCollectionException("Имя файла для записи не указано в переменной окружения FILENAME");
         }
+        catch (Exception e){
+            throw new FileCollectionException("Непредвиденная ошибка при записи в файл");
+        }
     }
 
     public static void writeCollection(XMLStreamWriter writer) throws XMLStreamException {

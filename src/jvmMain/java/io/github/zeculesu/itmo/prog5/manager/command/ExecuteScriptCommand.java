@@ -25,7 +25,13 @@ public class ExecuteScriptCommand implements CommandAction {
         }
         try {
             //todo проверка на расширение файла
-            FileReader fileReader = new FileReader(args[0]);
+            String fileName = args[0];
+            if (env.checkRecursionScript(fileName)){
+                response.setMessage("Вы создаете рекурсию из скриптов, ата-та");
+                return response;
+            }
+            env.addScriptQueue(fileName);
+            FileReader fileReader = new FileReader(fileName);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             env.setBufferReaderScript(bufferedReader);
             response.addLineOutput("Начало выполнения скрипта: ");

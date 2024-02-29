@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Response {
 
     String message; // что-то успешно добавлено или наоборот неуспешно, какая-то ошибка была
+    String error;
 
     ArrayList<String> output;
     ArrayList<SpaceMarine> outputElement;
