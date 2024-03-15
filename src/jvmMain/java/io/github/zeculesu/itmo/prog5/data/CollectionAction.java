@@ -7,14 +7,11 @@ import java.util.Date;
  * Действия, реализуемые с коллекцией
  */
 public interface CollectionAction extends Iterable<SpaceMarine> {
-    public ArrayList<String> info();
+    ArrayList<String> info();
 
-    public ArrayList<SpaceMarine> show();
+    ArrayList<SpaceMarine> show();
 
-    public void addElem(SpaceMarine o);
-
-    public void add(String name, Coordinates coordinates, int health,
-                    AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
+    void add(SpaceMarine o);
 
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
                             AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
@@ -24,8 +21,6 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
     public void removeById(int id);
 
     public void clear();
-
-    public void save(String filename);
 
     public SpaceMarine removeHead();
 

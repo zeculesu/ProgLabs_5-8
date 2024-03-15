@@ -66,26 +66,15 @@ public class SpaceMarineCollection implements CollectionAction {
         return new ArrayList<>(this.collectionSpaceMarine);
     }
 
-    /**
-     * Добавление нового элемента в коллецию
-     *
-     * @param name        имя Spacemarine
-     * @param coordinates координаты, где находится (состоит из двух параметров x и y)
-     * @param health      количество здоровья
-     * @param category    категория Spacemarine
-     * @param weaponType  тип оружия
-     * @param meleeWeapon тип оружия ближнего боя
-     * @param chapter     орден (имя ордена и родительским легион)
-     */
-    @Override
-    public void add(String name, Coordinates coordinates, int health,
-                    AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        SpaceMarine newElement = new SpaceMarine(nextId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
-        nextId++;
-        this.collectionSpaceMarine.add(newElement);
-    }
+//    @Override
+//    public void add(String name, Coordinates coordinates, int health,
+//                    AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
+//        SpaceMarine newElement = new SpaceMarine(nextId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
+//        nextId++;
+//        this.collectionSpaceMarine.add(newElement);
+//    }
 
-    public void addElem(SpaceMarine o){
+    public void add(SpaceMarine o){
         this.collectionSpaceMarine.add(o);
     }
 
@@ -176,10 +165,6 @@ public class SpaceMarineCollection implements CollectionAction {
      * @param filename имя файла
      * @throws FileCollectionException проблемы с записью или доступом коллекции
      */
-    @Override
-    public void save(String filename) throws FileCollectionException {
-        ParseFileXML.writeFile(filename, this);
-    }
 
     /**
      * Удаляет первый элемент коллекции

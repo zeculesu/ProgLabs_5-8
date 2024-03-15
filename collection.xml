@@ -1,43 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collection>
-    <element id="1">
-        <name>Arke</name>
-        <coordinates x="2" y="3.0"/>
-        <creationDate>17.02.2005 12:23</creationDate>
-        <health>100</health>
-        <category>SCOUT</category>
-        <weaponType>FLAMER</weaponType>
-        <meleeWeapon>CHAIN_AXE</meleeWeapon>
-        <chapter name="name_category" parentLegion="elf"/>
-    </element>
-    <element id="2">
-        <name>Barke</name>
-        <coordinates x="3" y="0.0"/>
-        <creationDate>18.02.2024 05:47</creationDate>
-        <health>2030</health>
-        <category>SUPPRESSOR</category>
-        <weaponType>BOLT_RIFLE</weaponType>
-        <meleeWeapon>POWER_SWORD</meleeWeapon>
-        <chapter name="name" parentLegion="orden"/>
-    </element>
-    <element id="3">
-        <name>Carke</name>
-        <coordinates x="4" y="5.0"/>
-        <creationDate>28.02.2024 01:11</creationDate>
-        <health>500</health>
-        <category>HELIX</category>
-        <weaponType>HEAVY_BOLTGUN</weaponType>
-        <meleeWeapon>POWER_SWORD</meleeWeapon>
-        <chapter name="orden" parentLegion="parent"/>
-    </element>
-    <element id="4">
-        <name>Dalke</name>
-        <coordinates x="4" y="5.0"/>
-        <creationDate>28.02.2024 01:11</creationDate>
-        <health>500</health>
-        <category>HELIX</category>
-        <weaponType>HEAVY_BOLTGUN</weaponType>
-        <meleeWeapon>POWER_SWORD</meleeWeapon>
-        <chapter name="orden" parentLegion="parent"/>
-    </element>
-</collection>
+	<element id="1">
+		<name>Arke</name>
+		<coordinates x="2" y="3.0"/>
+		<creationDate>17.02.2005 12:23</creationDate>
+		<health>100</health>
+		<category>SCOUT</category>
+		<weaponType>FLAMER</weaponType>
+		<meleeWeapon>CHAIN_AXE</meleeWeapon>
+		<chapter name="name_category" parentLegion="elf"/>
+	</element>
+	<element id="2">
+		<name>Barke</name>
+		<coordinates x="3" y="0.0"/>
+		<creationDate>18.02.2024 05:47</creationDate>
+		<health>2030</health>
+		<category>SUPPRESSOR</category>
+		<weaponType>BOLT_RIFLE</weaponType>
+		<meleeWeapon>POWER_SWORD</meleeWeapon>
+		<chapter name="name" parentLegion="orden"/>
+	</element>
+	<element id="3">
+		<name>Carke</name>
+		<coordinates x="4" y="5.0"/>
+		<creationDate>28.02.2024 01:11</creationDate>
+		<health>500</health>
+		<category>HELIX</category>
+		<weaponType>HEAVY_BOLTGUN</weaponType>
+		<meleeWeapon>POWER_SWORD</meleeWeapon>
+		<chapter name="orden" parentLegion="parent"/>
+	</element>
+	<element id="4">
+		<name>Dalke</name>
+		<coordinates x="4" y="5.0"/>
+		<creationDate>28.02.2024 01:11</creationDate>
+		<health>500</health>
+		<category>HELIX</category>
+		<weaponType>HEAVY_BOLTGUN</weaponType>
+		<meleeWeapon>POWER_SWORD</meleeWeapon>
+		<chapter name="orden" parentLegion="parent"/>
+	</element>
+	<element id="5">
+		<name>name2</name>
+		<coordinates x="4" y="5.0"/>
+		<creationDate>15.03.2024 11:31</creationDate>
+		<health>500</health>
+		<category>HELIX</category>
+		<weaponType>HEAVY_BOLTGUN</weaponType>
+		<meleeWeapon>POWER_SWORD</meleeWeapon>
+		<chapter name="orden" parentLegion="parent"/>
+	</element></collection>

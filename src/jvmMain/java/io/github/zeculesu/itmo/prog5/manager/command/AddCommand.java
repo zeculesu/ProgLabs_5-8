@@ -21,7 +21,7 @@ public class AddCommand implements CommandAction {
         Response response = new Response();
         ElementFormConsole elem = element[0];
         try {
-            collectionSpaceMarine.addElem(elem.getElement());
+            collectionSpaceMarine.add(elem.getElement());
             response.setMessage("Новый элемент добавлен");
             return response;
         } catch (NamingEnumException | InputFormException e) {
