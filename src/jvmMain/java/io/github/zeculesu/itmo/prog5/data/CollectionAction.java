@@ -11,14 +11,15 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
 
     public ArrayList<SpaceMarine> show();
 
+    public void addElem(SpaceMarine o);
+
     public void add(String name, Coordinates coordinates, int health,
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
 
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
                             AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
 
-    public void update(int id, String name, Coordinates coordinates, int health,
-                         AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
+    public void update(int id, SpaceMarine o);
 
     public void removeById(int id);
 

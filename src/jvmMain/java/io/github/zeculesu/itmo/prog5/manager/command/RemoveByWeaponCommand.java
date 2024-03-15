@@ -19,7 +19,7 @@ public class RemoveByWeaponCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0){
-            response.setMessage("Не введен аргумент - оружие ближнего боя");
+            response.setError("Не введен аргумент - оружие ближнего боя");
             return response;
         }
         try{
@@ -28,14 +28,14 @@ public class RemoveByWeaponCommand implements CommandAction {
             collectionSpaceMarine.removeAllByMeleeWeapon(meleeWeapon);
             int end = collectionSpaceMarine.size();
             if (start == end) {
-                response.setMessage("Элементов с таким оружием ближнего боя в коллекции не найдено");
+                response.setError("Элементов с таким оружием ближнего боя в коллекции не найдено");
             }
             else {
-                response.setMessage("Удаление произошло успешно");
+                response.setError("Удаление произошло успешно");
             }
         }
         catch (NamingEnumException e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

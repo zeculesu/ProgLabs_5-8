@@ -23,7 +23,7 @@ public class ExecuteScriptCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0) {
-            response.setMessage("Имя файла не введено");
+            response.setError("Имя файла не введено");
             return response;
         }
         try {
@@ -39,7 +39,7 @@ public class ExecuteScriptCommand implements CommandAction {
             response.addLineOutput("Начало выполнения скрипта: ");
             env.setStateIO(StateIO.CONSOLE_TO_SCRIPT);
         } catch (FileNotFoundException e) {
-            response.setMessage("Не удалось открыть файл");
+            response.setError("Не удалось открыть файл");
         }
         return response;
     }

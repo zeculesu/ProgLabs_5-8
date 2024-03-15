@@ -22,6 +22,7 @@ public class SpaceMarineCollection implements CollectionAction {
     /**
      * Сама коллекция
      */
+    private static int nextId = 1;
     private final PriorityQueue<SpaceMarine> collectionSpaceMarine = new PriorityQueue<>();
     /**
      * Дата создания коллекции
@@ -79,38 +80,32 @@ public class SpaceMarineCollection implements CollectionAction {
     @Override
     public void add(String name, Coordinates coordinates, int health,
                     AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-        int maxId = 1;
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            if (elem.getId() >= maxId) maxId = elem.getId() + 1;
-        }
-        SpaceMarine newElement = new SpaceMarine(maxId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
+        SpaceMarine newElement = new SpaceMarine(nextId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
+        nextId++;
         this.collectionSpaceMarine.add(newElement);
+    }
+
+    public void addElem(SpaceMarine o){
+        this.collectionSpaceMarine.add(o);
     }
 
     /**
      * Обновление значений полей имеющегося элемента через его id
      *
-     * @param id          id элемента
-     * @param name        имя Spacemarine
-     * @param coordinates координаты, где находится (состоит из двух параметров x и y)
-     * @param health      количество здоровья
-     * @param category    категория Spacemarine
-     * @param weaponType  тип оружия
-     * @param meleeWeapon тип оружия ближнего боя
-     * @param chapter     орден (имя ордена и родительским легион)
+     * @param id         id элемента для изменения
+     * @param o          элемент с новыми полями
      * @throws ElementNotFound в коллекции нет элемента с таким id
      */
     @Override
-    public void update(int id, String name, Coordinates coordinates, int health,
-                       AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) throws ElementNotFound {
+    public void update(int id, SpaceMarine o) throws ElementNotFound {
         SpaceMarine elem = findById(id);
-        elem.setName(name);
-        elem.setCoordinates(coordinates);
-        elem.setHealth(health);
-        elem.setCategory(category);
-        elem.setWeaponType(weaponType);
-        elem.setMeleeWeapon(meleeWeapon);
-        elem.setChapter(chapter);
+        elem.setName(o.getName());
+        elem.setCoordinates(o.getCoordinates());
+        elem.setHealth(o.getHealth());
+        elem.setCategory(o.getCategory());
+        elem.setWeaponType(o.getWeaponType());
+        elem.setMeleeWeapon(o.getMeleeWeapon());
+        elem.setChapter(o.getChapter());
     }
 
     /**
@@ -141,6 +136,9 @@ public class SpaceMarineCollection implements CollectionAction {
     public String load(String filename) {
         try {
             ParseFileXML.parseFile(filename, this);
+            for (SpaceMarine elem : this.collectionSpaceMarine) {
+                if (elem.getId() >= nextId) nextId = elem.getId() + 1;
+            }
         } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
             return e.getMessage();
         }
@@ -301,5 +299,9 @@ public class SpaceMarineCollection implements CollectionAction {
             }
         }
         throw new ElementNotFound("Элемента с таким id нет в коллекции");
+    }
+
+    public static int getNextId() {
+        return nextId;
     }
 }

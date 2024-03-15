@@ -22,7 +22,7 @@ public class ShowCommand implements CommandAction {
             response.setOutputElement(collectionSpaceMarine.show());
         }
         catch (EmptyCollectionException e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

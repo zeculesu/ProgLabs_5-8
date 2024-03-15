@@ -20,6 +20,14 @@ public class Response {
         this.outputElement = new ArrayList<>();
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -55,6 +63,8 @@ public class Response {
     public boolean isMessage(){
         return (this.message != null) && !this.message.isEmpty();
     }
+
+    public boolean isError(){return (this.error != null) && !this.error.isEmpty();}
 
     public boolean isOutput(){
         return !this.output.isEmpty();

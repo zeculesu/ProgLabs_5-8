@@ -14,44 +14,40 @@ import java.util.Date;
  * Форма ввода элемента
  */
 public class ElementFormConsole {
-    private String name; //Поле не может быть null, Строка не может быть пустой
-    private Coordinates coordinates; //Поле не может быть null
-    private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    private int health; //Поле не может быть null, Значение поля должно быть больше 0
-    private AstartesCategory category; //Поле может быть null
-    private Weapon weaponType; //Поле не может быть null
-    private MeleeWeapon meleeWeapon; //Поле не может быть null
-    private Chapter chapter; //Поле не может быть null
+    private final SpaceMarine element;
 
     public ElementFormConsole(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException, IOException {
         String input;
         console.print("Введите имя: ");
         input = console.readln();
-        this.name = checkName(input);
+        String name = checkName(input);
 
         console.print("Введите координату (x и y через пробел): ");
         input = console.readln();
-        this.coordinates = checkCoordinates(input);
+        Coordinates coordinates = checkCoordinates(input);
 
         console.print("Введите количество здоровья: ");
         input = console.readln();
-        this.health = checkHealth(input);
+        int health = checkHealth(input);
 
         console.print("Введите категорию (SCOUT, SUPPRESSOR, LIBRARIAN, HELIX): ");
         input = console.readln();
-        this.category = checkCategory(input);
+        AstartesCategory category = checkCategory(input);
 
         console.print("Введите тип оружия (BOLTGUN, HEAVY_BOLTGUN, BOLT_RIFLE, FLAMER, MULTI_MELTA): ");
         input = console.readln();
-        this.weaponType = checkWeaponType(input);
+        Weapon weaponType = checkWeaponType(input);
 
         console.print("Введите оружие ближнего боя (CHAIN_SWORD, POWER_SWORD, CHAIN_AXE, MANREAPER, POWER_BLADE): ");
         input = console.readln();
-        this.meleeWeapon = checkMeleeWeapon(input);
+        MeleeWeapon meleeWeapon = checkMeleeWeapon(input);
 
         console.print("Введите орден (имя и родительским легион через пробел): ");
         input = console.readln();
-        this.chapter = checkChapter(input);
+        Chapter chapter = checkChapter(input);
+
+        this.element = new SpaceMarine(SpaceMarineCollection.getNextId(), name, coordinates, health, category,
+                weaponType, meleeWeapon, chapter);
     }
 
     public static int checkId(String input) throws InputFormException {
@@ -141,36 +137,8 @@ public class ElementFormConsole {
         }
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public Coordinates getCoordinates() {
-        return this.coordinates;
-    }
-
-    public Date getCreationDate() {
-        return this.creationDate;
-    }
-
-    public int getHealth() {
-        return this.health;
-    }
-
-    public AstartesCategory getCategory() {
-        return this.category;
-    }
-
-    public Weapon getWeaponType() {
-        return this.weaponType;
-    }
-
-    public MeleeWeapon getMeleeWeapon() {
-        return this.meleeWeapon;
-    }
-
-    public Chapter getChapter() {
-        return this.chapter;
+    public SpaceMarine getElement() {
+        return this.element;
     }
 }
 

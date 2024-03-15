@@ -23,7 +23,7 @@ public class SaveCommand implements CommandAction {
             response.setMessage("Сохранение прошло успешно");
         }
         catch (FileCollectionException e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

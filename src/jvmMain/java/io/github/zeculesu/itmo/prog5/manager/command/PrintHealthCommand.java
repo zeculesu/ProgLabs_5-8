@@ -21,7 +21,7 @@ public class PrintHealthCommand implements CommandAction {
             response.addLineOutput(collectionSpaceMarine.printFieldDescendingHealth());
         }
         catch (EmptyCollectionException e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

@@ -7,3 +7,4 @@ HEAVY_BOLTGUN
 POWER_SWORD
 orden parent
 info
+execute_script script

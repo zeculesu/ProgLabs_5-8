@@ -21,16 +21,16 @@ public class UpdateCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0) {
-            response.setMessage("Не введен аргумент - id элемента");
+            response.setError("Не введен аргумент - id элемента");
             return response;
         }
         ElementFormConsole elem = element[0];
         try {
             int id = ElementFormConsole.checkId(args[0]);
-            collectionSpaceMarine.update(id, elem.getName(), elem.getCoordinates(), elem.getHealth(),
-                    elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
+            collectionSpaceMarine.update(id, elem.getElement());
+            response.setMessage("Элемент обновлен");
         } catch (NamingEnumException | InputFormException | ElementNotFound e) {
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

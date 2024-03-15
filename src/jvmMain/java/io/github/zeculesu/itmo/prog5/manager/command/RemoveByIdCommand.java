@@ -19,7 +19,7 @@ public class RemoveByIdCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0){
-            response.setMessage("Не введен аргумент - id элемента для удаления");
+            response.setError("Не введен аргумент - id элемента для удаления");
             return response;
         }
         try{
@@ -27,10 +27,10 @@ public class RemoveByIdCommand implements CommandAction {
             collectionSpaceMarine.removeById(id);
         }
         catch (ElementNotFound e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         catch (NumberFormatException e) {
-            response.setMessage("Неверный формат ввода id");
+            response.setError("Неверный формат ввода id");
         }
         return response;
     }

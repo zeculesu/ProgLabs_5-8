@@ -99,6 +99,7 @@ public class Console implements CommunicatedClient {
                 console.println(line);
             }
         }
+        if (response.isError()) console.println(response.getError());
         if (response.isMessage()) console.println(response.getMessage());
     }
 

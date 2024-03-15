@@ -22,19 +22,17 @@ public class RemoveLowerCommand implements CommandAction {
         ElementFormConsole elem = element[0];
         try {
 
-            SpaceMarine o = new SpaceMarine(0, elem.getName(), elem.getCoordinates(), elem.getHealth(),
-                    elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
             int startSize = collectionSpaceMarine.size();
 
-            collectionSpaceMarine.removeLower(o);
+            collectionSpaceMarine.removeLower(elem.getElement());
 
             int endSize = collectionSpaceMarine.size();
             if (startSize == endSize) {
-                response.setMessage("Элементов с меньше данного в коллекции не найдено");
+                response.setError("Элементов с меньше данного в коллекции не найдено");
             }
             response.setMessage("Удаление произошло успешно");
         } catch (NamingEnumException | InputFormException e) {
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

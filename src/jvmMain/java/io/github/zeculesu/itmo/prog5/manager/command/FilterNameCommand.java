@@ -18,12 +18,12 @@ public class FilterNameCommand implements CommandAction {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
         Response response = new Response();
         if (args.length == 0){
-            response.setMessage("Не введен аргумент - подстрока, с которой должны начинаться имена элементов");
+            response.setError("Не введен аргумент - подстрока, с которой должны начинаться имена элементов");
             return response;
         }
         String name = args[0];
         response.setOutputElement(collectionSpaceMarine.filterStartsWithName(name));
-        if (!response.isOutputElement()) response.setMessage("Не нашлось ни одного элемента");
+        if (!response.isOutputElement()) response.setError("Не нашлось ни одного элемента");
         return response;
     }
 

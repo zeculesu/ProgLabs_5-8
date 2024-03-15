@@ -23,7 +23,7 @@ public class RemoveHeadCommand implements CommandAction {
             response.setMessage("Элемент успешно удален");
         }
         catch (EmptyCollectionException e){
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
         }
         return response;
     }

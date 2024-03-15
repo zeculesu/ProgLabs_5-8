@@ -21,11 +21,11 @@ public class AddCommand implements CommandAction {
         Response response = new Response();
         ElementFormConsole elem = element[0];
         try {
-            collectionSpaceMarine.add(elem.getName(), elem.getCoordinates(), elem.getHealth(), elem.getCategory(), elem.getWeaponType(), elem.getMeleeWeapon(), elem.getChapter());
+            collectionSpaceMarine.addElem(elem.getElement());
             response.setMessage("Новый элемент добавлен");
             return response;
         } catch (NamingEnumException | InputFormException e) {
-            response.setMessage(e.getMessage());
+            response.setError(e.getMessage());
             return response;
         }
     }
