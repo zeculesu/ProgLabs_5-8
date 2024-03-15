@@ -2,16 +2,12 @@ package io.github.zeculesu.itmo.prog5.data;
 
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
-import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
-import io.github.zeculesu.itmo.prog5.manager.CommandIO;
-import io.github.zeculesu.itmo.prog5.manager.ParseFileXML;
-import org.jetbrains.annotations.NotNull;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.FileNotFoundException;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -66,23 +62,16 @@ public class SpaceMarineCollection implements CollectionAction {
         return new ArrayList<>(this.collectionSpaceMarine);
     }
 
-//    @Override
-//    public void add(String name, Coordinates coordinates, int health,
-//                    AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
-//        SpaceMarine newElement = new SpaceMarine(nextId, name, coordinates, health, category, weaponType, meleeWeapon, chapter);
-//        nextId++;
-//        this.collectionSpaceMarine.add(newElement);
-//    }
-
-    public void add(SpaceMarine o){
+    public void add(SpaceMarine o) {
         this.collectionSpaceMarine.add(o);
+        nextId++;
     }
 
     /**
      * Обновление значений полей имеющегося элемента через его id
      *
-     * @param id         id элемента для изменения
-     * @param o          элемент с новыми полями
+     * @param id id элемента для изменения
+     * @param o  элемент с новыми полями
      * @throws ElementNotFound в коллекции нет элемента с таким id
      */
     @Override
@@ -118,20 +107,11 @@ public class SpaceMarineCollection implements CollectionAction {
 
     /**
      * Загрузка элементов из коллекции
-     *
-     * @param filename имя файла
-     * @return вердикт о работе
      */
-    public String load(String filename) {
-        try {
-            ParseFileXML.parseFile(filename, this);
-            for (SpaceMarine elem : this.collectionSpaceMarine) {
-                if (elem.getId() >= nextId) nextId = elem.getId() + 1;
-            }
-        } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
-            return e.getMessage();
+    public void setNewMaxId() {
+        for (SpaceMarine elem : this.collectionSpaceMarine) {
+            if (elem.getId() >= nextId) nextId = elem.getId() + 1;
         }
-        return "Элементы из коллекции загружены";
     }
 
     /**
@@ -158,13 +138,6 @@ public class SpaceMarineCollection implements CollectionAction {
         this.collectionSpaceMarine.add(new SpaceMarine(id, name, coordinates, creationDate, health,
                 category, weaponType, meleeWeapon, chapter));
     }
-
-    /**
-     * Сохраняет коллекцию в файл
-     *
-     * @param filename имя файла
-     * @throws FileCollectionException проблемы с записью или доступом коллекции
-     */
 
     /**
      * Удаляет первый элемент коллекции
@@ -211,13 +184,8 @@ public class SpaceMarineCollection implements CollectionAction {
 
     @Override
     public ArrayList<SpaceMarine> filterStartsWithName(String name) {
-        ArrayList<SpaceMarine> finded = new ArrayList<>();
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            if (elem.getName().startsWith(name)) {
-                finded.add(elem);
-            }
-        }
-        return finded;
+        return (ArrayList<SpaceMarine>) this.collectionSpaceMarine.stream().filter(x
+                -> x.getName().startsWith(name)).collect(Collectors.toList());
     }
 
     /**
@@ -232,20 +200,9 @@ public class SpaceMarineCollection implements CollectionAction {
         if (this.size() == 0) {
             throw new EmptyCollectionException();
         }
-        ArrayList<Integer> heights = new ArrayList<>();
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            heights.add(elem.getHealth());
-        }
-        heights.sort(Comparator.reverseOrder());
-        StringBuilder heightsLine = new StringBuilder();
-        for (int h : heights) {
-            heightsLine.append(h).append("\n");
-        }
-        heightsLine.deleteCharAt(heightsLine.length() - 1);
-        heightsLine.deleteCharAt(heightsLine.length() - 1);
-        return heightsLine.toString();
+        return this.collectionSpaceMarine.stream().map(SpaceMarine::getHealth).sorted(Comparator.reverseOrder()).
+                map(Object::toString).collect(Collectors.joining("\n"));
     }
-
 
     /**
      * Делает коллекцию итерируемой
@@ -278,11 +235,8 @@ public class SpaceMarineCollection implements CollectionAction {
      */
     @Override
     public SpaceMarine findById(int id) throws ElementNotFound {
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
-            if (elem.getId() == id) {
-                return elem;
-            }
-        }
+        SpaceMarine o = this.collectionSpaceMarine.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        if (o != null) return o;
         throw new ElementNotFound("Элемента с таким id нет в коллекции");
     }
 

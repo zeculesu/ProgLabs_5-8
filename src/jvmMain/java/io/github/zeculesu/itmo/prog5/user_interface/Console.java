@@ -6,10 +6,14 @@ import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.CommandIO;
+import io.github.zeculesu.itmo.prog5.manager.ParseFileXML;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.SAXException;
 
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -125,7 +129,13 @@ public class Console implements CommunicatedClient {
         } else {
             console.println("Файл с коллекцией: " + fileName);
             //todo переделать вывод загрузки файла на RESPONSE
-            console.println(collectionSpaceMarine.load(fileName));
+            try {
+                ParseFileXML.parseFile(fileName, collectionSpaceMarine);
+                collectionSpaceMarine.setNewMaxId();
+            } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
+                console.println(e.getMessage());
+            }
+            console.println("Элементы из коллекции загружены");
         }
     }
 

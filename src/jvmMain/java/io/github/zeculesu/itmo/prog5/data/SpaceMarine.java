@@ -48,7 +48,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>{
                 ", name='" + name + '\'' +
                 ", coordinates={x = " + coordinates.getX() +
                 "; y = " + coordinates.getY() + "}" +
-                ", creationDate=" + df.format(creationDate) +
+                ", creationDate=\"" + df.format(creationDate) + "\"" +
                 ", health=" + health +
                 ", category=" + category +
                 ", weaponType=" + weaponType +
