@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <collection>
 	<element id="1">
-		<name>Arke</name>
+		<name>Barke</name>
 		<coordinates x="2" y="3.0"/>
 		<creationDate>17.02.2005 12:23</creationDate>
 		<health>100</health>
@@ -11,7 +11,7 @@
 		<chapter name="name_category" parentLegion="elf"/>
 	</element>
 	<element id="2">
-		<name>Barke</name>
+		<name>Arke</name>
 		<coordinates x="3" y="0.0"/>
 		<creationDate>18.02.2024 05:47</creationDate>
 		<health>2030</health>

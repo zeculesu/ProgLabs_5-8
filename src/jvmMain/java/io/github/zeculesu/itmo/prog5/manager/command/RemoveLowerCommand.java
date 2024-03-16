@@ -17,14 +17,14 @@ public class RemoveLowerCommand implements CommandAction {
 
     boolean acceptsElement = true;
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
+    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
-        ElementFormConsole elem = element[0];
+        SpaceMarine elem = element[0];
         try {
 
             int startSize = collectionSpaceMarine.size();
 
-            collectionSpaceMarine.removeLower(elem.getElement());
+            collectionSpaceMarine.removeLower(elem);
 
             int endSize = collectionSpaceMarine.size();
             if (startSize == endSize) {

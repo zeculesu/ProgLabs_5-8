@@ -38,10 +38,14 @@ kotlin {
         val commonMain by getting
         val commonTest by getting
         val jvmMain by getting{
+            dependencies{
+                implementation("org.jline:jline:3.20.0")
+            }
         }
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+
             }
         }
     }

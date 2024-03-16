@@ -17,11 +17,11 @@ public class AddCommand implements CommandAction {
     boolean acceptsElement = true;
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
+    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
-        ElementFormConsole elem = element[0];
+        SpaceMarine elem = element[0];
         try {
-            collectionSpaceMarine.add(elem.getElement());
+            collectionSpaceMarine.add(elem);
             response.setMessage("Новый элемент добавлен");
             return response;
         } catch (NamingEnumException | InputFormException e) {

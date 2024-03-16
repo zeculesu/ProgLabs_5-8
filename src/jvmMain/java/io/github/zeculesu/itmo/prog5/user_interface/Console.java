@@ -16,6 +16,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static io.github.zeculesu.itmo.prog5.user_interface.ColorConsole.DEFAULT;
+import static io.github.zeculesu.itmo.prog5.user_interface.ColorConsole.ERROR;
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
 /**
@@ -37,8 +39,6 @@ public class Console implements CommunicatedClient {
 
     @Override
     public void run() {
-        // todo разукрасить текст
-        //System.out.println("\u001B[31m" + "Красный текст" + "\u001B[0m");
         this.environment.setRun(true);
 
         loadFile(this.environment.getFileNameCollection());
@@ -73,13 +73,13 @@ public class Console implements CommunicatedClient {
             String[] args = token.length == 2 ? token[1].split(" ") : new String[0];
             if (com.isAcceptsElement()) {
                 try {
-                    ElementFormConsole element = new ElementFormConsole(new CommandIOConsole());
+                    SpaceMarine element = ElementFormConsole.getElemFromForm(new CommandIOConsole());
                     Response response = com.execute(this.collectionSpaceMarine, this.environment, args, element);
                     outputResponse(response);
                 } catch (NullPointerException e) {
                     this.environment.setRun(false);
                 } catch (InputFormException | NamingEnumException | IOException e) {
-                    console.println(e.getMessage());
+                    console.println(e.getMessage(), ERROR);
                 }
             } else {
                 Response response = com.execute(this.collectionSpaceMarine, this.environment, args);
@@ -103,7 +103,7 @@ public class Console implements CommunicatedClient {
                 console.println(line);
             }
         }
-        if (response.isError()) console.println(response.getError());
+        if (response.isError()) console.println(response.getError(), ColorConsole.ERROR);
         if (response.isMessage()) console.println(response.getMessage());
     }
 
@@ -117,7 +117,7 @@ public class Console implements CommunicatedClient {
                 }
                 return console.readln();
             } catch (IOException e) {
-                console.println("Проблемы с чтением файла скрипта");
+                console.println("Проблемы с чтением файла скрипта", ERROR);
             }
         }
         return readlnOrNull();
@@ -125,7 +125,7 @@ public class Console implements CommunicatedClient {
 
     public void loadFile(String fileName) {
         if (fileName == null) {
-            console.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME");
+            console.println("Имя файла с коллекцией не указано, оно должно храниться в переменной окружения FILENAME", ERROR);
         } else {
             console.println("Файл с коллекцией: " + fileName);
             //todo переделать вывод загрузки файла на RESPONSE
@@ -141,13 +141,21 @@ public class Console implements CommunicatedClient {
 
     class CommandIOConsole implements CommandIO {
         @Override
-        public void print(String line) {
-            System.out.print(conversionForScriptOutput(line));
+        public void print(String line, ColorConsole... color) {
+            if (color.length != 0) {
+                System.out.print(color[0].getAnsiCode() + conversionForScriptOutput(line) + DEFAULT.getAnsiCode());
+            } else {
+                System.out.print(conversionForScriptOutput(line));
+            }
         }
 
         @Override
-        public void println(String line) {
-            System.out.println(conversionForScriptOutput(line));
+        public void println(String line, ColorConsole... color) {
+            if (color.length != 0) {
+                System.out.println(color[0].getAnsiCode() + conversionForScriptOutput(line) + DEFAULT.getAnsiCode());
+            } else {
+                System.out.println(conversionForScriptOutput(line));
+            }
         }
 
         @Override

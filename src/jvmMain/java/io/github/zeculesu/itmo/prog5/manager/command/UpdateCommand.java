@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.manager.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -18,16 +19,16 @@ public class UpdateCommand implements CommandAction {
     boolean acceptsElement = true;
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, ElementFormConsole... element) {
+    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         if (args.length == 0) {
             response.setError("Не введен аргумент - id элемента");
             return response;
         }
-        ElementFormConsole elem = element[0];
+        SpaceMarine elem = element[0];
         try {
             int id = ElementFormConsole.checkId(args[0]);
-            collectionSpaceMarine.update(id, elem.getElement());
+            collectionSpaceMarine.update(id, elem);
             response.setMessage("Элемент обновлен");
         } catch (NamingEnumException | InputFormException | ElementNotFound e) {
             response.setError(e.getMessage());

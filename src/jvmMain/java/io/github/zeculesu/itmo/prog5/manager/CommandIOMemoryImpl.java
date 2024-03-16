@@ -1,5 +1,7 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
+import io.github.zeculesu.itmo.prog5.user_interface.ColorConsole;
+
 import java.util.Iterator;
 
 /**
@@ -15,13 +17,13 @@ public class CommandIOMemoryImpl implements CommandIO{
     }
 
     @Override
-    public void print(String line) {
+    public void print(String line, ColorConsole... color) {
         this.output.append(line);
 
     }
 
     @Override
-    public void println(String line) {
+    public void println(String line, ColorConsole... color) {
         this.output.append(line);
         this.output.append('\n');
     }

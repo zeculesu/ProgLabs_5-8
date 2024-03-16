@@ -14,9 +14,9 @@ import java.util.Date;
  * Форма ввода элемента
  */
 public class ElementFormConsole {
-    private final SpaceMarine element;
 
-    public ElementFormConsole(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException, IOException {
+
+    public static SpaceMarine getElemFromForm(CommandIO console) throws InputFormException, NamingEnumException, NullPointerException, IOException {
         String input;
         console.print("Введите имя: ");
         input = console.readln();
@@ -46,7 +46,7 @@ public class ElementFormConsole {
         input = console.readln();
         Chapter chapter = checkChapter(input);
 
-        this.element = new SpaceMarine(SpaceMarineCollection.getNextId(), name, coordinates, health, category,
+        return new SpaceMarine(SpaceMarineCollection.getNextId(), name, coordinates, health, category,
                 weaponType, meleeWeapon, chapter);
     }
 
@@ -135,10 +135,6 @@ public class ElementFormConsole {
         } catch (Exception e) {
             throw new InputFormException("Неправильный ввод ордена");
         }
-    }
-
-    public SpaceMarine getElement() {
-        return this.element;
     }
 }
 
