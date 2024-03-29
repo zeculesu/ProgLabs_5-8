@@ -11,6 +11,7 @@ import io.github.zeculesu.itmo.prog5.user_interface.DefaultConsoleCommandEnviron
 /**
  * Главный класс, который запускает всё
  */
+// new life in new branch
 public class Main {
     public static void main(String[] args) {
         CommandSet commandSetMap = new CommandSetMapImpl(new AddCommand(), new ClearCommand(), new FilterNameCommand(),
