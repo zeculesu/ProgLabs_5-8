@@ -1,12 +1,12 @@
 package io.github.zeculesu.itmo.prog5;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
-import io.github.zeculesu.itmo.prog5.manager.CommandSet;
-import io.github.zeculesu.itmo.prog5.manager.CommandSetMapImpl;
-import io.github.zeculesu.itmo.prog5.manager.command.*;
-import io.github.zeculesu.itmo.prog5.user_interface.CommunicatedClient;
-import io.github.zeculesu.itmo.prog5.user_interface.Console;
-import io.github.zeculesu.itmo.prog5.user_interface.DefaultConsoleCommandEnvironmentImpl;
+import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
+import io.github.zeculesu.itmo.prog5.server.command.CommandSetMapImpl;
+import io.github.zeculesu.itmo.prog5.server.command.*;
+import io.github.zeculesu.itmo.prog5.client.CommunicatedClient;
+import io.github.zeculesu.itmo.prog5.client.Console;
+import io.github.zeculesu.itmo.prog5.client.DefaultConsoleCommandEnvironmentImpl;
 
 /**
  * Главный класс, который запускает всё

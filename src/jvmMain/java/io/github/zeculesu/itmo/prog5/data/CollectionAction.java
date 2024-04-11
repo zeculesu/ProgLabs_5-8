@@ -35,6 +35,8 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
     public int size();
 
     public SpaceMarine findById(int id);
+
+    public void setNewMaxId();
 }
 
 

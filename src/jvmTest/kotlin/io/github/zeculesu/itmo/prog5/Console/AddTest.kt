@@ -1,14 +1,14 @@
 package io.github.zeculesu.itmo.prog5.Console
 
-import io.github.zeculesu.itmo.prog5.manager.command.AddCommand
+import io.github.zeculesu.itmo.prog5.server.command.AddCommand
 import kotlin.test.Test
 
 import io.github.zeculesu.itmo.prog5.data.*
-import io.github.zeculesu.itmo.prog5.manager.CommandSetMapImpl
-import io.github.zeculesu.itmo.prog5.manager.CommandIOMemoryImpl
-import io.github.zeculesu.itmo.prog5.manager.ConsoleCommandEnvironmentTestImpl
-import io.github.zeculesu.itmo.prog5.manager.command.ShowCommand
-import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole
+import io.github.zeculesu.itmo.prog5.server.command.CommandSetMapImpl
+import io.github.zeculesu.itmo.prog5.client.CommandIOMemoryImpl
+import io.github.zeculesu.itmo.prog5.server.ConsoleCommandEnvironmentTestImpl
+import io.github.zeculesu.itmo.prog5.server.command.ShowCommand
+import io.github.zeculesu.itmo.prog5.client.ElementFormConsole
 import kotlin.test.assertEquals
 
 class AddTest {
@@ -29,7 +29,8 @@ class AddTest {
         val collection = SpaceMarineCollection()
         val comm = AddCommand()
         val comm_show = ShowCommand()
-        val commandSet = CommandSetMapImpl(comm, comm_show)
+        val commandSet =
+            CommandSetMapImpl(comm, comm_show)
         val env = ConsoleCommandEnvironmentTestImpl(commandSet)
         comm.execute(collection, env, arrayOf(), elem)
         assertEquals(1, collection.size())

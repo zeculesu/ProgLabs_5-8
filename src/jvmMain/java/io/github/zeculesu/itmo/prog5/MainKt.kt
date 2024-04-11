@@ -1,7 +1,9 @@
 package io.github.zeculesu.itmo.prog5
 
+import io.github.zeculesu.itmo.prog5.server.net.Server
+
 object MainKt {
     @JvmStatic fun main(argv: Array<String>){
-        Main.main(argv)
+        Server.main(argv)
     }
 }
