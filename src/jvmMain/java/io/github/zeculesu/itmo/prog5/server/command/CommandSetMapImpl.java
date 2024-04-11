@@ -16,9 +16,8 @@ public class CommandSetMapImpl implements CommandSet {
     HashMap<String, CommandAction> commandSet = new HashMap<>();
 
     public CommandSetMapImpl(CommandAction... commands){
-        //заполняется в io.github.zeculesu.itmo.prog5.Main
         for (CommandAction command : commands){
-            this.commandSet.put(command.getName(), command);
+            addCommand(command);
         }
     }
 
@@ -26,6 +25,11 @@ public class CommandSetMapImpl implements CommandSet {
     @Override
     public CommandAction findCommand(@NotNull String comm) {
         return this.commandSet.get(comm);
+    }
+
+    @Override
+    public void addCommand(@NotNull CommandAction comm) {
+        this.commandSet.put(comm.getName(), comm);
     }
 
     @NotNull

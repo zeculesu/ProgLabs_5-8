@@ -14,40 +14,40 @@ public class UDPClient {
         Scanner scanner = new Scanner(System.in);
         try {
             while (true) {
-                // Создаем сокет для отправки данных
+                // РЎРѕР·РґР°РµРј СЃРѕРєРµС‚ РґР»СЏ РѕС‚РїСЂР°РІРєРё РґР°РЅРЅС‹С…
                 DatagramSocket clientSocket = new DatagramSocket();
-                // Получаем IP адрес сервера
+                // РџРѕР»СѓС‡Р°РµРј IP Р°РґСЂРµСЃ СЃРµСЂРІРµСЂР°
                 InetAddress serverIPAddress = InetAddress.getByName("localhost");
 
-                // Отправка сообщения серверу
-                // Создаем сообщение для отправки
+                // РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ СЃРµСЂРІРµСЂСѓ
+                // РЎРѕР·РґР°РµРј СЃРѕРѕР±С‰РµРЅРёРµ РґР»СЏ РѕС‚РїСЂР°РІРєРё
                 String message = scanner.nextLine();
-                // Преобразуем сообщение в массив байтов
+                // РџСЂРµРѕР±СЂР°Р·СѓРµРј СЃРѕРѕР±С‰РµРЅРёРµ РІ РјР°СЃСЃРёРІ Р±Р°Р№С‚РѕРІ
                 byte[] sendData = message.getBytes();
-                // Создаем пакет для отправки данных серверу
+                // РЎРѕР·РґР°РµРј РїР°РєРµС‚ РґР»СЏ РѕС‚РїСЂР°РІРєРё РґР°РЅРЅС‹С… СЃРµСЂРІРµСЂСѓ
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverIPAddress, 9876);
-                // Отправляем пакет серверу
+                // РћС‚РїСЂР°РІР»СЏРµРј РїР°РєРµС‚ СЃРµСЂРІРµСЂСѓ
                 clientSocket.send(sendPacket);
 
-                // Получение ответа от сервера
-                // Создаем буфер для приема данных от сервера
-                byte[] receiveData = new byte[1024];
-                // Создаем пакет для приема данных от сервера
+                // РџРѕР»СѓС‡РµРЅРёРµ РѕС‚РІРµС‚Р° РѕС‚ СЃРµСЂРІРµСЂР°
+                // РЎРѕР·РґР°РµРј Р±СѓС„РµСЂ РґР»СЏ РїСЂРёРµРјР° РґР°РЅРЅС‹С… РѕС‚ СЃРµСЂРІРµСЂР°
+                byte[] receiveData = new byte[65507];
+                // РЎРѕР·РґР°РµРј РїР°РєРµС‚ РґР»СЏ РїСЂРёРµРјР° РґР°РЅРЅС‹С… РѕС‚ СЃРµСЂРІРµСЂР°
                 DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
-                // Получаем данные от сервера
+                // РџРѕР»СѓС‡Р°РµРј РґР°РЅРЅС‹Рµ РѕС‚ СЃРµСЂРІРµСЂР°
                 clientSocket.receive(receivePacket);
-                // Преобразуем данные в массив байт
+                // РџСЂРµРѕР±СЂР°Р·СѓРµРј РґР°РЅРЅС‹Рµ РІ РјР°СЃСЃРёРІ Р±Р°Р№С‚
                 byte[] data = receivePacket.getData();
-                // Преобразуем массив байт обратно в объект
+                // РџСЂРµРѕР±СЂР°Р·СѓРµРј РјР°СЃСЃРёРІ Р±Р°Р№С‚ РѕР±СЂР°С‚РЅРѕ РІ РѕР±СЉРµРєС‚
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                 Response response = (Response) objectInputStream.readObject();
 
-                // Выводим полученное сообщение от сервера на консоль
+                // Р’С‹РІРѕРґРёРј РїРѕР»СѓС‡РµРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚ СЃРµСЂРІРµСЂР° РЅР° РєРѕРЅСЃРѕР»СЊ
                 System.out.println("Received from server: " + response.getMessage() + " " + response.getError()  + " " + response.getOutput());
 
-                // Закрываем сокет
+                // Р—Р°РєСЂС‹РІР°РµРј СЃРѕРєРµС‚
                 clientSocket.close();
             }
         } catch (Exception e) {

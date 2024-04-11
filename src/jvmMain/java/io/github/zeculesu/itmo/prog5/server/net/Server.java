@@ -1,33 +1,72 @@
 package io.github.zeculesu.itmo.prog5.server.net;
 
+import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.server.command.DownloadCollectionCommand;
+import io.github.zeculesu.itmo.prog5.server.command.SaveCommand;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 public class Server {
-    static int port = 9876;
-    public static void main(String[] args) {
+    private final int port;
+    private final ConsoleCommandEnvironment environment;
+    private final CollectionAction collectionSpaceMarine;
+
+    private final byte[] receiveData = new byte[65507];
+
+    public Server(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine, int port){
+        this.environment = environment;
+        this.collectionSpaceMarine = collectionSpaceMarine;
+        this.port = port;
+    }
+
+    public void run() {
         System.out.println("Начало работы сервера");
-        //todo Возможно нужно отправлять список команд клиенту
+        this.environment.setRun(true);
+
+        //загрузка коллекции из файла
+        outputResponse(new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+
         try {
             // Создаем сокет для приема данных на порту
             DatagramSocket serverSocket = new DatagramSocket(port);
             // Создаем буфер для приема данных от клиента
-            byte[] receiveData = new byte[1024];
 
             while (true) {
                 // получаем запрос от клиента
-                DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, receiveData);
+                DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
 
                 // Выполняем запрос клиента
-                Response response = RequestReading.requestRead(receivePacket);
+                Response response = RequestReading.requestRead(receivePacket, this.environment, this.collectionSpaceMarine);
 
                 //отправляем ответ клиенту
                 ResponseSending.responseSend(serverSocket, receivePacket, response);
+
+                if (!this.environment.isRun()){
+                    //сохранение коллекции в файл после завершения работы клиента
+                    outputResponse(new SaveCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+                }
             }
         } catch (Exception e) {
             e.getMessage();
         }
+    }
+
+    public void outputResponse(Response response) {
+        if (response.isOutputElement()) {
+            for (SpaceMarine line : response.getOutputElement()) {
+                System.out.println(line.toString());
+            }
+        }
+        if (response.isOutput()) {
+            for (String line : response.getOutput()) {
+                System.out.println(line);
+            }
+        }
+        if (response.isError()) System.out.println(response.getError());
+        if (response.isMessage()) System.out.println(response.getMessage());
     }
 }

@@ -34,13 +34,13 @@ public class DownloadCollectionCommand implements CommandAction {
     @NotNull
     @Override
     public String getName() {
-        return "download collection from file";
+        return "download";
     }
 
     @NotNull
     @Override
     public String getDescription() {
-        return null;
+        return "download collection from file";
     }
 
     @Override

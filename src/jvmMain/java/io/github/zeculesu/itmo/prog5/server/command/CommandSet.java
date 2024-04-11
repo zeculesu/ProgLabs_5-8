@@ -10,4 +10,6 @@ import org.jetbrains.annotations.Nullable;
 public interface CommandSet extends Iterable<CommandAction> {
     @Nullable
     CommandAction findCommand(@NotNull String comm);
+
+    void addCommand(@NotNull CommandAction comm);
 }

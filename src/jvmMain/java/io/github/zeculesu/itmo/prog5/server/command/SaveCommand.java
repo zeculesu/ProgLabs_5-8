@@ -20,7 +20,7 @@ public class SaveCommand implements CommandAction {
         Response response = new Response();
         try{
             ParseFileXML.writeFile(env.getFileNameCollection(), collectionSpaceMarine);
-            response.setMessage("Сохранение прошло успешно");
+            response.setMessage("Сохранение коллекции в файл прошло успешно");
         }
         catch (FileCollectionException e){
             response.setError(e.getMessage());
