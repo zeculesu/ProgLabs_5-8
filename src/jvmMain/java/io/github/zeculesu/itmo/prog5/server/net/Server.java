@@ -9,6 +9,7 @@ public class Server {
     static int port = 9876;
     public static void main(String[] args) {
         System.out.println("Начало работы сервера");
+        //todo Возможно нужно отправлять список команд клиенту
         try {
             // Создаем сокет для приема данных на порту
             DatagramSocket serverSocket = new DatagramSocket(port);

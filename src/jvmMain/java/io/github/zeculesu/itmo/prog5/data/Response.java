@@ -2,17 +2,19 @@ package io.github.zeculesu.itmo.prog5.data;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ответ получаемый после выполнения команды
  */
-public class Response {
+public class Response implements Serializable {
 
     String message;
     String error;
-    ArrayList<String> output;
-    ArrayList<SpaceMarine> outputElement;
+    List<String> output;
+    List<SpaceMarine> outputElement;
 
     public Response(){
         this.output = new ArrayList<>();
@@ -35,7 +37,7 @@ public class Response {
         this.message = message;
     }
 
-    public ArrayList<String> getOutput() {
+    public List<String> getOutput() {
         return output;
     }
 
@@ -43,7 +45,7 @@ public class Response {
         this.output = output;
     }
 
-    public ArrayList<SpaceMarine> getOutputElement() {
+    public List<SpaceMarine> getOutputElement() {
         return outputElement;
     }
 
