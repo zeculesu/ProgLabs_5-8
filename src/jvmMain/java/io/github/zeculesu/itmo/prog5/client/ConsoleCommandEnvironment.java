@@ -1,5 +1,6 @@
 package io.github.zeculesu.itmo.prog5.client;
 
+import io.github.zeculesu.itmo.prog5.server.command.AbstractCommand;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ public interface ConsoleCommandEnvironment {
     String getFileNameCollection();
 
     CommandSet getCommandSetMap();
+    void removeFromCommandSetMap(String command);
 
     void addCommandToHistory(String command);
 

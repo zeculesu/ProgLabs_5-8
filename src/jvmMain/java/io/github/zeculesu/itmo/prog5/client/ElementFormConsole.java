@@ -3,6 +3,7 @@ package io.github.zeculesu.itmo.prog5.client;
 import io.github.zeculesu.itmo.prog5.data.*;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
+import io.github.zeculesu.itmo.prog5.models.*;
 
 import java.io.IOException;
 import java.text.ParseException;

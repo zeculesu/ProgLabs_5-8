@@ -2,10 +2,9 @@ package io.github.zeculesu.itmo.prog5.server.net;
 
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.Response;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.command.DownloadCollectionCommand;
-import io.github.zeculesu.itmo.prog5.server.command.SaveCommand;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -28,7 +27,8 @@ public class Server {
         this.environment.setRun(true);
 
         //загрузка коллекции из файла
-        outputResponse(new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+        new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]);
+        System.out.println("ok");
 
         try {
             // Создаем сокет для приема данных на порту
@@ -45,28 +45,13 @@ public class Server {
                 //отправляем ответ клиенту
                 ResponseSending.responseSend(serverSocket, receivePacket, response);
 
-                if (!this.environment.isRun()){
-                    //сохранение коллекции в файл после завершения работы клиента
-                    outputResponse(new SaveCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
-                }
+//                if (!this.environment.isRun()){
+//                    //сохранение коллекции в файл после завершения работы клиента
+//                    outputResponse(new SaveCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+//                }
             }
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
-    }
-
-    public void outputResponse(Response response) {
-        if (response.isOutputElement()) {
-            for (SpaceMarine line : response.getOutputElement()) {
-                System.out.println(line.toString());
-            }
-        }
-        if (response.isOutput()) {
-            for (String line : response.getOutput()) {
-                System.out.println(line);
-            }
-        }
-        if (response.isError()) System.out.println(response.getError());
-        if (response.isMessage()) System.out.println(response.getMessage());
     }
 }

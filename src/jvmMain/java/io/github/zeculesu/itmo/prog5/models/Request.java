@@ -1,12 +1,10 @@
-package io.github.zeculesu.itmo.prog5.data;
-
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+package io.github.zeculesu.itmo.prog5.models;
 
 import java.io.Serializable;
 
 public class Request implements Serializable {
     private String command;
-    private String[] arg;
+    private String arg;
     private SpaceMarine elem;
 
     public String getCommand() {
@@ -17,11 +15,11 @@ public class Request implements Serializable {
         this.command = command;
     }
 
-    public String[] getArg() {
+    public String getArg() {
         return arg;
     }
 
-    public void setArg(String[] arg) {
+    public void setArg(String arg) {
         this.arg = arg;
     }
 

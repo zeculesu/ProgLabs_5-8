@@ -1,5 +1,7 @@
 package io.github.zeculesu.itmo.prog5.data;
 
+import io.github.zeculesu.itmo.prog5.models.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 

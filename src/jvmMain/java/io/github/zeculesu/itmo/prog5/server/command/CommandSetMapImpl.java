@@ -37,4 +37,9 @@ public class CommandSetMapImpl implements CommandSet {
     public Iterator<CommandAction> iterator() {
         return this.commandSet.values().iterator();
     }
+
+    @Override
+    public void removeCommand(@NotNull CommandAction comm) {
+        this.commandSet.remove(comm);
+    }
 }

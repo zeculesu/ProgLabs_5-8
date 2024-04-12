@@ -2,17 +2,20 @@ package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.Response;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.parseFile.ParseFileXML;
-import org.jetbrains.annotations.NotNull;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 
 
-public class DownloadCollectionCommand implements CommandAction {
+public class DownloadCollectionCommand extends AbstractCommand {
+
+    public DownloadCollectionCommand(){
+        super("download",  "download: загрузка коллекции из файла", false, false);
+    }
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
@@ -29,22 +32,5 @@ public class DownloadCollectionCommand implements CommandAction {
             }
         }
         return response;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "download";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "download collection from file";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return false;
     }
 }

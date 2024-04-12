@@ -1,21 +1,22 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.client.ElementFormConsole;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Обновление полей элемента по его id
  */
-public class UpdateCommand implements CommandAction {
+public class UpdateCommand extends AbstractCommand {
 
-    boolean acceptsElement = true;
+    public UpdateCommand(){
+        super("update", "update id : обновить значение элемента коллекции, id которого равен заданному", true, true);
+    }
 
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
@@ -33,22 +34,5 @@ public class UpdateCommand implements CommandAction {
             response.setError(e.getMessage());
         }
         return response;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "update";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "update id : обновить значение элемента коллекции, id которого равен заданному";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return acceptsElement;
     }
 }

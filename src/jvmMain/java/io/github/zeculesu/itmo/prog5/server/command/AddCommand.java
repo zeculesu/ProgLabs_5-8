@@ -3,16 +3,18 @@ package io.github.zeculesu.itmo.prog5.server.command;
 import io.github.zeculesu.itmo.prog5.data.*;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
-import org.jetbrains.annotations.NotNull;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 
 /**
  * Добавление элемента SpaceMarine в коллекцию
  */
-public class AddCommand implements CommandAction {
+public class AddCommand extends AbstractCommand {
 
-    boolean acceptsElement = true;
+    public AddCommand(){
+        super("add", "add {element} : добавить новый элемент в коллекцию", true, false);
+    }
 
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
@@ -26,22 +28,5 @@ public class AddCommand implements CommandAction {
             response.setError(e.getMessage());
             return response;
         }
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "add";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "add {element} : добавить новый элемент в коллекцию";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return this.acceptsElement;
     }
 }

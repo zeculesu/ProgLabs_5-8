@@ -5,6 +5,7 @@ import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.client.ElementFormConsole;
+import io.github.zeculesu.itmo.prog5.models.*;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

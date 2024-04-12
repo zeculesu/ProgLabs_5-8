@@ -4,6 +4,7 @@ import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.error.IdException;
 
+import io.github.zeculesu.itmo.prog5.models.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

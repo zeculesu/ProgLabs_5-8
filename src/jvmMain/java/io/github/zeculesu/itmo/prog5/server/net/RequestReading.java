@@ -1,11 +1,12 @@
 package io.github.zeculesu.itmo.prog5.server.net;
 
-import io.github.zeculesu.itmo.prog5.data.Request;
+import io.github.zeculesu.itmo.prog5.models.Request;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.Response;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
+import io.github.zeculesu.itmo.prog5.server.command.SendCommandSet;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -14,22 +15,31 @@ import java.net.DatagramPacket;
 
 public class RequestReading {
     public static Response requestRead(DatagramPacket receivePacket, ConsoleCommandEnvironment env, CollectionAction collection) throws IOException, ClassNotFoundException {
-        // Преобразуем данные в массив байт
+        // РџСЂРµРѕР±СЂР°Р·СѓРµРј РґР°РЅРЅС‹Рµ РІ РјР°СЃСЃРёРІ Р±Р°Р№С‚
         byte[] data = receivePacket.getData();
-        // Преобразуем массив байт обратно в объект
+        // РџСЂРµРѕР±СЂР°Р·СѓРµРј РјР°СЃСЃРёРІ Р±Р°Р№С‚ РѕР±СЂР°С‚РЅРѕ РІ РѕР±СЉРµРєС‚
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         Request request = (Request) objectInputStream.readObject();
 
-        // Выводим полученное сообщение от клиента на консоль
+        // Р’С‹РІРѕРґРёРј РїРѕР»СѓС‡РµРЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ РѕС‚ РєР»РёРµРЅС‚Р° РЅР° РєРѕРЅСЃРѕР»СЊ
         System.out.println("Received from client: " + request.getCommand());
+        if (request.getCommand().equals("send_command")){
+            CommandAction comm = new SendCommandSet();
+            return comm.execute(collection, env, new String[0], null);
+        }
+
         CommandAction com = env.getCommandSetMap().findCommand(request.getCommand());
         if (com != null) {
             SpaceMarine elem = null;
             if (com.isAcceptsElement()) {
                 elem = request.getElem();
             }
-            return com.execute(collection, env, request.getArg(), elem);
+            String[] args = new String[1];
+            if (com.isAcceptsArg()) {
+                args[0] = request.getArg();
+            }
+            return com.execute(collection, env, args, elem);
         }
         return new Response();
     }

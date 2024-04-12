@@ -1,11 +1,11 @@
 package io.github.zeculesu.itmo.prog5.client;
 
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.server.command.DownloadCollectionCommand;
 import org.jetbrains.annotations.NotNull;
 

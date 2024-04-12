@@ -1,11 +1,10 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.client.StateIO;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -14,9 +13,11 @@ import java.io.FileReader;
 /**
  * Выполнение скрипта из файла
  */
-public class ExecuteScriptCommand implements CommandAction {
+public class ExecuteScriptCommand extends AbstractCommand {
 
-    boolean acceptsElement = false;
+    public ExecuteScriptCommand(){
+        super("execute_script", "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.", false, true);
+    }
 
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
@@ -41,22 +42,5 @@ public class ExecuteScriptCommand implements CommandAction {
             response.setError("Не удалось открыть файл");
         }
         return response;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "execute_script";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return acceptsElement;
     }
 }

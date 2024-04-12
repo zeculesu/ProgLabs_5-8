@@ -1,8 +1,8 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.Response;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,4 +16,6 @@ public interface CommandAction {
     public @NotNull String getDescription();
 
     public boolean isAcceptsElement();
+
+    public boolean isAcceptsArg();
 }

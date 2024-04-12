@@ -1,7 +1,10 @@
 package io.github.zeculesu.itmo.prog5.client;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 /**
- * Возможность общения с клиентом
+ * Р’РѕР·РјРѕР¶РЅРѕСЃС‚СЊ РѕР±С‰РµРЅРёСЏ СЃ РєР»РёРµРЅС‚РѕРј
  */
 public interface CommunicatedClient {
     public void run();

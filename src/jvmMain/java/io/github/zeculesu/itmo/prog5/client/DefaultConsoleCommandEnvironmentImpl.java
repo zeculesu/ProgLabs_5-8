@@ -1,5 +1,7 @@
 package io.github.zeculesu.itmo.prog5.client;
 
+import io.github.zeculesu.itmo.prog5.server.command.AbstractCommand;
+import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
 
 import java.io.BufferedReader;
@@ -82,5 +84,11 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
 
     public void clearScriptQueue(){
         this.scriptQueue.clear();
+    }
+
+    @Override
+    public void removeFromCommandSetMap(String comm) {
+        CommandAction command = this.commandSetMap.findCommand(comm);
+        this.commandSetMap.removeCommand(command);
     }
 }

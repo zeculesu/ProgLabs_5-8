@@ -8,6 +8,9 @@ import io.github.zeculesu.itmo.prog5.client.CommunicatedClient;
 import io.github.zeculesu.itmo.prog5.client.Console;
 import io.github.zeculesu.itmo.prog5.client.DefaultConsoleCommandEnvironmentImpl;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 /**
  * Главный класс, который запускает всё
  */

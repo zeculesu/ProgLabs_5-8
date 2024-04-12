@@ -1,6 +1,4 @@
-package io.github.zeculesu.itmo.prog5.data;
-
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+package io.github.zeculesu.itmo.prog5.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,12 +9,13 @@ import java.util.List;
  */
 public class Response implements Serializable {
 
-    String message;
-    String error;
-    List<String> output;
-    List<SpaceMarine> outputElement;
+    private int status;
+    private String message;
+    private String error;
+    private List<String> output;
+    private List<SpaceMarine> outputElement;
 
-    public Response(){
+    public Response() {
         this.output = new ArrayList<>();
         this.outputElement = new ArrayList<>();
     }
@@ -61,16 +60,27 @@ public class Response implements Serializable {
         this.outputElement.add(elem);
     }
 
-    public boolean isMessage(){
+    public boolean isMessage() {
         return (this.message != null) && !this.message.isEmpty();
     }
 
-    public boolean isError(){return (this.error != null) && !this.error.isEmpty();}
+    public boolean isError() {
+        return (this.error != null) && !this.error.isEmpty();
+    }
 
-    public boolean isOutput(){
+    public boolean isOutput() {
         return !this.output.isEmpty();
     }
-    public boolean isOutputElement(){
+
+    public boolean isOutputElement() {
         return !this.outputElement.isEmpty();
+    }
+
+    public int getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

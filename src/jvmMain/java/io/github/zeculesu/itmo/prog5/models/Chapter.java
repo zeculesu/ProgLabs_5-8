@@ -1,4 +1,4 @@
-package io.github.zeculesu.itmo.prog5.data;
+package io.github.zeculesu.itmo.prog5.models;
 
 /**
  * Класс описывающий главу для SpaceMarine

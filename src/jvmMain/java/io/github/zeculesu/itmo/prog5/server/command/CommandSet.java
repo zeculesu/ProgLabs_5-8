@@ -12,4 +12,6 @@ public interface CommandSet extends Iterable<CommandAction> {
     CommandAction findCommand(@NotNull String comm);
 
     void addCommand(@NotNull CommandAction comm);
+
+    void removeCommand(@NotNull CommandAction comm);
 }

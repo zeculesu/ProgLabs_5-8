@@ -1,18 +1,19 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Удаление элемента из коллекции по его id
  */
-public class RemoveByIdCommand implements CommandAction {
+public class RemoveByIdCommand extends AbstractCommand {
 
-    boolean acceptsElement = false;
+    public RemoveByIdCommand(){
+        super("remove_by_id", "remove_by_id id : удалить элемент из коллекции по его id", false, true);
+    }
 
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
@@ -32,22 +33,5 @@ public class RemoveByIdCommand implements CommandAction {
             response.setError("Неверный формат ввода id");
         }
         return response;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "remove_by_id";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "remove_by_id id : удалить элемент из коллекции по его id";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return acceptsElement;
     }
 }

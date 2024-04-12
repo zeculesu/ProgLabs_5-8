@@ -1,17 +1,19 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.data.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Очищение коллекции
  */
-public class ClearCommand implements CommandAction {
+public class ClearCommand extends AbstractCommand {
 
-    boolean acceptsElement = false;
+    public ClearCommand() {
+        super("clear", "clear : очистить коллекцию", false, false);
+    }
+
 
     @Override
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
@@ -19,22 +21,5 @@ public class ClearCommand implements CommandAction {
         collectionSpaceMarine.clear();
         response.setMessage("Коллекция очищена");
         return response;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "clear";
-    }
-
-    @NotNull
-    @Override
-    public String getDescription() {
-        return "clear : очистить коллекцию";
-    }
-
-    @Override
-    public boolean isAcceptsElement() {
-        return this.acceptsElement;
     }
 }
