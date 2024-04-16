@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Response implements Serializable {
 
-    private int status;
+    private int status = 0;
     private String message;
     private String error;
     private List<String> output;
@@ -83,4 +83,5 @@ public class Response implements Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
+
 }

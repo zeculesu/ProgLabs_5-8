@@ -3,6 +3,8 @@ package io.github.zeculesu.itmo.prog5.models;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,7 +12,9 @@ import java.util.Date;
 /**
  * Класс элементов, с которыми работаем в программе
  */
-public class SpaceMarine implements Comparable<SpaceMarine>{
+public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
     private String name; //Поле не может быть null, Строка не может быть пустой

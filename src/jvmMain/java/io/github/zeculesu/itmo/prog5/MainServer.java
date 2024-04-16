@@ -14,7 +14,7 @@ public class MainServer {
         String fileName = System.getenv("FILENAME");
         DefaultConsoleCommandEnvironmentImpl env = new DefaultConsoleCommandEnvironmentImpl(commandSetMapClient, fileName);
         SpaceMarineCollection collectionSpaceMarine = new SpaceMarineCollection();
-        Server server = new Server(env, collectionSpaceMarine, 9876);
+        Server server = new Server(env, collectionSpaceMarine, 45000);
         server.run();
     }
 }

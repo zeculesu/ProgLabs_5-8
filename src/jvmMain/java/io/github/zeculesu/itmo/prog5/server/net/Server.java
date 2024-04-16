@@ -9,6 +9,8 @@ import io.github.zeculesu.itmo.prog5.server.command.DownloadCollectionCommand;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import static io.github.zeculesu.itmo.prog5.client.ColorConsole.ERROR;
+
 public class Server {
     private final int port;
     private final ConsoleCommandEnvironment environment;
@@ -27,8 +29,8 @@ public class Server {
         this.environment.setRun(true);
 
         //загрузка коллекции из файла
-        new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]);
-        System.out.println("ok");
+        output(new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+
 
         try {
             // Создаем сокет для приема данных на порту
@@ -38,6 +40,7 @@ public class Server {
             while (true) {
                 // получаем запрос от клиента
                 DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
+                Thread.sleep(10000);
 
                 // Выполняем запрос клиента
                 Response response = RequestReading.requestRead(receivePacket, this.environment, this.collectionSpaceMarine);
@@ -53,5 +56,21 @@ public class Server {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void output(Response response) {
+        if (response.isOutputElement()) {
+            for (SpaceMarine line : response.getOutputElement()) {
+                System.out.println(line.toString());
+            }
+        }
+        if (response.isOutput()) {
+            for (String line : response.getOutput()) {
+                System.out.println(line);
+            }
+        }
+        if (response.isError()) System.out.println(response.getError());
+        if (response.isMessage()) System.out.println(response.getMessage());
+
     }
 }

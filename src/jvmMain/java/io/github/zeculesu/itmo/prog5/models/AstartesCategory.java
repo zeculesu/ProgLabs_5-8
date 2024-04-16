@@ -17,14 +17,6 @@ public enum AstartesCategory {
 
     private final String astartesCategoryName;
     private static final Map<String, AstartesCategory> name2instance = associateBy(AstartesCategory.values(), v -> v.astartesCategoryName);
-//
-//    static {
-//        Map<String, AstartesCategory> names = new HashMap<>();
-//        for (AstartesCategory cat : AstartesCategory.values()) {
-//            names.put(cat.astartesCategoryName, cat);
-//        }
-//        name2instance = names;
-//    }
 
     AstartesCategory(String astartesCategoryName) {
         this.astartesCategoryName = astartesCategoryName;

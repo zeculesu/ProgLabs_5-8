@@ -2,6 +2,8 @@ package io.github.zeculesu.itmo.prog5.models;
 
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Map;
 
 import static kotlin.collections.ArraysKt.associateBy;
@@ -9,7 +11,7 @@ import static kotlin.collections.ArraysKt.associateBy;
 /**
  * Возможные типы оружия для SpaceMarine
  */
-public enum Weapon {
+public enum Weapon implements Serializable {
     BOLTGUN("BOLTGUN"),
 
     HEAVY_BOLTGUN("HEAVY_BOLTGUN"),

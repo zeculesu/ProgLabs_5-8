@@ -15,7 +15,7 @@ import java.io.FileReader;
  */
 public class ExecuteScriptCommand extends AbstractCommand {
 
-    public ExecuteScriptCommand(){
+    public ExecuteScriptCommand() {
         super("execute_script", "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.", false, true);
     }
 
@@ -28,17 +28,19 @@ public class ExecuteScriptCommand extends AbstractCommand {
         }
         try {
             String fileName = args[0];
-            if (env.checkRecursionScript(fileName)){
+            if (env.checkRecursionScript(fileName)) {
+                //todo переделать проверку на рекурсию
                 response.setMessage("Вы создаете рекурсию из скриптов, ата-та");
                 return response;
             }
             env.addScriptQueue(fileName);
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            env.setBufferReaderScript(bufferedReader);
+//            FileReader fileReader = new FileReader(fileName);
+//            BufferedReader bufferedReader = new BufferedReader(fileReader);
+//            env.setBufferReaderScript(bufferedReader);
             response.addLineOutput("Начало выполнения скрипта: ");
-            env.setStateIO(StateIO.CONSOLE_TO_SCRIPT);
-        } catch (FileNotFoundException e) {
+//            env.setStateIO(StateIO.CONSOLE_TO_SCRIPT);
+            response.setStatus(300);
+        } catch (Exception e) {
             response.setError("Не удалось открыть файл");
         }
         return response;

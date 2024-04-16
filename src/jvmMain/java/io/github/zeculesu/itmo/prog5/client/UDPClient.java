@@ -85,7 +85,7 @@ public class UDPClient {
         this.clientSocket = new DatagramSocket();
         // Получаем IP адрес сервера
         this.serverIPAddress = InetAddress.getByName(this.host);
-        this.clientSocket.setSoTimeout(200);
+        this.clientSocket.setSoTimeout(15000);
     }
 
     public void sendPacket(byte[] sendData) throws IOException {
@@ -98,6 +98,7 @@ public class UDPClient {
     public Response getResponse() throws IOException, ClassNotFoundException, SocketTimeoutException {
         // Получение ответа от сервера
         // Создаем буфер для приема данных от сервера
+        //todo изменить
         byte[] receiveData = new byte[65507];
         // Создаем пакет для приема данных от сервера
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);

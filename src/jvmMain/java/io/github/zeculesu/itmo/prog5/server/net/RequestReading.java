@@ -28,7 +28,7 @@ public class RequestReading {
             CommandAction comm = new SendCommandSet();
             return comm.execute(collection, env, new String[0], null);
         }
-
+        env.addCommandToHistory(request.getCommand());
         CommandAction com = env.getCommandSetMap().findCommand(request.getCommand());
         if (com != null) {
             SpaceMarine elem = null;

@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -97,8 +99,10 @@ public class CLientConsole implements CommunicatedClient {
             if (this.commandsSet.commandAcceptedArg(nameCommand)) {
                 if (token.length == 1) {
                     console.println("Не введен аргумент для команды, для справки воспользуйтесь командой 'help'", ERROR);
+                    return;
                 } else if (token.length > 2) {
                     console.println("Слишком много аргументов, для справки воспользуйтесь командой 'help'");
+                    return;
                 } else {
                     request.setArg(token[1]);
                 }
@@ -110,6 +114,7 @@ public class CLientConsole implements CommunicatedClient {
                 }
             } catch (InputFormException | NamingEnumException | IOException e) {
                 console.println(e.getMessage(), ERROR);
+                return;
             }
             request.setElem(element);
 
@@ -124,6 +129,8 @@ public class CLientConsole implements CommunicatedClient {
             // Закрываем сокет
             udpClient.clientSocket.close();
 
+            int status = response.getStatus();
+            readStatus(status, request.getArg());
             outputResponse(response);
 
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
@@ -146,6 +153,22 @@ public class CLientConsole implements CommunicatedClient {
         }
         if (response.isError()) console.println(response.getError(), ERROR);
         if (response.isMessage()) console.println(response.getMessage());
+    }
+
+    public void readStatus(int status, String arg) {
+        if (status == 400){
+            this.run = false;
+        }
+        if (status == 300){
+            try{
+            scriptQueue.add(arg);
+            FileReader fileReader = new FileReader(arg);
+            this.bufferReaderScript = new BufferedReader(fileReader);
+            this.stateIO = StateIO.CONSOLE_TO_SCRIPT;}
+         catch (FileNotFoundException e) {
+            console.println("Не удалось открыть файл", ERROR);
+        }
+        }
     }
 
     public String readlnOrNullCommand() {
