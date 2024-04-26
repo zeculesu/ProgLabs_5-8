@@ -3,9 +3,9 @@ package io.github.zeculesu.itmo.prog5.server.command;
 import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
-import io.github.zeculesu.itmo.prog5.server.parseFile.ParseFileXML;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.server.parseFile.WriteFileXML;
 
 /**
  * Сохранение в файл
@@ -19,7 +19,7 @@ public class SaveCommand extends AbstractCommand {
     public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         try {
-            ParseFileXML.writeFile(env.getFileNameCollection(), collectionSpaceMarine);
+            WriteFileXML.writeFile(env.getFileNameCollection(), collectionSpaceMarine);
             response.setMessage("Сохранение коллекции в файл прошло успешно");
         } catch (FileCollectionException e) {
             response.setError(e.getMessage());

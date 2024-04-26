@@ -25,6 +25,7 @@ public class RemoveByIdCommand extends AbstractCommand {
         try{
             int id = Integer.parseInt(args[0]);
             collectionSpaceMarine.removeById(id);
+            response.setMessage("Элемент успешно удален");
         }
         catch (ElementNotFound e){
             response.setError(e.getMessage());

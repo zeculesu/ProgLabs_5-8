@@ -1,7 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.parseFile;
 
 import io.github.zeculesu.itmo.prog5.data.*;
-import io.github.zeculesu.itmo.prog5.error.FileCollectionException;
+
 import io.github.zeculesu.itmo.prog5.error.IdException;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.client.ElementFormConsole;
@@ -13,118 +13,25 @@ import org.xml.sax.helpers.DefaultHandler;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 /**
- * Парсинг из .xml
+ * ������� �� .xml
  */
 
-public class ParseFileXML implements ParseFileCollection {
+public class ReadFileXML {
     private static CollectionAction collection;
 
-    public static void writeFile(String filePath, CollectionAction collection) throws FileCollectionException {
-        ParseFileXML.collection = collection;
-        XMLOutputFactory factory = XMLOutputFactory.newFactory();
-        try {
-            XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filePath), "UTF-8");
-            writeCollection(writer);
-        } catch (FileNotFoundException e) {
-            throw new FileCollectionException("Файл не найден");
-        } catch (XMLStreamException e) {
-            throw new FileCollectionException("Ошибка с файлом");
-        } catch (NullPointerException e) {
-            throw new FileCollectionException("Имя файла для записи не указано в переменной окружения FILENAME");
-        }
-        catch (Exception e){
-            throw new FileCollectionException("Непредвиденная ошибка при записи в файл");
-        }
-    }
-
-    public static void writeCollection(XMLStreamWriter writer) throws XMLStreamException {
-        writer.writeStartDocument("UTF-8", "1.0");
-
-        writer.writeCharacters("\n");
-        writer.writeStartElement("collection");
-        for (SpaceMarine o : ParseFileXML.collection) {
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t");
-            writer.writeStartElement("element");
-            writer.writeAttribute("id", Integer.toString(o.getId()));
-            writer.writeCharacters("\n");
-
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("name");
-            writer.writeCharacters(o.getName());
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeEmptyElement("coordinates");
-            writer.writeAttribute("x", Long.toString(o.getCoordinates().getX()));
-            writer.writeAttribute("y", Float.toString(o.getCoordinates().getY()));
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("creationDate");
-            DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
-            writer.writeCharacters(df.format(o.getCreationDate()));
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("health");
-            writer.writeCharacters(Integer.toString(o.getHealth()));
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("category");
-            writer.writeCharacters(o.getCategory().toString());
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("weaponType");
-            writer.writeCharacters(o.getWeaponType().toString());
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeStartElement("meleeWeapon");
-            writer.writeCharacters(o.getMeleeWeapon().toString());
-            writer.writeEndElement();
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t\t");
-            writer.writeEmptyElement("chapter");
-            writer.writeAttribute("name", o.getChapter().getName());
-            writer.writeAttribute("parentLegion", o.getChapter().getParentLegion());
-            writer.writeCharacters("\n");
-
-            writer.writeCharacters("\t");
-            writer.writeEndElement();
-
-        }
-        writer.writeEndElement();
-
-        writer.writeEndDocument();
-    }
-
     public static void parseFile(String filePath, CollectionAction collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
-        ParseFileXML.collection = collection;
+        ReadFileXML.collection = collection;
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
         AdvancedXMLHandler handler = new AdvancedXMLHandler();
@@ -132,9 +39,9 @@ public class ParseFileXML implements ParseFileCollection {
             parser.parse(new File(filePath), handler);
 
         } catch (SAXException | FileNotFoundException e) {
-            throw new FileNotFoundException("Файл не найден");
+            throw new FileNotFoundException("���� �� ������");
         } catch (IOException e) {
-            throw new FileNotFoundException("Проблема с чтением файла");
+            throw new FileNotFoundException("�������� � ������� �����");
         }
     }
 
@@ -242,9 +149,9 @@ public class ParseFileXML implements ParseFileCollection {
                     System.out.println(e.getMessage());
                 }
             } else if (!fill && qName.equals("element")) {
-                System.out.println("Неправильный ввод параметров коллекции");
+                System.out.println("������������ ���� ���������� ���������");
                 for (String val : valuesNull) {
-                    System.out.println("Отсутствует поле : " + val);
+                    System.out.println("����������� ���� : " + val);
                 }
             }
         }
