@@ -1,6 +1,6 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -17,7 +17,7 @@ public class RemoveLowerCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         SpaceMarine elem = element[0];
         try {

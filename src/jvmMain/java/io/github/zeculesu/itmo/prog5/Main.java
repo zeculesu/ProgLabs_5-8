@@ -1,15 +1,12 @@
 package io.github.zeculesu.itmo.prog5;
 
-import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSetMapImpl;
 import io.github.zeculesu.itmo.prog5.server.command.*;
 import io.github.zeculesu.itmo.prog5.client.CommunicatedClient;
 import io.github.zeculesu.itmo.prog5.client.Console;
 import io.github.zeculesu.itmo.prog5.client.DefaultConsoleCommandEnvironmentImpl;
-
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
 /**
  * Главный класс, который запускает всё
@@ -22,7 +19,7 @@ public class Main {
                 new SaveCommand(), new ShowCommand(), new UpdateCommand(), new InfoCommand(), new ExitCommand(), new HistoryCommand(), new ExecuteScriptCommand());
         String fileName = System.getenv("FILENAME");
         DefaultConsoleCommandEnvironmentImpl env = new DefaultConsoleCommandEnvironmentImpl(commandSetMap, fileName);
-        SpaceMarineCollection collectionSpaceMarine = new SpaceMarineCollection();
+        InMemorySpaceMarineCollection collectionSpaceMarine = new InMemorySpaceMarineCollection();
         CommunicatedClient console = new Console(env, collectionSpaceMarine);
         console.run();
     }

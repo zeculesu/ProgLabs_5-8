@@ -2,7 +2,7 @@ package io.github.zeculesu.itmo.prog5.server.net;
 
 import io.github.zeculesu.itmo.prog5.models.Request;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 
 public class RequestReading {
-    public static Response requestRead(DatagramPacket receivePacket, ConsoleCommandEnvironment env, CollectionAction collection) throws IOException, ClassNotFoundException {
+    public static Response requestRead(DatagramPacket receivePacket, ConsoleCommandEnvironment env, SpaceMarineCollection collection) throws IOException, ClassNotFoundException {
         // Преобразуем данные в массив байт
         byte[] data = receivePacket.getData();
         // Преобразуем массив байт обратно в объект

@@ -1,14 +1,9 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
-import io.github.zeculesu.itmo.prog5.client.StateIO;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 
 /**
  * Выполнение скрипта из файла
@@ -20,7 +15,7 @@ public class ExecuteScriptCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         if (args.length == 0) {
             response.setError("Имя файла не введено");

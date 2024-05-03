@@ -1,6 +1,6 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
@@ -15,7 +15,7 @@ public class InfoCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         response.setOutput(collectionSpaceMarine.info());
         return response;

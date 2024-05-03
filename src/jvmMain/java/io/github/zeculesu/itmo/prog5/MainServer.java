@@ -1,7 +1,7 @@
 package io.github.zeculesu.itmo.prog5;
 
 import io.github.zeculesu.itmo.prog5.client.DefaultConsoleCommandEnvironmentImpl;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.server.command.*;
 import io.github.zeculesu.itmo.prog5.server.net.Server;
 
@@ -13,7 +13,7 @@ public class MainServer {
                 new ShowCommand(), new UpdateCommand(), new InfoCommand(), new ExitCommand(), new HistoryCommand(), new ExecuteScriptCommand());
         String fileName = System.getenv("FILENAME");
         DefaultConsoleCommandEnvironmentImpl env = new DefaultConsoleCommandEnvironmentImpl(commandSetMapClient, fileName);
-        SpaceMarineCollection collectionSpaceMarine = new SpaceMarineCollection();
+        InMemorySpaceMarineCollection collectionSpaceMarine = new InMemorySpaceMarineCollection();
         Server server = new Server(env, collectionSpaceMarine, 45000);
         server.run();
     }

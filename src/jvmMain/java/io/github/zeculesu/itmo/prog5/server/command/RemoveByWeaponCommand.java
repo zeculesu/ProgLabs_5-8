@@ -1,6 +1,6 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.MeleeWeapon;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -16,7 +16,7 @@ public class RemoveByWeaponCommand extends AbstractCommand {
     }
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         if (args.length == 0) {
             response.setError("Не введен аргумент - оружие ближнего боя");

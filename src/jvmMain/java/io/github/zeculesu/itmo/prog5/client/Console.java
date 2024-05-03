@@ -1,7 +1,7 @@
 package io.github.zeculesu.itmo.prog5.client;
 
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
@@ -21,11 +21,11 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
 public class Console implements CommunicatedClient {
 
     private final DefaultConsoleCommandEnvironmentImpl environment;
-    private final SpaceMarineCollection collectionSpaceMarine;
+    private final InMemorySpaceMarineCollection collectionSpaceMarine;
 
     private final CommandIOConsole console;
 
-    public Console(DefaultConsoleCommandEnvironmentImpl environment, SpaceMarineCollection collectionSpaceMarine) {
+    public Console(DefaultConsoleCommandEnvironmentImpl environment, InMemorySpaceMarineCollection collectionSpaceMarine) {
         this.environment = environment;
         this.collectionSpaceMarine = collectionSpaceMarine;
         this.console = new CommandIOConsole();

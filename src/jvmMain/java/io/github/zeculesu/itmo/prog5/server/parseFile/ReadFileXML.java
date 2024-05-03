@@ -28,9 +28,9 @@ import java.util.HashMap;
  */
 
 public class ReadFileXML {
-    private static CollectionAction collection;
+    private static SpaceMarineCollection collection;
 
-    public static void parseFile(String filePath, CollectionAction collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
+    public static void parseFile(String filePath, SpaceMarineCollection collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
         ReadFileXML.collection = collection;
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
