@@ -78,8 +78,13 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
     }
 
     @Override
-    public void removeById(int id) throws ElementNotFound {
-        this.collectionSpaceMarine.remove(findById(id));
+    public boolean removeById(int id) {
+        SpaceMarine o = findById(id);
+        if (o == null) {
+            return false;
+        }
+        this.collectionSpaceMarine.remove(o);
+        return true;
     }
 
     @Override
@@ -135,10 +140,8 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
     }
 
     @Override
-    public SpaceMarine findById(int id) throws ElementNotFound {
-        SpaceMarine o = this.collectionSpaceMarine.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
-        if (o != null) return o;
-        throw new ElementNotFound("Элемента с таким id нет в коллекции");
+    public SpaceMarine findById(int id) {
+        return this.collectionSpaceMarine.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
     }
 
     public static int getNextId() {

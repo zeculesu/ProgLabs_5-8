@@ -14,6 +14,7 @@ public interface ConsoleCommandEnvironment {
     String getFileNameCollection();
 
     CommandSet getCommandSetMap();
+
     void removeFromCommandSetMap(String command);
 
     void addCommandToHistory(String command);
@@ -24,17 +25,17 @@ public interface ConsoleCommandEnvironment {
 
     void setRun(boolean stage);
 
-    public StateIO getStateIO();
+    StateIO getStateIO();
 
-    public void setStateIO(StateIO stateIO);
+    void setStateIO(StateIO stateIO);
 
-    public BufferedReader getBufferReaderScript();
+    BufferedReader getBufferReaderScript();
 
-    public void setBufferReaderScript(BufferedReader bufferedReader);
+    void setBufferReaderScript(BufferedReader bufferedReader);
 
-    public boolean checkRecursionScript(String fileName);
+    boolean checkRecursionScript(String fileName);
 
-    public void addScriptQueue(String scriptName);
+    void addScriptQueue(String scriptName);
 
-    public void clearScriptQueue();
+    void clearScriptQueue();
 }

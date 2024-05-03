@@ -38,12 +38,11 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
     void update(int id, SpaceMarine o);
 
     /**
-     * Удаление элемента из коллекции по его id
+     * Удаление элемента из коллекции по его id, возвращает true при успешном удалении и false при неудаче
      *
      * @param id id элемента
-     * @throws ElementNotFound элемента с такими id нет в коллекции
      */
-    void removeById(int id);
+    boolean removeById(int id);
 
     /**
      * Очищает коллекцию

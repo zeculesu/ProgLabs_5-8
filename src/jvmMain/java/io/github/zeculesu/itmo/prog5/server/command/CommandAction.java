@@ -10,12 +10,15 @@ import org.jetbrains.annotations.NotNull;
  * Возможности команд
  */
 public interface CommandAction {
-    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element);
+    Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element);
 
-    public @NotNull String getName();
-    public @NotNull String getDescription();
+    @NotNull
+    String getName();
 
-    public boolean isAcceptsElement();
+    @NotNull
+    String getDescription();
 
-    public boolean isAcceptsArg();
+    boolean isAcceptsElement();
+
+    boolean isAcceptsArg();
 }
