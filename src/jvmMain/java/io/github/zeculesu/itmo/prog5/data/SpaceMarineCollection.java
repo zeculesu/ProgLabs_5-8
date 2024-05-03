@@ -4,8 +4,6 @@ import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.models.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +12,7 @@ import java.util.List;
 public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
     /**
      * Создается список строк, содержащих главную информацию
+     *
      * @return список со строками информации о коллекции
      */
     List<String> info();
@@ -27,7 +26,9 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
     List<SpaceMarine> show();
 
     void add(SpaceMarine o);
+
     void add(int id, SpaceMarine o);
+
     /**
      * Обновление значений полей имеющегося элемента через его id
      *

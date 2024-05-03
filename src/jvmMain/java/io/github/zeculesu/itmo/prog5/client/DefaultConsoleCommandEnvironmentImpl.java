@@ -1,6 +1,5 @@
 package io.github.zeculesu.itmo.prog5.client;
 
-import io.github.zeculesu.itmo.prog5.server.command.AbstractCommand;
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
 

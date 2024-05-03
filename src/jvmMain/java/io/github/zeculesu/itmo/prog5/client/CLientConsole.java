@@ -48,11 +48,11 @@ public class CLientConsole implements CommunicatedClient {
                 console.println("Повторить подключение? (y/n)");
                 console.print("> ");
                 answer = readlnOrNullCommand();
-                if (answer.equals("y")) {
-                    run();
-                } else if (answer == null || answer.equals("n")) {
+                if (answer == null || answer.equals("n")) {
                     console.println("Конец работы программы");
                     return;
+                } else if (answer.equals("y")) {
+                    run();
                 }
             }
         }
@@ -81,8 +81,7 @@ public class CLientConsole implements CommunicatedClient {
                 } else {
                     readCommand(command);
                 }
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 console.println(e.getMessage());
             }
         }
@@ -156,18 +155,18 @@ public class CLientConsole implements CommunicatedClient {
     }
 
     public void readStatus(int status, String arg) {
-        if (status == 400){
+        if (status == 400) {
             this.run = false;
         }
-        if (status == 300){
-            try{
-            scriptQueue.add(arg);
-            FileReader fileReader = new FileReader(arg);
-            this.bufferReaderScript = new BufferedReader(fileReader);
-            this.stateIO = StateIO.CONSOLE_TO_SCRIPT;}
-         catch (FileNotFoundException e) {
-            console.println("Не удалось открыть файл", ERROR);
-        }
+        if (status == 300) {
+            try {
+                scriptQueue.add(arg);
+                FileReader fileReader = new FileReader(arg);
+                this.bufferReaderScript = new BufferedReader(fileReader);
+                this.stateIO = StateIO.CONSOLE_TO_SCRIPT;
+            } catch (FileNotFoundException e) {
+                console.println("Не удалось открыть файл", ERROR);
+            }
         }
     }
 
