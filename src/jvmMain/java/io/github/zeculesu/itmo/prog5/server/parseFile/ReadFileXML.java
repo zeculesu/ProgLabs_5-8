@@ -45,10 +45,9 @@ public class ReadFileXML {
         }
     }
 
-
     private static class AdvancedXMLHandler extends DefaultHandler {
 
-        private HashMap<String, String> params = new HashMap<>();
+        private final HashMap<String, String> params = new HashMap<>();
 
         {
             clear_params();
@@ -70,7 +69,7 @@ public class ReadFileXML {
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes) {
             lastElementName = qName;
             if (lastElementName.equals("element")) {
                 params.put("id", attributes.getValue("id"));
@@ -86,7 +85,7 @@ public class ReadFileXML {
         }
 
         @Override
-        public void characters(char[] ch, int start, int length) throws SAXException {
+        public void characters(char[] ch, int start, int length) {
             String information = new String(ch, start, length);
 
             information = information.replace("\n", "").trim();

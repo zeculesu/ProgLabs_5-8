@@ -1,7 +1,5 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
-import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
-import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
