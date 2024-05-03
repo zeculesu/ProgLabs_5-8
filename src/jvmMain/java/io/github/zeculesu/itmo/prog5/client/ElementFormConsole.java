@@ -14,8 +14,6 @@ import java.util.Date;
  * Форма ввода элемента
  */
 public class ElementFormConsole {
-
-
     public static SpaceMarine getElemFromForm(CommandIO console) throws InputFormException, NamingEnumException, IOException {
         String input;
         console.print("Введите имя: ");

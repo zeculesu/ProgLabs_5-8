@@ -16,7 +16,7 @@ import java.util.Set;
 public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvironment {
 
     private boolean run;
-    private StateIO stateIO; //0 - обычный, 1 - переходный из обычного в скрипт, 2 - скрипт, 3 - переходный в обычный
+    private StateIO stateIO;
     private final Set<String> scriptQueue = new HashSet<>();
     private BufferedReader bufferReaderScript;
     private final CommandSet commandSetMap;

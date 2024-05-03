@@ -20,37 +20,6 @@ public class UDPClient {
         //todo Сделать изменяемый this.port = 9876;
     }
 
-    public void run() {
-        Scanner scanner = new Scanner(System.in);
-        try {
-            sendMeCommand();
-            while (true) {
-//                createSocket();
-//
-//                // Отправка сообщения серверу
-//                // Создаем сообщение для отправки
-//                String message = scanner.nextLine();
-//                // Преобразуем сообщение в массив байтов
-//                byte[] sendData = message.getBytes();
-//
-//                sendPacket(sendData);
-//
-//                try {
-//                    Response response = getResponse();
-//                    // Выводим полученное сообщение от сервера на консоль
-//                    System.out.println("Received from server: " + response.getMessage() + " " + response.getError() + " " + response.getOutput());
-//                } catch (SocketTimeoutException e) {
-//                    // Обработка ситуации, когда ответ не был получен вовремя
-//                    System.out.println("Сервер временно недоступен");
-//                }
-//
-//                // Закрываем сокет
-//                clientSocket.close();
-            }
-        } catch (Exception e) {
-            run();
-        }
-    }
 
     public SendedCommandResponse sendMeCommand() throws IOException, ClassNotFoundException, SocketTimeoutException {
         createSocket();
@@ -62,17 +31,7 @@ public class UDPClient {
         byte[] sendData = castToByte(request);
 
         sendPacket(sendData);
-
-//        try {
-//            Response response = getResponse();
-//            // Выводим полученное сообщение от сервера на консоль
-//            System.out.println("Received from server: " + response.getMessage() + " " + response.getError() + " " + response.getOutput());
-//        } catch (SocketTimeoutException e) {
-//            // Обработка ситуации, когда ответ не был получен вовремя
-//            System.out.println("Сервер временно недоступен");
-//        }
         SendedCommandResponse response = (SendedCommandResponse) getResponse();
-
 
         // Закрываем сокет
         clientSocket.close();
@@ -94,7 +53,6 @@ public class UDPClient {
         // Отправляем пакет серверу
         this.clientSocket.send(sendPacket);
     }
-
     public Response getResponse() throws IOException, ClassNotFoundException, SocketTimeoutException {
         // Получение ответа от сервера
         // Создаем буфер для приема данных от сервера

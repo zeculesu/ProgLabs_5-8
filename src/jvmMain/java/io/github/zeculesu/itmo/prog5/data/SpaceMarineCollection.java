@@ -68,6 +68,9 @@ public class SpaceMarineCollection implements CollectionAction {
         nextId++;
     }
 
+    public void add(int id, SpaceMarine o) {
+    }
+
     /**
      * Обновление значений полей имеющегося элемента через его id
      *

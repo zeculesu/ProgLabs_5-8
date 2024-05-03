@@ -8,12 +8,13 @@ import java.util.Date;
 /**
  * Действия, реализуемые с коллекцией
  */
-public interface CollectionAction extends Iterable<SpaceMarine> {
+public interface  CollectionAction extends Iterable<SpaceMarine> {
     ArrayList<String> info();
 
     ArrayList<SpaceMarine> show();
 
     void add(SpaceMarine o);
+    void add(int id, SpaceMarine o);
 
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
                             AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);

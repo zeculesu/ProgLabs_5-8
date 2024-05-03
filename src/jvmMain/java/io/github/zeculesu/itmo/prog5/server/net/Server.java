@@ -18,7 +18,7 @@ public class Server {
 
     private final byte[] receiveData = new byte[65507];
 
-    public Server(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine, int port){
+    public Server(ConsoleCommandEnvironment environment, CollectionAction collectionSpaceMarine, int port) {
         this.environment = environment;
         this.collectionSpaceMarine = collectionSpaceMarine;
         this.port = port;
@@ -31,16 +31,14 @@ public class Server {
         //загрузка коллекции из файла
         output(new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
 
-
         try {
             // Создаем сокет для приема данных на порту
             DatagramSocket serverSocket = new DatagramSocket(port);
             // Создаем буфер для приема данных от клиента
 
-            while (true) {
+            while (this.environment.isRun()) {
                 // получаем запрос от клиента
                 DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
-                Thread.sleep(10000);
 
                 // Выполняем запрос клиента
                 Response response = RequestReading.requestRead(receivePacket, this.environment, this.collectionSpaceMarine);
@@ -71,6 +69,5 @@ public class Server {
         }
         if (response.isError()) System.out.println(response.getError());
         if (response.isMessage()) System.out.println(response.getMessage());
-
     }
 }
