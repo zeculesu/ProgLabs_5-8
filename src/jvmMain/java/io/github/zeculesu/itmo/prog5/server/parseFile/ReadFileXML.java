@@ -142,8 +142,8 @@ public class ReadFileXML {
                     Weapon weaponType = ElementFormConsole.checkWeaponType(params.get("weaponType"));
                     MeleeWeapon meleeWeapon = ElementFormConsole.checkMeleeWeapon(params.get("meleeWeapon"));
                     Chapter chapter = ElementFormConsole.checkChapter(params.get("chapter_name") + " " + params.get("parentLegion"));
-                    collection.addFromFile(id, name, coordinates, creationDate, health,
-                            category, weaponType, meleeWeapon, chapter);
+                    collection.add(id, new SpaceMarine(id, name, coordinates, creationDate, health,
+                            category, weaponType, meleeWeapon, chapter));
                     clear_params();
                 } catch (InputFormException | IdException e) {
                     System.out.println(e.getMessage());

@@ -1,45 +1,115 @@
 package io.github.zeculesu.itmo.prog5.data;
 
+import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
+import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.models.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Действия, реализуемые с коллекцией
  */
 public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
-    ArrayList<String> info();
+    /**
+     * Создается список строк, содержащих главную информацию
+     * @return список со строками информации о коллекции
+     */
+    List<String> info();
 
-    ArrayList<SpaceMarine> show();
+    /**
+     * Формируется список из элементов коллекции
+     *
+     * @return список SpaceMarin'ов
+     * @throws EmptyCollectionException пустая коллекции
+     */
+    List<SpaceMarine> show();
 
     void add(SpaceMarine o);
     void add(int id, SpaceMarine o);
+    /**
+     * Обновление значений полей имеющегося элемента через его id
+     *
+     * @param id id элемента для изменения
+     * @param o  элемент с новыми полями
+     * @throws ElementNotFound в коллекции нет элемента с таким id
+     */
+    void update(int id, SpaceMarine o);
 
-    public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
-                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
+    /**
+     * Удаление элемента из коллекции по его id
+     *
+     * @param id id элемента
+     * @throws ElementNotFound элемента с такими id нет в коллекции
+     */
+    void removeById(int id);
 
-    public void update(int id, SpaceMarine o);
+    /**
+     * Очищает коллекцию
+     */
+    void clear();
 
-    public void removeById(int id);
+    /**
+     * Удаляет первый элемент коллекции
+     *
+     * @return возвращает удаленный элемент
+     * @throws EmptyCollectionException коллекция пустая
+     */
+    SpaceMarine removeHead();
 
-    public void clear();
+    /**
+     * Удаляет элементы коллекции, которые меньше указанного
+     *
+     * @param o элемент для сравнения
+     */
+    void removeLower(SpaceMarine o);
 
-    public SpaceMarine removeHead();
+    /**
+     * Удаляет элементы, у которых поле ближнего боя равно указанному
+     *
+     * @param meleeWeapon параметр ближнего боя
+     */
+    void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon);
 
-    public void removeLower(SpaceMarine o);
+    /**
+     * Выбирает элементы, у которых имя начинается с заданной подстроки
+     *
+     * @param name подстрока для поиска
+     * @return элементы, у которых имя начинается с заданной подстроки
+     */
 
-    public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon);
+    List<SpaceMarine> filterStartsWithName(String name);
 
-    public ArrayList<SpaceMarine> filterStartsWithName(String name);
+    /**
+     * Выбирает у всех элементов колллекции поле здоровья
+     *
+     * @return строка со всеми количествами здоровья в коллекции, идущих по убыванию
+     * @throws EmptyCollectionException коллекция пустая
+     */
 
-    public String printFieldDescendingHealth();
+    String printFieldDescendingHealth();
 
-    public int size();
+    /**
+     * Количество элементов в коллекции
+     *
+     * @return размер коллекции
+     */
+    int size();
 
-    public SpaceMarine findById(int id);
+    /**
+     * Получить элемент из коллекции по id
+     *
+     * @param id id элемента
+     * @return элемент SpaceMarine
+     * @throws ElementNotFound элемента с таким id нет в коллекции
+     */
+    SpaceMarine findById(int id);
 
-    public void setNewMaxId();
+    /**
+     * Загрузка элементов из коллекции
+     */
+    void setNewMaxId();
 }
 
 

@@ -40,7 +40,7 @@ public class Response implements Serializable {
         return output;
     }
 
-    public void setOutput(ArrayList<String> output) {
+    public void setOutput(List<String> output) {
         this.output = output;
     }
 
@@ -48,7 +48,7 @@ public class Response implements Serializable {
         return outputElement;
     }
 
-    public void setOutputElement(ArrayList<SpaceMarine> outputElement) {
+    public void setOutputElement(List<SpaceMarine> outputElement) {
         this.outputElement = outputElement;
     }
 
