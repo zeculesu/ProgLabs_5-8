@@ -9,6 +9,7 @@ tasks.withType<JavaCompile>{
 allprojects {
     repositories {
         mavenCentral()
+        maven("https://maven.landgrafhomyak.ru/")
     }
 }
 
@@ -39,7 +40,7 @@ kotlin {
         val commonTest by getting
         val jvmMain by getting{
             dependencies{
-                implementation("org.jline:jline:3.20.0")
+                implementation("ru.landgrafhomyak.utility:int-serializers:1.0")
             }
         }
         val jvmTest by getting {
