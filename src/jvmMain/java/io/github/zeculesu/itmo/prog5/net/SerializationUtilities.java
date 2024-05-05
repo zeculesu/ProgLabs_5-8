@@ -7,9 +7,11 @@ import java.io.InputStream;
 import java.util.Map;
 
 class SerializationUtilities {
-    <T extends NetCommand<T>> byte[] formatCommandPacket(T command) {
-        NetCommandSerializer<T> serializer = command.serializer;
-        int packetSize = serializer.serialisedSize(command) + 4;
+    private final static int headerSize = 4;
+
+    <T extends NetObject<T>> byte[] formatPacket(T command) {
+        NetObjectSerializer<T> serializer = command.getSerializer();
+        int packetSize = headerSize + serializer.serialisedSize(command);
         byte[] buffer = new byte[packetSize];
         IntSerializers.encode24beIu(buffer, 0, packetSize);
         IntSerializers.encode8Bu(buffer, 3, serializer.typeId);
@@ -17,14 +19,14 @@ class SerializationUtilities {
         return buffer;
     }
 
-    NetCommand<?> parseCommandPacket(InputStream stream, Map<Byte, NetCommandSerializer<?>> resolver) throws IOException {
-        byte[] header = stream.readNBytes(4);
+    <T extends NetObject<T>> T parsePacket(InputStream stream, Map<Byte, NetObjectSerializer<T>> resolver) throws IOException {
+        byte[] header = stream.readNBytes(headerSize);
         int packetSize = IntSerializers.decode24beIu(header, 0);
         byte typeId = IntSerializers.decode8Bu(header, 3);
-        NetCommandSerializer<?> serializer = resolver.get(typeId);
+        NetObjectSerializer<T> serializer = resolver.get(typeId);
         if (serializer == null) {
             return null;
         }
-        return serializer.deserialise(stream.readNBytes(packetSize - 4), 0);
+        return serializer.deserialize(stream.readNBytes(packetSize - headerSize), 0);
     }
 }
