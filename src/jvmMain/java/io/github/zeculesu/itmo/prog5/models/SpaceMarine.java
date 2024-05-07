@@ -1,6 +1,8 @@
 package io.github.zeculesu.itmo.prog5.models;
 
 
+import io.github.zeculesu.itmo.prog5.net.NetObject;
+import io.github.zeculesu.itmo.prog5.net.NetObjectSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serial;
@@ -12,11 +14,8 @@ import java.util.Date;
 /**
  * Класс элементов, с которыми работаем в программе
  */
-public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class SpaceMarine implements Comparable<SpaceMarine>, NetObject<SpaceMarine> {
     private final int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
@@ -133,5 +132,26 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     @Override
     public int compareTo(@NotNull SpaceMarine o) {
         return this.getName().compareTo(o.getName());
+    }
+
+    private static class Serializer extends NetObjectSerializer<SpaceMarine> {
+        public Serializer() {
+            super((byte) 0);
+        }
+
+        @Override
+        public void serialise(byte[] buffer, int offset, SpaceMarine value) {
+
+        }
+
+        @Override
+        public SpaceMarine deserialize(byte[] buffer, int offset) {
+            return null;
+        }
+
+        @Override
+        public int serialisedSize(SpaceMarine value) {
+            return 0;
+        }
     }
 }

@@ -7,7 +7,7 @@ public abstract class NetObjectSerializer<T extends NetObject<T>> {
         this.typeId = typeId;
     }
 
-    abstract void serialise(byte[] buffer, int offset, T value);
-    abstract T deserialize(byte[] buffer, int offset);
-    abstract int serialisedSize(T value);
+    public abstract void serialise(byte[] buffer, int offset, T value);
+    public abstract T deserialize(byte[] buffer, int offset);
+    public abstract int serialisedSize(T value);
 }
