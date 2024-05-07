@@ -3,12 +3,15 @@ package io.github.zeculesu.itmo.prog5.models;
 
 import io.github.zeculesu.itmo.prog5.net.NetObject;
 import io.github.zeculesu.itmo.prog5.net.NetObjectSerializer;
+import io.github.zeculesu.itmo.prog5.net.SerialiseStringUtilities;
 import org.jetbrains.annotations.NotNull;
+import ru.landgrafhomyak.utility.IntSerializers;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -134,24 +137,89 @@ public class SpaceMarine implements Comparable<SpaceMarine>, NetObject<SpaceMari
         return this.getName().compareTo(o.getName());
     }
 
-    private static class Serializer extends NetObjectSerializer<SpaceMarine> {
-        public Serializer() {
+    private static class SerializerImpl extends NetObjectSerializer<SpaceMarine> {
+        public SerializerImpl() {
             super((byte) 0);
         }
 
         @Override
         public void serialise(byte[] buffer, int offset, SpaceMarine value) {
+            IntSerializers.encode32beIu(buffer, offset, value.getId());
+            offset += 4;
 
+            offset = SerialiseStringUtilities.serialise(buffer, offset, value.getName());
+
+            Coordinates.Serializer.serialise(buffer, offset, value.getCoordinates());
+            offset = Coordinates.Serializer.serialisedSize(value.getCoordinates());
+
+            IntSerializers.encode64beLu(buffer, offset, value.getCreationDate().toInstant().getEpochSecond());
+
+            IntSerializers.encode32beIu(buffer, offset + 8, value.getHealth());
+            offset += 4;
+
+            AstartesCategory.Serializer.serialise(buffer, offset, value.getCategory());
+            offset = AstartesCategory.Serializer.serialisedSize(value.getCategory());
+
+            Weapon.Serializer.serialise(buffer, offset, value.getWeaponType());
+            offset = Weapon.Serializer.serialisedSize(value.getWeaponType());
+
+            MeleeWeapon.Serializer.serialise(buffer, offset, value.getMeleeWeapon());
+            offset = MeleeWeapon.Serializer.serialisedSize(value.getMeleeWeapon());
+
+            Chapter.Serializer.serialise(buffer, offset, value.getChapter());
         }
 
         @Override
         public SpaceMarine deserialize(byte[] buffer, int offset) {
-            return null;
+            int id = IntSerializers.decode32beIu(buffer, offset);
+            offset += 4;
+
+            String name = SerialiseStringUtilities.deserialize(buffer, offset);
+            offset += SerialiseStringUtilities.getDeserializationOffset(buffer, offset);
+
+            Coordinates coordinates = Coordinates.Serializer.deserialize(buffer, offset);
+            offset += Coordinates.Serializer.serialisedSize(coordinates);
+
+            long data = IntSerializers.decode64beL(buffer, offset);
+            Date creationData = Date.from(Instant.ofEpochSecond(data));
+
+            int health = IntSerializers.decode32beIu(buffer, offset);
+            offset += 4;
+
+            AstartesCategory astartesCategory = AstartesCategory.Serializer.deserialize(buffer, offset);
+            offset += AstartesCategory.Serializer.serialisedSize(astartesCategory);
+
+            Weapon weapon = Weapon.Serializer.deserialize(buffer, offset);
+            offset += Weapon.Serializer.serialisedSize(weapon);
+
+            MeleeWeapon meleeWeapon = MeleeWeapon.Serializer.deserialize(buffer, offset);
+            offset += MeleeWeapon.Serializer.serialisedSize(meleeWeapon);
+
+            Chapter chapter = Chapter.Serializer.deserialize(buffer, offset);
+            offset += Chapter.Serializer.serialisedSize(chapter);
+
+            return new SpaceMarine(id, name, coordinates, creationData, health, astartesCategory,
+                    weapon, meleeWeapon, chapter);
         }
 
         @Override
         public int serialisedSize(SpaceMarine value) {
-            return 0;
+            return 4 +
+                    SerialiseStringUtilities.serialisedSize(value.getName()) +
+                    Coordinates.Serializer.serialisedSize(value.getCoordinates()) +
+                    8 +
+                    4 +
+                    AstartesCategory.Serializer.serialisedSize(value.getCategory()) +
+                    Weapon.Serializer.serialisedSize(value.getWeaponType()) +
+                    MeleeWeapon.Serializer.serialisedSize(value.getMeleeWeapon()) +
+                    Chapter.Serializer.serialisedSize(value.getChapter());
         }
+    }
+
+    public static final NetObjectSerializer<SpaceMarine> Serializer = new SpaceMarine.SerializerImpl();
+
+    @Override
+    public NetObjectSerializer<SpaceMarine> getSerializer() {
+        return Serializer;
     }
 }
