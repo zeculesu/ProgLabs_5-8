@@ -7,8 +7,6 @@ import io.github.zeculesu.itmo.prog5.net.SerialiseStringUtilities;
 import org.jetbrains.annotations.NotNull;
 import ru.landgrafhomyak.utility.IntSerializers;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -183,7 +181,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, NetObject<SpaceMari
             long data = IntSerializers.decode64beL(buffer, offset);
             Date creationData = Date.from(Instant.ofEpochSecond(data));
 
-            int health = IntSerializers.decode32beIu(buffer, offset);
+            int health = IntSerializers.decode32beIu(buffer, offset + 8);
             offset += 4;
 
             AstartesCategory astartesCategory = AstartesCategory.Serializer.deserialize(buffer, offset);
@@ -196,7 +194,6 @@ public class SpaceMarine implements Comparable<SpaceMarine>, NetObject<SpaceMari
             offset += MeleeWeapon.Serializer.serialisedSize(meleeWeapon);
 
             Chapter chapter = Chapter.Serializer.deserialize(buffer, offset);
-            offset += Chapter.Serializer.serialisedSize(chapter);
 
             return new SpaceMarine(id, name, coordinates, creationData, health, astartesCategory,
                     weapon, meleeWeapon, chapter);
