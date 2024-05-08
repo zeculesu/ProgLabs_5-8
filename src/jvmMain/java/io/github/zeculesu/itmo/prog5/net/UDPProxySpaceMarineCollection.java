@@ -1,17 +1,30 @@
 package io.github.zeculesu.itmo.prog5.net;
 
+import io.github.zeculesu.itmo.prog5.client.UDPClient;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.MeleeWeapon;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.net.commands.InfoCommandNet;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 public class UDPProxySpaceMarineCollection implements SpaceMarineCollection {
 
+    UDPClient udpClient;
+
+    public UDPProxySpaceMarineCollection(UDPClient udpClient) {
+        this.udpClient = udpClient;
+    }
+
     @Override
     public List<String> info() {
+//        byte[] buffer = new byte[InfoCommandNet.Serializer.serialisedSize(InfoCommandNet.getInstance())];
+//        InfoCommandNet.Serializer.serialise(buffer, 0, InfoCommandNet.getInstance());
+//        this.udpClient.sendPacket(buffer);
+//        return  this.udpClient.getResponse().getOutput();
         return null;
     }
 

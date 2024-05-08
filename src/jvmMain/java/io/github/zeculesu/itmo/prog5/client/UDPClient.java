@@ -20,7 +20,6 @@ public class UDPClient {
         //todo Сделать изменяемый this.port = 9876;
     }
 
-
     public SendedCommandResponse sendMeCommand() throws IOException, ClassNotFoundException, SocketTimeoutException {
         createSocket();
 
