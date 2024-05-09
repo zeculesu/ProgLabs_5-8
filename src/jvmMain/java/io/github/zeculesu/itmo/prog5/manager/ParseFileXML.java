@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class ParseFileXML implements ParseFileCollection {
 
-    public static void writeFile(String filePath, SpaceMarineCollection collection) throws FileCollectionException {
+    public static void writeFile(String filePath, CollectionAction collection) throws FileCollectionException {
         XMLOutputFactory factory = XMLOutputFactory.newFactory();
         try {
             XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filePath), "UTF-8");
@@ -48,7 +48,7 @@ public class ParseFileXML implements ParseFileCollection {
         }
     }
 
-    public static void writeCollection(XMLStreamWriter writer, SpaceMarineCollection collection) throws XMLStreamException {
+    public static void writeCollection(XMLStreamWriter writer, CollectionAction collection) throws XMLStreamException {
         writer.writeStartDocument("UTF-8", "1.0");
 
         writer.writeCharacters("\n");
