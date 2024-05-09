@@ -9,7 +9,6 @@ import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.server.command.DownloadCollectionCommand;
 import org.jetbrains.annotations.NotNull;
 
-
 import java.io.IOException;
 
 import static io.github.zeculesu.itmo.prog5.client.ColorConsole.*;

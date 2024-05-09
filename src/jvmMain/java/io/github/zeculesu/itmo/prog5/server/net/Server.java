@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.net;
 
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
@@ -12,11 +13,11 @@ import java.net.DatagramSocket;
 public class Server {
     private final int port;
     private final ConsoleCommandEnvironment environment;
-    private final SpaceMarineCollection collectionSpaceMarine;
+    private final InMemorySpaceMarineCollection collectionSpaceMarine;
 
     private final byte[] receiveData = new byte[65507];
 
-    public Server(ConsoleCommandEnvironment environment, SpaceMarineCollection collectionSpaceMarine, int port) {
+    public Server(ConsoleCommandEnvironment environment, InMemorySpaceMarineCollection collectionSpaceMarine, int port) {
         this.environment = environment;
         this.collectionSpaceMarine = collectionSpaceMarine;
         this.port = port;

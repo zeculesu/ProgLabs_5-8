@@ -27,8 +27,6 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
 
     void add(SpaceMarine o);
 
-    void add(int id, SpaceMarine o);
-
     /**
      * Обновление значений полей имеющегося элемента через его id
      *

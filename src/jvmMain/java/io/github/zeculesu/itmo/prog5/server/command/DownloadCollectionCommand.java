@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
+import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
@@ -24,7 +25,7 @@ public class DownloadCollectionCommand extends AbstractCommand {
         } else {
             response.addLineOutput("Файл с коллекцией: " + env.getFileNameCollection());
             try {
-                ReadFileXML.parseFile(env.getFileNameCollection(), collectionSpaceMarine);
+                ReadFileXML.parseFile(env.getFileNameCollection(), (InMemorySpaceMarineCollection) collectionSpaceMarine);
                 collectionSpaceMarine.setNewMaxId();
                 response.addLineOutput("Элементы из коллекции загружены");
             } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
