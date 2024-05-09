@@ -13,9 +13,6 @@ public interface CollectionAction extends Iterable<SpaceMarine> {
 
     void add(SpaceMarine o);
 
-    public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
-                            AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter);
-
     public void update(int id, SpaceMarine o);
 
     public void removeById(int id);

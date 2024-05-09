@@ -128,7 +128,6 @@ public class SpaceMarineCollection implements CollectionAction {
      * @throws IdException элемент с таким id уже имеется в коллекции
      */
 
-    @Override
     public void addFromFile(int id, String name, Coordinates coordinates, Date creationDate, int health,
                             AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) throws IdException {
         for (SpaceMarine o : this.collectionSpaceMarine) {

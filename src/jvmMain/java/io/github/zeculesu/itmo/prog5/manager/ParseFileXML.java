@@ -30,9 +30,9 @@ import java.util.HashMap;
  */
 
 public class ParseFileXML implements ParseFileCollection {
-    private static CollectionAction collection;
+    private static SpaceMarineCollection collection;
 
-    public static void writeFile(String filePath, CollectionAction collection) throws FileCollectionException {
+    public static void writeFile(String filePath, SpaceMarineCollection collection) throws FileCollectionException {
         ParseFileXML.collection = collection;
         XMLOutputFactory factory = XMLOutputFactory.newFactory();
         try {
@@ -122,7 +122,7 @@ public class ParseFileXML implements ParseFileCollection {
         writer.writeEndDocument();
     }
 
-    public static void parseFile(String filePath, CollectionAction collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
+    public static void parseFile(String filePath, SpaceMarineCollection collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
         ParseFileXML.collection = collection;
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
