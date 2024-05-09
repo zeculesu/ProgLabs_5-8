@@ -46,7 +46,7 @@ public class ElementFormConsole {
         input = console.readln();
         Chapter chapter = checkChapter(input);
 
-        return new SpaceMarine(SpaceMarineCollection.getNextId(), name, coordinates, health, category,
+        return new SpaceMarine(InMemorySpaceMarineCollection.getNextId(), name, coordinates, health, category,
                 weaponType, meleeWeapon, chapter);
     }
 

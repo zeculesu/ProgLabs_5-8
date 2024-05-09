@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class ParseFileXML implements ParseFileCollection {
 
-    public static void writeFile(String filePath, CollectionAction collection) throws FileCollectionException {
+    public static void writeFile(String filePath, SpaceMarineCollection collection) throws FileCollectionException {
         XMLOutputFactory factory = XMLOutputFactory.newFactory();
         try {
             XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(filePath), "UTF-8");
@@ -48,7 +48,7 @@ public class ParseFileXML implements ParseFileCollection {
         }
     }
 
-    public static void writeCollection(XMLStreamWriter writer, CollectionAction collection) throws XMLStreamException {
+    public static void writeCollection(XMLStreamWriter writer, SpaceMarineCollection collection) throws XMLStreamException {
         writer.writeStartDocument("UTF-8", "1.0");
 
         writer.writeCharacters("\n");
@@ -120,7 +120,7 @@ public class ParseFileXML implements ParseFileCollection {
         writer.writeEndDocument();
     }
 
-    public static void parseFile(String filePath, SpaceMarineCollection collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
+    public static void parseFile(String filePath, InMemorySpaceMarineCollection collection) throws FileNotFoundException, ParserConfigurationException, SAXException {
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();
         AdvancedXMLHandler handler = new AdvancedXMLHandler(collection);
@@ -135,9 +135,9 @@ public class ParseFileXML implements ParseFileCollection {
     }
 
     private static class AdvancedXMLHandler extends DefaultHandler {
-        SpaceMarineCollection collection;
+        InMemorySpaceMarineCollection collection;
 
-        public AdvancedXMLHandler(SpaceMarineCollection collection) {
+        public AdvancedXMLHandler(InMemorySpaceMarineCollection collection) {
             this.collection = collection;
         }
 

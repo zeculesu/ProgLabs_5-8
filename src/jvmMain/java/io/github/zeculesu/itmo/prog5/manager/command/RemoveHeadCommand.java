@@ -1,12 +1,11 @@
 package io.github.zeculesu.itmo.prog5.manager.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
-import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +16,7 @@ public class RemoveHeadCommand implements CommandAction {
     boolean acceptsElement = false;
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         try{
             response.addElement(collectionSpaceMarine.removeHead());

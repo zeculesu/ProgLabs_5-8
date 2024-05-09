@@ -26,7 +26,8 @@ class AddTest {
             )
         )
         val elem = ElementFormConsole(io)
-        val collection = SpaceMarineCollection()
+        val collection =
+            InMemorySpaceMarineCollection()
         val comm = AddCommand()
         val comm_show = ShowCommand()
         val commandSet = CommandSetMapImpl(comm, comm_show)

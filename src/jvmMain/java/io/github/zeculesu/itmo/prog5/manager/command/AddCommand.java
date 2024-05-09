@@ -6,7 +6,6 @@ import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.manager.CommandAction;
 import io.github.zeculesu.itmo.prog5.manager.Response;
 import io.github.zeculesu.itmo.prog5.user_interface.ConsoleCommandEnvironment;
-import io.github.zeculesu.itmo.prog5.user_interface.ElementFormConsole;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +16,7 @@ public class AddCommand implements CommandAction {
     boolean acceptsElement = true;
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         SpaceMarine elem = element[0];
         try {

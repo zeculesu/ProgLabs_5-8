@@ -1,13 +1,13 @@
 package io.github.zeculesu.itmo.prog5.manager;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 
 /**
  * Парсинг коллекции из файла
  */
 public interface ParseFileCollection {
-    public static CollectionAction parseFile(String filePath, CollectionAction collection){
+    public static SpaceMarineCollection parseFile(String filePath, SpaceMarineCollection collection){
         return collection;
     }
-    public static void writeFile(String filePath, CollectionAction collectionAction){}
+    public static void writeFile(String filePath, SpaceMarineCollection spaceMarineCollection){}
 }

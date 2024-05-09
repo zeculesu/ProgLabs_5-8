@@ -1,7 +1,7 @@
 package io.github.zeculesu.itmo.prog5.manager.command;
 
-import io.github.zeculesu.itmo.prog5.data.CollectionAction;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarine;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -19,7 +19,7 @@ public class UpdateCommand implements CommandAction {
     boolean acceptsElement = true;
 
     @Override
-    public Response execute(CollectionAction collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
+    public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
         if (args.length == 0) {
             response.setError("Не введен аргумент - id элемента");
