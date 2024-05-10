@@ -25,7 +25,7 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      */
     List<SpaceMarine> show();
 
-    void add(SpaceMarine o);
+    int add(SpaceMarine o);
 
     /**
      * Обновление значений полей имеющегося элемента через его id
@@ -103,11 +103,6 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * @throws ElementNotFound элемента с таким id нет в коллекции
      */
     SpaceMarine findById(int id);
-
-    /**
-     * Загрузка элементов из коллекции
-     */
-    void setNewMaxId();
 }
 
 

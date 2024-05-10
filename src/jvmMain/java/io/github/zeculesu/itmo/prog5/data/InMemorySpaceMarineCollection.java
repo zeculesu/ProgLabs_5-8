@@ -20,7 +20,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
      * Сама коллекция
      */
     private static int nextId = 1;
-    private final PriorityQueue<SpaceMarine> collectionSpaceMarine = new PriorityQueue<>();
+    private final HashMap<Integer, SpaceMarine> collectionSpaceMarine = new HashMap<Integer, SpaceMarine>();
     /**
      * Дата создания коллекции
      */
@@ -38,7 +38,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
         ArrayList<String> info = new ArrayList<>();
         info.add("Тип коллекции: " + this.collectionSpaceMarine.getClass().getName());
         info.add("Дата инициализации: " + this.dateInitialization.toString());
-        info.add("Количество элементов: " + this.collectionSpaceMarine.toArray().length);
+        info.add("Количество элементов: " + this.collectionSpaceMarine.size());
         return info;
     }
 
@@ -47,22 +47,26 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
         if (this.size() == 0) {
             throw new EmptyCollectionException();
         }
-        return new ArrayList<>(this.collectionSpaceMarine);
+        return new ArrayList<>(this.collectionSpaceMarine.values());
     }
 
-    public void add(SpaceMarine o) {
-        this.collectionSpaceMarine.add(o);
-        nextId++;
+    public int add(SpaceMarine o) {
+        this.collectionSpaceMarine.put(nextId, o);
+        o.setId(nextId);
+        return nextId++;
     }
 
     public void add(int id, SpaceMarine o) throws IdException {
-        try{
+        try {
             findById(o.getId());
-        }
-        catch (ElementNotFound e){
+        } catch (ElementNotFound e) {
             throw new IdException("id не уникальные, элемент с повторяющимся id загружен не будет");
         }
-        this.collectionSpaceMarine.add(o);
+        o.setId(id);
+        this.collectionSpaceMarine.put(id, o);
+        if (nextId < id) {
+            nextId = id + 1;
+        }
     }
 
     @Override
@@ -94,34 +98,40 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
 
 
     public void setNewMaxId() {
-        for (SpaceMarine elem : this.collectionSpaceMarine) {
+        for (SpaceMarine elem : this.collectionSpaceMarine.values()) {
             if (elem.getId() >= nextId) nextId = elem.getId() + 1;
         }
     }
 
     @Override
     public SpaceMarine removeHead() throws EmptyCollectionException {
-        if (collectionSpaceMarine.peek() == null) {
+        Iterator<Integer> idIter = this.collectionSpaceMarine.keySet().iterator();
+        if (!idIter.hasNext()) {
             throw new EmptyCollectionException();
         }
-        SpaceMarine head = this.collectionSpaceMarine.peek();
-        this.collectionSpaceMarine.remove(head);
+        int id = idIter.next();
+        SpaceMarine head = this.collectionSpaceMarine.get(id);
+        this.collectionSpaceMarine.remove(id);
         return head;
     }
 
     @Override
-    public void removeLower(SpaceMarine o) {
-        this.collectionSpaceMarine.removeIf(n -> (n.compareTo(o) < 0));
+    public void removeLower(SpaceMarine other) {
+        for (SpaceMarine spaceMarine : this.collectionSpaceMarine.values()) {
+            if (spaceMarine.compareTo(other) < 0) this.collectionSpaceMarine.remove(spaceMarine.getId());
+        }
     }
 
     @Override
     public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon) {
-        this.collectionSpaceMarine.removeIf(n -> (n.getMeleeWeapon() == meleeWeapon));
+        for (SpaceMarine spaceMarine : this.collectionSpaceMarine.values()) {
+            if (spaceMarine.getMeleeWeapon() == meleeWeapon) this.collectionSpaceMarine.remove(spaceMarine.getId());
+        }
     }
 
     @Override
     public ArrayList<SpaceMarine> filterStartsWithName(String name) {
-        return (ArrayList<SpaceMarine>) this.collectionSpaceMarine.stream().filter(x
+        return (ArrayList<SpaceMarine>) this.collectionSpaceMarine.values().stream().filter(x
                 -> x.getName().startsWith(name)).collect(Collectors.toList());
     }
 
@@ -130,7 +140,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
         if (this.size() == 0) {
             throw new EmptyCollectionException();
         }
-        return this.collectionSpaceMarine.stream().map(SpaceMarine::getHealth).sorted(Comparator.reverseOrder()).
+        return this.collectionSpaceMarine.values().stream().map(SpaceMarine::getHealth).sorted(Comparator.reverseOrder()).
                 map(Object::toString).collect(Collectors.joining("\n"));
     }
 
@@ -141,7 +151,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public SpaceMarine findById(int id) {
-        return this.collectionSpaceMarine.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
+        return this.collectionSpaceMarine.get(id);
     }
 
     public static int getNextId() {
@@ -150,12 +160,13 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
 
     /**
      * Делает коллекцию итерируемой
+     *
      * @return итератор
      */
     @NotNull
     @Override
     public Iterator<SpaceMarine> iterator() {
-        return this.collectionSpaceMarine.iterator();
+        return this.collectionSpaceMarine.values().iterator();
     }
 
 }

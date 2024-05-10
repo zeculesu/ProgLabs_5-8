@@ -15,7 +15,7 @@ import java.util.Date;
 public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-    private final int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private int id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
 
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
@@ -129,6 +129,8 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     public void setChapter(Chapter chapter) {
         this.chapter = chapter;
     }
+
+    public void setId(int id){this.id=id;}
 
     @Override
     public int compareTo(@NotNull SpaceMarine o) {

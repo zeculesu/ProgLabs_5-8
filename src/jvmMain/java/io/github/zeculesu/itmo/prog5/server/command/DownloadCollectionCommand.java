@@ -26,7 +26,7 @@ public class DownloadCollectionCommand extends AbstractCommand {
             response.addLineOutput("Файл с коллекцией: " + env.getFileNameCollection());
             try {
                 ReadFileXML.parseFile(env.getFileNameCollection(), (InMemorySpaceMarineCollection) collectionSpaceMarine);
-                collectionSpaceMarine.setNewMaxId();
+                ((InMemorySpaceMarineCollection) collectionSpaceMarine).setNewMaxId();
                 response.addLineOutput("Элементы из коллекции загружены");
             } catch (FileNotFoundException | ParserConfigurationException | SAXException e) {
                 response.setError(e.getMessage());

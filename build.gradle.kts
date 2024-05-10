@@ -9,6 +9,7 @@ tasks.withType<JavaCompile>{
 allprojects {
     repositories {
         mavenCentral()
+        maven("https://maven.landgrafhomyak.ru/")
     }
 }
 
@@ -39,13 +40,13 @@ kotlin {
         val commonTest by getting
         val jvmMain by getting{
             dependencies{
-                implementation("org.jline:jline:3.20.0")
+                implementation("org.postgresql:postgresql:42.7.3")
+                implementation("ru.landgrafhomyak.utility:java-resource-loader:2.0")
             }
         }
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-
             }
         }
     }
