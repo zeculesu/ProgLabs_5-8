@@ -43,10 +43,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
     }
 
     @Override
-    public ArrayList<SpaceMarine> show() throws EmptyCollectionException {
-        if (this.size() == 0) {
-            throw new EmptyCollectionException();
-        }
+    public ArrayList<SpaceMarine> show() {
         return new ArrayList<>(this.collectionSpaceMarine.values());
     }
 

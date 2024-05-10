@@ -26,6 +26,8 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     private MeleeWeapon meleeWeapon; //Поле не может быть null
     private Chapter chapter; //Поле не может быть null
 
+    private String owner;
+
     public SpaceMarine(int id, String name, Coordinates coordinates, int health,
                        AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter) {
         this(id, name, coordinates, new Date(), health, category, weaponType, meleeWeapon, chapter);
@@ -135,5 +137,13 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     @Override
     public int compareTo(@NotNull SpaceMarine o) {
         return this.getName().compareTo(o.getName());
+    }
+
+    public String getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 }

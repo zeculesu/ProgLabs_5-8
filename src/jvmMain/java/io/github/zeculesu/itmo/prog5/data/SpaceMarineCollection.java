@@ -21,7 +21,6 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * Формируется список из элементов коллекции
      *
      * @return список SpaceMarin'ов
-     * @throws EmptyCollectionException пустая коллекции
      */
     List<SpaceMarine> show();
 
@@ -34,7 +33,7 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * @param o  элемент с новыми полями
      * @throws ElementNotFound в коллекции нет элемента с таким id
      */
-    void update(int id, SpaceMarine o);
+    void update(int id, SpaceMarine o) throws ElementNotFound;
 
     /**
      * Удаление элемента из коллекции по его id, возвращает true при успешном удалении и false при неудаче
@@ -54,7 +53,7 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * @return возвращает удаленный элемент
      * @throws EmptyCollectionException коллекция пустая
      */
-    SpaceMarine removeHead();
+    SpaceMarine removeHead() throws EmptyCollectionException;
 
     /**
      * Удаляет элементы коллекции, которые меньше указанного
@@ -86,7 +85,7 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * @throws EmptyCollectionException коллекция пустая
      */
 
-    String printFieldDescendingHealth();
+    String printFieldDescendingHealth() throws EmptyCollectionException;
 
     /**
      * Количество элементов в коллекции
@@ -102,7 +101,7 @@ public interface SpaceMarineCollection extends Iterable<SpaceMarine> {
      * @return элемент SpaceMarine
      * @throws ElementNotFound элемента с таким id нет в коллекции
      */
-    SpaceMarine findById(int id);
+    SpaceMarine findById(int id) throws ElementNotFound;
 }
 
 
