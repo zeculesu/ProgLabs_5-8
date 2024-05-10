@@ -21,6 +21,6 @@ public class Main {
         DefaultConsoleCommandEnvironmentImpl env = new DefaultConsoleCommandEnvironmentImpl(commandSetMap, fileName);
         InMemorySpaceMarineCollection collectionSpaceMarine = new InMemorySpaceMarineCollection();
         CommunicatedClient console = new Console(env, collectionSpaceMarine);
-        console.run();
+        console.start();
     }
 }

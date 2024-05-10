@@ -7,5 +7,6 @@ import java.net.UnknownHostException;
  * Возможность общения с клиентом
  */
 public interface CommunicatedClient {
+    void start();
     void run();
 }

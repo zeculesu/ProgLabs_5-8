@@ -29,13 +29,17 @@ public class Console implements CommunicatedClient {
         this.collectionSpaceMarine = collectionSpaceMarine;
         this.console = new CommandIOConsole();
     }
-
     @Override
-    public void run() {
+    public void start(){
         this.environment.setRun(true);
 
         //загрузка коллекции из файла
         outputResponse(new DownloadCollectionCommand().execute(this.collectionSpaceMarine, environment, new String[0]));
+        run();
+    }
+
+    @Override
+    public void run() {
 
         String command;
 

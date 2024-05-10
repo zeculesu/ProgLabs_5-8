@@ -13,6 +13,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,9 +40,11 @@ public class CLientConsole implements CommunicatedClient {
     }
 
     @Override
-    public void run() {
+    public void start() {
         try {
             this.commandsSet = udpClient.sendMeCommand();
+            this.run = true;
+            run();
         } catch (Exception e) {
             console.println("Сервер временно недоступен", ERROR);
             String answer = "";
@@ -52,13 +56,14 @@ public class CLientConsole implements CommunicatedClient {
                     console.println("Конец работы программы");
                     return;
                 } else if (answer.equals("y")) {
-                    run();
+                    start();
                 }
             }
         }
-        //todo добавить парс статуса возврата
-        this.run = true;
+    }
 
+    @Override
+    public void run() {
         String command;
 
         while (run) {
@@ -79,7 +84,13 @@ public class CLientConsole implements CommunicatedClient {
                 } else if (command.isBlank()) {
                     console.println("Команда не введена");
                 } else {
-                    readCommand(command);
+                    Request request = readCommand(command);
+                    if (request != null) {
+                        Response response = sendRequest(request);
+
+                        readStatus(response.getStatus(), request.getArg());
+                        outputResponse(response);
+                    }
                 }
             } catch (Exception e) {
                 console.println(e.getMessage());
@@ -87,7 +98,7 @@ public class CLientConsole implements CommunicatedClient {
         }
     }
 
-    public void readCommand(@NotNull String command) throws IOException, ClassNotFoundException {
+    public Request readCommand(@NotNull String command) {
         String[] token = command.split(" ");
         String nameCommand = token[0];
         boolean com = this.commandsSet.haveThisCommand(nameCommand);
@@ -98,10 +109,10 @@ public class CLientConsole implements CommunicatedClient {
             if (this.commandsSet.commandAcceptedArg(nameCommand)) {
                 if (token.length == 1) {
                     console.println("Не введен аргумент для команды, для справки воспользуйтесь командой 'help'", ERROR);
-                    return;
+                    return null;
                 } else if (token.length > 2) {
                     console.println("Слишком много аргументов, для справки воспользуйтесь командой 'help'");
-                    return;
+                    return null;
                 } else {
                     request.setArg(token[1]);
                 }
@@ -113,30 +124,25 @@ public class CLientConsole implements CommunicatedClient {
                 }
             } catch (InputFormException | NamingEnumException | IOException e) {
                 console.println(e.getMessage(), ERROR);
-                return;
+                return null;
             }
             request.setElem(element);
-
-            udpClient.createSocket();
-
-            byte[] sendData = udpClient.castToByte(request);
-
-            udpClient.sendPacket(sendData);
-
-            Response response = udpClient.getResponse();
-
-            // Закрываем сокет
-            udpClient.clientSocket.close();
-
-            int status = response.getStatus();
-            readStatus(status, request.getArg());
-            outputResponse(response);
-
+            return request;
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
         // todo this.environment.addCommandToHistory(token[0]);
         if (this.stateIO == StateIO.CONSOLE_TO_SCRIPT) {
             this.stateIO = StateIO.SCRIPT;
         }
+        return null;
+    }
+
+    public Response sendRequest(Request request) throws SocketException, UnknownHostException, IOException, ClassNotFoundException {
+        udpClient.createSocket();
+        byte[] sendData = udpClient.castToByte(request);
+        udpClient.sendPacket(sendData);
+        Response response = udpClient.getResponse();
+        udpClient.clientSocket.close();
+        return response;
     }
 
     public void outputResponse(Response response) {
