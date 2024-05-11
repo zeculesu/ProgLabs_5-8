@@ -6,6 +6,7 @@ import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
 import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.server.Auth;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -25,6 +26,7 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
  * Реализует консоль, взаимодействие с пользователем
  */
 public class CLientConsole implements CommunicatedClient {
+    private String login;
     private StateIO stateIO;
     private final Set<String> scriptQueue = new HashSet<>();
     private BufferedReader bufferReaderScript;
@@ -41,7 +43,9 @@ public class CLientConsole implements CommunicatedClient {
 
     @Override
     public void start() {
+        console.println("Добро пожаловать");
         try {
+            auth();
             this.commandsSet = udpClient.sendMeCommand();
             this.run = true;
             run();
@@ -60,6 +64,47 @@ public class CLientConsole implements CommunicatedClient {
                 }
             }
         }
+    }
+
+    public boolean auth() throws IOException, ClassNotFoundException {
+        try {
+            String answer = "f";
+            while (answer != null) {
+                try {
+                    console.println("Для начала работы надо пройти авторизацию");
+                    console.print("Выберите авторизоваться (1) или зарегистрироваться (2): ");
+                    answer = readlnOrNullCommand();
+                    if (answer.equals("1")) {
+                        console.print("Введите логин: ");
+                        String login = readlnOrNullCommand();
+                        console.print("Введите пароль: ");
+                        String password = readlnOrNullCommand();
+                        Response response = Auth.sendAuth(login, password, this.udpClient);
+                        outputResponse(response);
+                        if (response.getStatus() == 200){
+                            this.login = login;
+                            return true;
+                        }
+                    } else if (answer.equals("2")) {
+                        console.print("Введите логин: ");
+                        String login = readlnOrNullCommand();
+                        Response response = Auth.checkUniqLogin(login, udpClient);
+                        outputResponse(response);
+                        if (response.getStatus() == 200){
+                            console.print("Придумайте пароль: ");
+                            String password = readlnOrNullCommand();
+                            Response response2 = Auth.sendReg(login, password, udpClient);
+                            outputResponse(response2);
+                        }
+                    }
+                } catch (Exception e) {
+                    throw e;
+                }
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return false;
     }
 
     @Override

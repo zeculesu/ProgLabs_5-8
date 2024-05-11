@@ -17,7 +17,6 @@ public class UDPClient {
     public UDPClient(String host, int port) {
         this.host = host;
         this.port = port;
-        //todo Сделать изменяемый this.port = 9876;
     }
 
 
@@ -68,7 +67,7 @@ public class UDPClient {
         return castToObjectFromByte(data);
     }
 
-    public byte[] castToByte(Serializable data) throws IOException {
+    public static byte[] castToByte(Serializable data) throws IOException {
         // Преобразуем сообщение в массив байтов
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -82,5 +81,9 @@ public class UDPClient {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         return (Response) objectInputStream.readObject();
+    }
+
+    public void closeClientSocket(){
+        this.clientSocket.close();
     }
 }
