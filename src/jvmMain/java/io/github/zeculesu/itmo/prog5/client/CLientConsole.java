@@ -45,11 +45,14 @@ public class CLientConsole implements CommunicatedClient {
     public void start() {
         console.println("Добро пожаловать");
         try {
-            auth();
+            if (!auth()){
+                console.println("Сессия провалена", ERROR);
+                return;
+            };
             this.commandsSet = udpClient.sendMeCommand();
             this.run = true;
             run();
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             console.println("Сервер временно недоступен", ERROR);
             String answer = "";
             while (!answer.equals("y")) {
@@ -74,11 +77,23 @@ public class CLientConsole implements CommunicatedClient {
                     console.println("Для начала работы надо пройти авторизацию");
                     console.print("Выберите авторизоваться (1) или зарегистрироваться (2): ");
                     answer = readlnOrNullCommand();
+                    if (answer == null){
+                        console.println("Конец работы программы");
+                        System.exit(0);
+                    }
                     if (answer.equals("1")) {
                         console.print("Введите логин: ");
                         String login = readlnOrNullCommand();
+                        if (login == null){
+                            console.println("Конец работы программы");
+                            System.exit(0);
+                        }
                         console.print("Введите пароль: ");
                         String password = readlnOrNullCommand();
+                        if (password == null){
+                            console.println("Конец работы программы");
+                            System.exit(0);
+                        }
                         Response response = Auth.sendAuth(login, password, this.udpClient);
                         outputResponse(response);
                         if (response.getStatus() == 200){
@@ -88,11 +103,19 @@ public class CLientConsole implements CommunicatedClient {
                     } else if (answer.equals("2")) {
                         console.print("Введите логин: ");
                         String login = readlnOrNullCommand();
+                        if (login == null){
+                            console.println("Конец работы программы");
+                            System.exit(0);
+                        }
                         Response response = Auth.checkUniqLogin(login, udpClient);
                         outputResponse(response);
                         if (response.getStatus() == 200){
                             console.print("Придумайте пароль: ");
                             String password = readlnOrNullCommand();
+                            if (password == null){
+                                console.println("Конец работы программы");
+                                System.exit(0);
+                            }
                             Response response2 = Auth.sendReg(login, password, udpClient);
                             outputResponse(response2);
                         }

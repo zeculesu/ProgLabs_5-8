@@ -5,8 +5,7 @@ import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
-import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
-import io.github.zeculesu.itmo.prog5.server.command.SendCommandSet;
+import io.github.zeculesu.itmo.prog5.server.command.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,10 +23,27 @@ public class RequestReading {
 
         // Выводим полученное сообщение от клиента на консоль
         System.out.println("Received from client: " + request.getCommand());
-        if (request.getCommand().equals("send_command")){
+        if (request.getCommand().equals("send_command")) {
             CommandAction comm = new SendCommandSet();
             return comm.execute(collection, env, new String[0], null);
         }
+
+        if (request.getCommand().equals("check_uniq_login")) {
+            CommandAction comm = new CheckUniqLoginCommand();
+            return comm.execute(collection, env, new String[]{request.getArg()}, null);
+        }
+
+        if (request.getCommand().equals("register")) {
+            CommandAction comm = new RegisterCommand();
+            return comm.execute(collection, env, new String[]{request.getArg()}, null);
+        }
+
+        if (request.getCommand().equals("auth")) {
+            CommandAction comm = new AuthCommand();
+            return comm.execute(collection, env, new String[]{request.getArg()}, null);
+
+        }
+
         env.addCommandToHistory(request.getCommand());
         CommandAction com = env.getCommandSetMap().findCommand(request.getCommand());
         if (com != null) {

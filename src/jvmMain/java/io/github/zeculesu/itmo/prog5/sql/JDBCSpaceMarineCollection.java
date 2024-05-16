@@ -22,9 +22,9 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public List<String> info() {
         List<String> output = new ArrayList<>();
-        output.add("Òèï êîëëåêöèè: áàçà äàííûõ PostgreSQl");
-        output.add("Äàòà èíèöèàëèçàöèè: " + getCreationDate().toString());
-        output.add("Êîëè÷åñòâî ýëåìåíòîâ: " + size());
+        output.add("Ð¢Ð¸Ð¿ ÐºÐ¾Ð»Ð»ÐµÐºÑ†Ð¸Ð¸: Ð±Ð°Ð·Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ… PostgreSQl");
+        output.add("Ð”Ð°Ñ‚Ð° Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸: " + getCreationDate().toString());
+        output.add("ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²: " + size());
         return output;
     }
 
@@ -90,7 +90,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
             ps.setString(1, o.getName());
             ps.setLong(2, o.getCoordinates().getX());
             ps.setFloat(3, o.getCoordinates().getY());
-            //todo âîçìîæíî íàäî ïåðåäåëàòü
+            //todo Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð½Ð°Ð´Ð¾ Ð¿ÐµÑ€ÐµÐ´ÐµÐ»Ð°Ñ‚ÑŒ
             ps.setDate(4, (java.sql.Date) o.getCreationDate());
             ps.setInt(5, o.getHealth());
             ps.setString(6, o.getCategory().name());
@@ -111,7 +111,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
         try (PreparedStatement ps = this.connection.prepareStatement(REMOVE_BY_ID_QUERY)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
-            // Ïðîâåðÿåì êîëè÷åñòâî èçìåíåííûõ ñòðîê
+            // ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð½Ñ‹Ñ… ÑÑ‚Ñ€Ð¾Ðº
             return rowsAffected > 0;
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
