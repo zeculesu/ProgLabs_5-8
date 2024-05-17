@@ -24,8 +24,8 @@ public class RemoveByIdCommand extends AbstractCommand {
         }
         try {
             int id = Integer.parseInt(args[0]);
-            if (collectionSpaceMarine.removeById(id)) {
-                response.setMessage("Элемента с таким id нет в коллекции");
+            if (!collectionSpaceMarine.removeById(id)) {
+                response.setError("Элемента с таким id нет в коллекции");
             } else {
                 response.setMessage("Элемент успешно удален");
             }

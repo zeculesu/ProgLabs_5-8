@@ -1,6 +1,5 @@
 package io.github.zeculesu.itmo.prog5.data;
 
-import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.models.MeleeWeapon;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +23,7 @@ public class CachedSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public List<String> info() {
-        return this.cache.info();
+        return this.origin.info();
     }
 
     @Override

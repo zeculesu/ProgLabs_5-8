@@ -2,8 +2,11 @@ package io.github.zeculesu.itmo.prog5.client;
 
 import io.github.zeculesu.itmo.prog5.server.command.CommandAction;
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
+import io.github.zeculesu.itmo.prog5.sql.ConnectingDB;
 
 import java.io.BufferedReader;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +24,8 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
     private final CommandSet commandSetMap;
     private final String fileNameCollection;
     private final List<String> commandHistory = new ArrayList<>();
+
+    private Connection connection;
 
     public DefaultConsoleCommandEnvironmentImpl(CommandSet commandSetMap, String fileNameCollection) {
         this.commandSetMap = commandSetMap;
@@ -81,7 +86,7 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
         this.scriptQueue.add(scriptName);
     }
 
-    public void clearScriptQueue(){
+    public void clearScriptQueue() {
         this.scriptQueue.clear();
     }
 
@@ -89,5 +94,15 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
     public void removeFromCommandSetMap(String comm) {
         CommandAction command = this.commandSetMap.findCommand(comm);
         this.commandSetMap.removeCommand(command);
+    }
+
+    @Override
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    @Override
+    public void setConnection(String url, String username, String password) throws SQLException {
+        this.connection = new ConnectingDB(url, username, password).getConnection();
     }
 }

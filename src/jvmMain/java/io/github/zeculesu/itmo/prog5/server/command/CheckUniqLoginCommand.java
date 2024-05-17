@@ -20,7 +20,7 @@ public class CheckUniqLoginCommand extends AbstractCommand {
         Response response = new Response();
         String login = args[0];
         try {
-            Connection connection = ConnectingDB.getConnection("jdbc:postgresql://localhost:5432/SpaceMarines", "root", "root");
+            Connection connection = env.getConnection();
 
             String query = "SELECT login FROM users WHERE login = ?";
 
@@ -30,7 +30,6 @@ public class CheckUniqLoginCommand extends AbstractCommand {
 
             ResultSet resultSet = ps.executeQuery();
 
-            connection.close();
 
             if (resultSet.next()) {
                 response.setError("Такой логин уже существует, придумайте новый");

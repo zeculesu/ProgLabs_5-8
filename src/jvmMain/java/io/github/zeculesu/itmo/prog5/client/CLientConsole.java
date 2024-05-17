@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
@@ -70,62 +71,54 @@ public class CLientConsole implements CommunicatedClient {
     }
 
     public boolean auth() throws IOException, ClassNotFoundException {
-        try {
-            String answer = "f";
-            while (answer != null) {
-                try {
-                    console.println("Для начала работы надо пройти авторизацию");
-                    console.print("Выберите авторизоваться (1) или зарегистрироваться (2): ");
-                    answer = readlnOrNullCommand();
-                    if (answer == null){
+        String answer = "f";
+        while (answer != null) {
+            console.println("Для начала работы надо пройти авторизацию");
+            console.print("Выберите авторизоваться (1) или зарегистрироваться (2): ");
+            answer = readlnOrNullCommand();
+            if (answer == null){
+                console.println("Конец работы программы");
+                System.exit(0);
+            }
+            if (answer.equals("1")) {
+                console.print("Введите логин: ");
+                String login = readlnOrNullCommand();
+                if (login == null){
+                    console.println("Конец работы программы");
+                    System.exit(0);
+                }
+                console.print("Введите пароль: ");
+                String password = readlnOrNullCommand();
+                if (password == null){
+                    console.println("Конец работы программы");
+                    System.exit(0);
+                }
+                Response response = Auth.sendAuth(login, password, this.udpClient);
+                outputResponse(response);
+                if (response.getStatus() == 200){
+                    this.login = login;
+                    return true;
+                }
+            } else if (answer.equals("2")) {
+                console.print("Введите логин: ");
+                String login = readlnOrNullCommand();
+                if (login == null){
+                    console.println("Конец работы программы");
+                    System.exit(0);
+                }
+                Response response = Auth.checkUniqLogin(login, udpClient);
+                outputResponse(response);
+                if (response.getStatus() == 200){
+                    console.print("Придумайте пароль: ");
+                    String password = readlnOrNullCommand();
+                    if (password == null){
                         console.println("Конец работы программы");
                         System.exit(0);
                     }
-                    if (answer.equals("1")) {
-                        console.print("Введите логин: ");
-                        String login = readlnOrNullCommand();
-                        if (login == null){
-                            console.println("Конец работы программы");
-                            System.exit(0);
-                        }
-                        console.print("Введите пароль: ");
-                        String password = readlnOrNullCommand();
-                        if (password == null){
-                            console.println("Конец работы программы");
-                            System.exit(0);
-                        }
-                        Response response = Auth.sendAuth(login, password, this.udpClient);
-                        outputResponse(response);
-                        if (response.getStatus() == 200){
-                            this.login = login;
-                            return true;
-                        }
-                    } else if (answer.equals("2")) {
-                        console.print("Введите логин: ");
-                        String login = readlnOrNullCommand();
-                        if (login == null){
-                            console.println("Конец работы программы");
-                            System.exit(0);
-                        }
-                        Response response = Auth.checkUniqLogin(login, udpClient);
-                        outputResponse(response);
-                        if (response.getStatus() == 200){
-                            console.print("Придумайте пароль: ");
-                            String password = readlnOrNullCommand();
-                            if (password == null){
-                                console.println("Конец работы программы");
-                                System.exit(0);
-                            }
-                            Response response2 = Auth.sendReg(login, password, udpClient);
-                            outputResponse(response2);
-                        }
-                    }
-                } catch (Exception e) {
-                    throw e;
+                    Response response2 = Auth.sendReg(login, password, udpClient);
+                    outputResponse(response2);
                 }
             }
-        } catch (Exception e) {
-            throw e;
         }
         return false;
     }
@@ -237,7 +230,7 @@ public class CLientConsole implements CommunicatedClient {
                 scriptQueue.add(arg);
                 FileReader fileReader = new FileReader(arg);
                 this.bufferReaderScript = new BufferedReader(fileReader);
-                this.stateIO = StateIO.CONSOLE_TO_SCRIPT;
+                this.stateIO = StateIO.SCRIPT;
             } catch (FileNotFoundException e) {
                 console.println("Не удалось открыть файл", ERROR);
             }

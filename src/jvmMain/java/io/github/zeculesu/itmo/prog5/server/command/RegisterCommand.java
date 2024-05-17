@@ -28,7 +28,7 @@ public class RegisterCommand extends AbstractCommand {
         String password = log_pas[1];
 
         try{
-            Connection connection = ConnectingDB.getConnection("jdbc:postgresql://localhost:5432/SpaceMarines", "root", "root");
+            Connection connection = env.getConnection();
 
             String query = "INSERT INTO users (login, password) VALUES (?, ?)";
 
@@ -40,8 +40,6 @@ public class RegisterCommand extends AbstractCommand {
             ps.setString(2, password);
 
             ps.executeUpdate();
-
-            connection.close();
 
             response.setMessage("Регистрация успешно пройдена");
         }

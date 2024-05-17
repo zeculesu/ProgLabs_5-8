@@ -6,8 +6,17 @@ import java.sql.SQLException;
 
 public class ConnectingDB {
 
-    public static Connection getConnection(String jdbcUrl, String username, String password) throws SQLException {
-        Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-        return connection;
+    final String jdbcUrl;
+    final String username;
+    final String password;
+
+    public ConnectingDB(String jdbcUrl, String username, String password) {
+        this.jdbcUrl = jdbcUrl;
+        this.username = username;
+        this.password = password;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(this.jdbcUrl, this.username, this.password);
     }
 }

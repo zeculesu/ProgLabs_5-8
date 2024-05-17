@@ -30,7 +30,7 @@ public class RemoveByWeaponCommand extends AbstractCommand {
             if (start == end) {
                 response.setError("Элементов с таким оружием ближнего боя в коллекции не найдено");
             } else {
-                response.setError("Удаление произошло успешно");
+                response.setMessage("Удаление произошло успешно");
             }
         } catch (NamingEnumException e) {
             response.setError(e.getMessage());

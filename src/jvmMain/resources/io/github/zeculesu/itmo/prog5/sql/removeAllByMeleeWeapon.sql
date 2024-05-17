@@ -1,3 +1,3 @@
 DELETE
 FROM collection
-WHERE meleeweapon = ?;
+WHERE meleeWeapon = CAST(? AS MELEEWEAPON);

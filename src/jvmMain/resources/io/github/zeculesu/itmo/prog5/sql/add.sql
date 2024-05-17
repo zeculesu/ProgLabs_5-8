@@ -1,5 +1,4 @@
-INSERT INTO collection (id,
-                        name,
+INSERT INTO collection (name,
                         coordinatesX,
                         coordinatesY,
                         creationDate,
@@ -9,4 +8,6 @@ INSERT INTO collection (id,
                         meleeWeapon,
                         chapterName,
                         chapterParentLegion)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, CAST(? AS ASTARTESCATEGORY), CAST(? AS WEAPONTYPE), CAST(? AS MELEEWEAPON), ?, ?);
+
+-- todo add owner

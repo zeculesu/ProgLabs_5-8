@@ -1,3 +1,3 @@
 SELECT *
 FROM collection
-WHERE name LIKE ? + '%';
+WHERE name LIKE ?;

@@ -22,7 +22,7 @@ public class RequestReading {
         Request request = (Request) objectInputStream.readObject();
 
         // Выводим полученное сообщение от клиента на консоль
-        System.out.println("Received from client: " + request.getCommand());
+        System.out.println("Команда с клиента: " + request.getCommand());
         if (request.getCommand().equals("send_command")) {
             CommandAction comm = new SendCommandSet();
             return comm.execute(collection, env, new String[0], null);

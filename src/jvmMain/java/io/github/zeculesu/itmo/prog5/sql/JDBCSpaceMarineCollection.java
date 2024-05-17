@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.sql;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.models.*;
 import org.jetbrains.annotations.NotNull;
 import ru.landgrafhomyak.utility.JavaResourceLoader;
@@ -23,7 +24,6 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     public List<String> info() {
         List<String> output = new ArrayList<>();
         output.add("Тип коллекции: база данных PostgreSQl");
-        output.add("Дата инициализации: " + getCreationDate().toString());
         output.add("Количество элементов: " + size());
         return output;
     }
@@ -36,21 +36,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
         try (PreparedStatement ps = this.connection.prepareStatement(SHOW)) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                spaceMarines.add(new SpaceMarine(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        new Coordinates(
-                                resultSet.getLong("coordinatesX"),
-                                resultSet.getFloat("coordinatesY")),
-                        resultSet.getDate("creationDate"),
-                        resultSet.getInt("health"),
-                        AstartesCategory.getCategoryByName(resultSet.getString("category")),
-                        Weapon.getWeaponByName(resultSet.getString("weaponType")),
-                        MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
-                        new Chapter(
-                                resultSet.getString("chapterName"),
-                                resultSet.getString("chapterParentLegion"))
-                ));
+                spaceMarines.add(createElem(resultSet));
             }
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
@@ -63,23 +49,19 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public int add(SpaceMarine o) {
         try (PreparedStatement ps = this.connection.prepareStatement(ADD_QUERY)) {
-            ps.setInt(1, o.getId());
-            ps.setString(2, o.getName());
-            ps.setLong(3, o.getCoordinates().getX());
-            ps.setFloat(4, o.getCoordinates().getY());
-            ps.setDate(5, (java.sql.Date) o.getCreationDate());
-            ps.setInt(6, o.getHealth());
-            ps.setString(7, o.getCategory().name());
-            ps.setString(8, o.getWeaponType().name());
-            ps.setString(9, o.getMeleeWeapon().name());
-            ps.setString(10, o.getChapter().getName());
-            ps.setString(11, o.getChapter().getParentLegion());
-            ps.executeUpdate();
-            return o.getId();
+            fullQueryElem(ps, o);
+
+            int rowsAffected = ps.executeUpdate();
+
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            }
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
             return 0;
         }
+        return 0;
     }
 
     private final static String UPDATE_QUERY = loadQuery("update.sql");
@@ -87,18 +69,11 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public void update(int id, SpaceMarine o) {
         try (PreparedStatement ps = this.connection.prepareStatement(UPDATE_QUERY)) {
-            ps.setString(1, o.getName());
-            ps.setLong(2, o.getCoordinates().getX());
-            ps.setFloat(3, o.getCoordinates().getY());
-            //todo возможно надо переделать
-            ps.setDate(4, (java.sql.Date) o.getCreationDate());
-            ps.setInt(5, o.getHealth());
-            ps.setString(6, o.getCategory().name());
-            ps.setString(7, o.getWeaponType().name());
-            ps.setString(8, o.getMeleeWeapon().name());
-            ps.setString(9, o.getChapter().getName());
-            ps.setString(10, o.getChapter().getParentLegion());
-            ps.executeUpdate();
+            fullQueryElem(ps, o);
+            ps.setInt(11, id);
+
+            int rowsUpdated = ps.executeUpdate();
+            if (rowsUpdated <= 0) throw new ElementNotFound("Элемент с id=" + id + " не был найден");
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
         }
@@ -141,17 +116,16 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
                     String name = rs.getString("name");
                     long coordinatesX = rs.getLong("coordinatesX");
                     float coordinatesY = rs.getFloat("coordinatesY");
-                    Date creationDate = rs.getDate("creationDate");
+                    Date creationDate = new Date(rs.getDate("creationDate").getTime());
                     int health = rs.getInt("health");
                     AstartesCategory category = AstartesCategory.getCategoryByName(rs.getString("category"));
                     Weapon weaponType = Weapon.getWeaponByName(rs.getString("weaponType"));
                     MeleeWeapon meleeWeapon = MeleeWeapon.getMeleeWeaponByName(rs.getString("meleeWeapon"));
                     String chapterName = rs.getString("chapterName");
                     String chapterParentLegion = rs.getString("chapterParentLegion");
-                    SpaceMarine o = new SpaceMarine(id, name, new Coordinates(coordinatesX, coordinatesY),
+                    return new SpaceMarine(id, name, new Coordinates(coordinatesX, coordinatesY),
                             creationDate, health, category, weaponType, meleeWeapon,
                             new Chapter(chapterName, chapterParentLegion));
-                    return o;
                 }
             }
         } catch (SQLException e) {
@@ -180,6 +154,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
             ps.setString(1, meleeWeapon.name());
             ps.executeUpdate();
         } catch (SQLException e) {
+            System.out.println(e);
             Unsafe.getUnsafe().throwException(e);
         }
     }
@@ -190,23 +165,10 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     public List<SpaceMarine> filterStartsWithName(String name) {
         List<SpaceMarine> spaceMarines = new ArrayList<>();
         try (PreparedStatement ps = this.connection.prepareStatement(FILTER_NAME_QUERY)) {
+            ps.setString(1, name + "%");
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                SpaceMarine spaceMarine = new SpaceMarine(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        new Coordinates(
-                                resultSet.getLong("coordinatesX"),
-                                resultSet.getFloat("coordinatesY")),
-                        resultSet.getDate("creationDate"),
-                        resultSet.getInt("health"),
-                        AstartesCategory.getCategoryByName(resultSet.getString("category")),
-                        Weapon.getWeaponByName(resultSet.getString("weaponType")),
-                        MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
-                        new Chapter(
-                                resultSet.getString("chapterName"),
-                                resultSet.getString("chapterParentLegion"))
-                );
+                SpaceMarine spaceMarine = createElem(resultSet);
                 spaceMarines.add(spaceMarine);
             }
         } catch (SQLException e) {
@@ -254,40 +216,8 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
         try (PreparedStatement ps = this.connection.prepareStatement(FIND_BY_ID_QUERY)) {
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
-                return new SpaceMarine(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        new Coordinates(
-                                resultSet.getLong("coordinatesX"),
-                                resultSet.getFloat("coordinatesY")),
-                        resultSet.getDate("creationDate"),
-                        resultSet.getInt("health"),
-                        AstartesCategory.getCategoryByName(resultSet.getString("category")),
-                        Weapon.getWeaponByName(resultSet.getString("weaponType")),
-                        MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
-                        new Chapter(
-                                resultSet.getString("chapterName"),
-                                resultSet.getString("chapterParentLegion"))
-                );
+                return createElem(resultSet);
             }
-        } catch (SQLException e) {
-            Unsafe.getUnsafe().throwException(e);
-        }
-        return null;
-    }
-
-    public Date getCreationDate() {
-        String query = "SELECT pg_class.relname, pg_stat_user_tables.last_analyze, pg_stat_user_tables.last_autoanalyze, pg_stat_user_tables.last_vacuum, pg_stat_user_tables.last_autovacuum "
-                + "FROM pg_class "
-                + "JOIN pg_stat_user_tables ON pg_class.relname = pg_stat_user_tables.relname "
-                + "WHERE pg_class.relname = 'collection';";
-
-        try (PreparedStatement statement = this.connection.prepareStatement(query)) {
-            ResultSet resultSet = statement.executeQuery(query);
-            if (resultSet.next()) {
-                return resultSet.getDate("creation_date");
-            }
-
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
         }
@@ -297,33 +227,41 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @NotNull
     @Override
     public Iterator<SpaceMarine> iterator() {
-        List<SpaceMarine> spaceMarines = new ArrayList<>();
-        try (PreparedStatement ps = this.connection.prepareStatement(SHOW)) {
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                spaceMarines.add(new SpaceMarine(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        new Coordinates(
-                                resultSet.getLong("coordinatesX"),
-                                resultSet.getFloat("coordinatesY")),
-                        resultSet.getDate("creationDate"),
-                        resultSet.getInt("health"),
-                        AstartesCategory.getCategoryByName(resultSet.getString("category")),
-                        Weapon.getWeaponByName(resultSet.getString("weaponType")),
-                        MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
-                        new Chapter(
-                                resultSet.getString("chapterName"),
-                                resultSet.getString("chapterParentLegion"))
-                ));
-            }
-        } catch (SQLException e) {
-            Unsafe.getUnsafe().throwException(e);
-        }
-        return spaceMarines.iterator();
+        return show().iterator();
     }
 
     private static String loadQuery(String filename) {
         return JavaResourceLoader.loadTextRelativeExitOnFail(JDBCSpaceMarineCollection.class, filename);
+    }
+
+    private SpaceMarine createElem(ResultSet resultSet) throws SQLException {
+        return new SpaceMarine(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                new Coordinates(
+                        resultSet.getLong("coordinatesX"),
+                        resultSet.getFloat("coordinatesY")),
+                new Date(resultSet.getDate("creationDate").getTime()),
+                resultSet.getInt("health"),
+                AstartesCategory.getCategoryByName(resultSet.getString("category")),
+                Weapon.getWeaponByName(resultSet.getString("weaponType")),
+                MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
+                new Chapter(
+                        resultSet.getString("chapterName"),
+                        resultSet.getString("chapterParentLegion"))
+        );
+    }
+
+    private void fullQueryElem(PreparedStatement ps, SpaceMarine o) throws SQLException {
+        ps.setString(1, o.getName());
+        ps.setLong(2, o.getCoordinates().getX());
+        ps.setFloat(3, o.getCoordinates().getY());
+        ps.setDate(4, new java.sql.Date(o.getCreationDate().getTime()));
+        ps.setInt(5, o.getHealth());
+        ps.setString(6, o.getCategory().name());
+        ps.setString(7, o.getWeaponType().name());
+        ps.setString(8, o.getMeleeWeapon().name());
+        ps.setString(9, o.getChapter().getName());
+        ps.setString(10, o.getChapter().getParentLegion());
     }
 }

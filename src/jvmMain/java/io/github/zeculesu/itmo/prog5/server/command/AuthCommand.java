@@ -24,11 +24,9 @@ public class AuthCommand extends AbstractCommand {
         String login = log_pas[0];
         String password = log_pas[1];
         try {
-            Connection connection = ConnectingDB.getConnection("jdbc:postgresql://localhost:5432/SpaceMarines", "root", "root");
-
             String query = "SELECT login FROM users WHERE login = ? AND password = ?";
 
-            PreparedStatement ps = connection.prepareStatement(query);
+            PreparedStatement ps = env.getConnection().prepareStatement(query);
 
             password = Auth.hash_password(password);
 
@@ -36,8 +34,6 @@ public class AuthCommand extends AbstractCommand {
             ps.setString(2, password);
 
             ResultSet resultSet = ps.executeQuery();
-
-            connection.close();
 
             if (resultSet.next()) {
                 response.setStatus(200);

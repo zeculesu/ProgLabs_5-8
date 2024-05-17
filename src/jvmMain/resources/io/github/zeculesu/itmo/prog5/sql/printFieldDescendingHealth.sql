@@ -1,3 +1,3 @@
 SELECT health
 FROM collection
-ORDER BY health;
+ORDER BY health DESC;

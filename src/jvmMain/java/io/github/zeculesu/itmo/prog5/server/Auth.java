@@ -6,12 +6,13 @@ import io.github.zeculesu.itmo.prog5.models.Response;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.SocketTimeoutException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Auth {
 
-    public static Response sendAuth(String login, String password, UDPClient udpClient) throws IOException, ClassNotFoundException {
+    public static Response sendAuth(String login, String password, UDPClient udpClient) throws SocketTimeoutException, IOException, ClassNotFoundException {
         udpClient.createSocket();
 
         // Отправка сообщения серверу
