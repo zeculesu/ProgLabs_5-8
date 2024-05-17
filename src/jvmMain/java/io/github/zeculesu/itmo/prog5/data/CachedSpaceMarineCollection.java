@@ -6,10 +6,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class CachedSpaceMarineCollection implements SpaceMarineCollection {
     InMemorySpaceMarineCollection cache;
     SpaceMarineCollection origin;
+
+    private final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private final Lock readLock = lock.readLock();
+    private final Lock writeLock = lock.writeLock();
 
     public CachedSpaceMarineCollection(SpaceMarineCollection origin, InMemorySpaceMarineCollection cache) {
         this.origin = origin;

@@ -28,7 +28,7 @@ public class RequestReading {
 
         if (!clientCollections.containsKey(login)) {
             // Создание новой коллекции для клиента
-            clientCollections.put(login, new AuthCheckSpaceMarineCollection(new CachedSpaceMarineCollection(Server.jdbcSpaceMarineCollection, Server.inMemorySpaceMarineCollection), login));
+            clientCollections.put(login, new AuthCheckSpaceMarineCollection(Server.cachedSpaceMarineCollection, login));
         }
 
         AuthCheckSpaceMarineCollection collection = (AuthCheckSpaceMarineCollection) clientCollections.get(login);

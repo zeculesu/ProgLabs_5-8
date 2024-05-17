@@ -25,8 +25,7 @@ public class Server {
     private final int port;
     private final ConsoleCommandEnvironment environment;
 
-    protected static JDBCSpaceMarineCollection jdbcSpaceMarineCollection;
-    protected static InMemorySpaceMarineCollection inMemorySpaceMarineCollection;
+    protected static CachedSpaceMarineCollection cachedSpaceMarineCollection;
     private static final Map<String, AuthCheckSpaceMarineCollection> clientCollections = new HashMap<>();
 
     private final byte[] receiveData = new byte[65507];
@@ -50,6 +49,7 @@ public class Server {
         createCollection();
         System.out.println("-------");
         run();
+        System.exit(0);
     }
 
     public void run() {
@@ -95,12 +95,14 @@ public class Server {
 
     private void createCollection() {
         System.out.println("ИНИЦИАЛИЗАЦИЯ КОЛЛЕКЦИИ");
-        jdbcSpaceMarineCollection = new JDBCSpaceMarineCollection(environment.getConnection());
-        inMemorySpaceMarineCollection = new InMemorySpaceMarineCollection();
+        JDBCSpaceMarineCollection jdbcSpaceMarineCollection = new JDBCSpaceMarineCollection(environment.getConnection());
+        InMemorySpaceMarineCollection inMemorySpaceMarineCollection = new InMemorySpaceMarineCollection();
 
-        for (SpaceMarine o : jdbcSpaceMarineCollection.show()){
+        for (SpaceMarine o : jdbcSpaceMarineCollection.show()) {
             inMemorySpaceMarineCollection.add(o.getId(), o);
         }
+
+        cachedSpaceMarineCollection = new CachedSpaceMarineCollection(jdbcSpaceMarineCollection, inMemorySpaceMarineCollection);
 
         //   df = AuthCheckSpaceMarineCollection(new CachedSpaceMarineCollection(inMemorySpaceMarineCollection, jdbcSpaceMarineCollection), "login");
     }

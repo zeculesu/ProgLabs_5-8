@@ -22,13 +22,14 @@ public class ExecuteScriptCommand extends AbstractCommand {
             return response;
         }
         try {
-            String fileName = args[0];
-            if (env.checkRecursionScript(fileName)) {
-                //todo переделать проверку на рекурсию
-                response.setMessage("Вы создаете рекурсию из скриптов, ата-та");
-                return response;
-            }
-            env.addScriptQueue(fileName);
+            //todo добавить обработку рекурсии
+           // String fileName = args[0];
+            //    if (env.checkRecursionScript(fileName)) {
+            //          //todo переделать проверку на рекурсию
+            //            response.setMessage("Вы создаете рекурсию из скриптов, ата-та");
+            //              return response;
+//            }
+            //env.addScriptQueue(fileName);
 //            FileReader fileReader = new FileReader(fileName);
 //            BufferedReader bufferedReader = new BufferedReader(fileReader);
 //            env.setBufferReaderScript(bufferedReader);

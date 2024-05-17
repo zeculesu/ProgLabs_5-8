@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.error.OwnershipException;
 import io.github.zeculesu.itmo.prog5.models.MeleeWeapon;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.NamingEnumException;
@@ -32,7 +33,7 @@ public class RemoveByWeaponCommand extends AbstractCommand {
             } else {
                 response.setMessage("Удаление произошло успешно");
             }
-        } catch (NamingEnumException e) {
+        } catch (NamingEnumException | OwnershipException e) {
             response.setError(e.getMessage());
         }
         return response;

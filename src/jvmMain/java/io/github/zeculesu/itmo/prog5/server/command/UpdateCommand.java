@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.error.OwnershipException;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.error.InputFormException;
@@ -30,7 +31,7 @@ public class UpdateCommand extends AbstractCommand {
             int id = ElementFormConsole.checkId(args[0]);
             collectionSpaceMarine.update(id, elem);
             response.setMessage("Элемент обновлен");
-        } catch (NamingEnumException | InputFormException | ElementNotFound e) {
+        } catch (NamingEnumException | InputFormException | ElementNotFound | OwnershipException e) {
             response.setError(e.getMessage());
         }
         return response;

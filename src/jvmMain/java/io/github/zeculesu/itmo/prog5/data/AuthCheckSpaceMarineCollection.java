@@ -38,11 +38,16 @@ public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public void update(int id, SpaceMarine o) throws ElementNotFound {
-        if (Objects.equals(o.getOwner(), owner)) {
+        if (findById(id) == null) {
+            throw new ElementNotFound("Элемент с id=" + id + " не найден");
+        }
+        if (this.origin.findById(id).getOwner().equals(owner)) {
             this.origin.update(id, o);
         } else {
             throw new OwnershipException();
         }
+
+        //todo починить дату создания
     }
 
     @Override
