@@ -9,15 +9,13 @@ import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.sql.JDBCSpaceMarineCollection;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
 
@@ -66,8 +64,17 @@ public class Server {
                 Callable<Response> task = () -> RequestReading.requestRead(receivePacket, this.environment, clientCollections);
                 Future<Response> result = service.submit(task);
 
+
                 //отправляем ответ клиенту
-                ResponseSending.responseSend(serverSocket, receivePacket, result.get());
+                Runnable sendingTesk = () -> {
+                    try {
+                        ResponseSending.responseSend(serverSocket, receivePacket, result.get());
+                    } catch (IOException | InterruptedException | ExecutionException e) {
+                        throw new RuntimeException(e);
+                    }
+                };
+                Thread thread = new Thread(sendingTesk);
+                thread.start();
             }
             service.shutdown();
         } catch (Exception e) {
@@ -82,7 +89,9 @@ public class Server {
             String username = readlnOrNull();
             System.out.print("Введите пароль: ");
             String password = readlnOrNull();
-            environment.setConnection("jdbc:postgresql://localhost:5432/SpaceMarines", username, password);
+            System.out.print("Введите url (jdbc:postgresql://localhost:5432/SpaceMarines): ");
+            String url = readlnOrNull();
+            environment.setConnection(url, username, password);
             System.out.println("База данных подключена");
             return true;
         } catch (SQLException e) {

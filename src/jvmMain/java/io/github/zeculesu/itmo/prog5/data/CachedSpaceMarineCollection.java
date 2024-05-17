@@ -30,79 +30,145 @@ public class CachedSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public List<String> info() {
-        return this.origin.info();
+        readLock.lock();
+        try {
+            return this.origin.info();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public List<SpaceMarine> show() {
-        return this.cache.show();
+        readLock.lock();
+        try {
+            return this.cache.show();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public int add(SpaceMarine o) {
-        int id = this.origin.add(o);
-        this.cache.add(id, o);
-        return id;
+        writeLock.lock();
+        try {
+            int id = this.origin.add(o);
+            this.cache.add(id, o);
+            return id;
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void update(int id, SpaceMarine o) {
-        this.origin.update(id, o);
-        this.cache.update(id, o);
+        writeLock.lock();
+        try {
+            this.origin.update(id, o);
+            this.cache.update(id, o);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public boolean removeById(int id) {
-        if (this.origin.removeById(id)) {
-            this.cache.removeById(id);
-            return true;
+        writeLock.lock();
+        try {
+            if (this.origin.removeById(id)) {
+                this.cache.removeById(id);
+                return true;
+            }
+            return false;
+        } finally {
+            writeLock.unlock();
         }
-        return false;
     }
 
     @Override
     public void clear() {
-        this.origin.clear();
-        this.cache.clear();
+        writeLock.lock();
+        try {
+            this.origin.clear();
+            this.cache.clear();
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public SpaceMarine removeHead() {
-        SpaceMarine o = this.origin.removeHead();
-        this.cache.removeById(o.getId());
-        return o;
+        writeLock.lock();
+        try {
+            SpaceMarine o = this.origin.removeHead();
+            this.cache.removeById(o.getId());
+            return o;
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void removeLower(SpaceMarine o) {
-        this.origin.removeLower(o);
-        this.cache.removeLower(o);
+        writeLock.lock();
+        try {
+            this.origin.removeLower(o);
+            this.cache.removeLower(o);
+        } finally {
+            writeLock.unlock();
+        }
     }
 
     @Override
     public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon) {
-        this.origin.removeAllByMeleeWeapon(meleeWeapon);
-        this.cache.removeAllByMeleeWeapon(meleeWeapon);
+        writeLock.lock();
+        try {
+            this.origin.removeAllByMeleeWeapon(meleeWeapon);
+            this.cache.removeAllByMeleeWeapon(meleeWeapon);
+        } finally {
+            writeLock.unlock();
+        }
+
     }
 
     @Override
     public List<SpaceMarine> filterStartsWithName(String name) {
-        return this.cache.filterStartsWithName(name);
+        readLock.lock();
+        try {
+            return this.cache.filterStartsWithName(name);
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public String printFieldDescendingHealth() {
-        return this.cache.printFieldDescendingHealth();
+        readLock.lock();
+        try {
+            return this.cache.printFieldDescendingHealth();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public int size() {
-        return this.cache.size();
+        readLock.lock();
+        try {
+            return this.cache.size();
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @Override
     public SpaceMarine findById(int id) {
-        return this.cache.findById(id);
+        readLock.lock();
+        try {
+            return this.cache.findById(id);
+        } finally {
+            readLock.unlock();
+        }
     }
 
     @NotNull
