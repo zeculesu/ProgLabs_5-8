@@ -46,7 +46,7 @@ public class CachedSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public boolean removeById(int id) {
-        if (!this.origin.removeById(id)){
+        if (this.origin.removeById(id)) {
             this.cache.removeById(id);
             return true;
         }

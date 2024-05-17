@@ -46,6 +46,12 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
         this.chapter = chapter;
     }
 
+    public SpaceMarine(int id, String name, Coordinates coordinates, Date creationDate, int health,
+                       AstartesCategory category, Weapon weaponType, MeleeWeapon meleeWeapon, Chapter chapter, String owner){
+        this(id, name, coordinates, creationDate, health, category, weaponType, meleeWeapon, chapter);
+        this.owner = owner;
+    }
+
     @Override
     public String toString() {
         DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
@@ -61,6 +67,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
                 ", meleeWeapon=" + meleeWeapon +
                 ", chapter={name=" + chapter.getName() +
                 "; parent_legion=" + chapter.getParentLegion() + "}" +
+                "; owner=" + owner +
                 '}';
     }
 
@@ -132,7 +139,9 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
         this.chapter = chapter;
     }
 
-    public void setId(int id){this.id=id;}
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public int compareTo(@NotNull SpaceMarine o) {

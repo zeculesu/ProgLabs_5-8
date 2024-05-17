@@ -1,5 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.net;
 
+import io.github.zeculesu.itmo.prog5.data.AuthCheckSpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.data.CachedSpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Request;
 import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
@@ -11,15 +13,25 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
+import java.util.Map;
 
 public class RequestReading {
-    public static Response requestRead(DatagramPacket receivePacket, ConsoleCommandEnvironment env, SpaceMarineCollection collection) throws IOException, ClassNotFoundException {
+    public static Response requestRead(DatagramPacket receivePacket, ConsoleCommandEnvironment env, Map clientCollections) throws IOException, ClassNotFoundException {
         // Преобразуем данные в массив байт
         byte[] data = receivePacket.getData();
         // Преобразуем массив байт обратно в объект
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         Request request = (Request) objectInputStream.readObject();
+
+        String login = request.getLogin();
+
+        if (!clientCollections.containsKey(login)) {
+            // Создание новой коллекции для клиента
+            clientCollections.put(login, new AuthCheckSpaceMarineCollection(new CachedSpaceMarineCollection(Server.jdbcSpaceMarineCollection, Server.inMemorySpaceMarineCollection), login));
+        }
+
+        AuthCheckSpaceMarineCollection collection = (AuthCheckSpaceMarineCollection) clientCollections.get(login);
 
         // Выводим полученное сообщение от клиента на консоль
         System.out.println("Команда с клиента: " + request.getCommand());

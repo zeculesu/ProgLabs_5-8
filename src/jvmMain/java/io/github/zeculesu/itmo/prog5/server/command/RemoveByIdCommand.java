@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.error.OwnershipException;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.ElementNotFound;
 import io.github.zeculesu.itmo.prog5.models.Response;
@@ -33,6 +34,8 @@ public class RemoveByIdCommand extends AbstractCommand {
             response.setError(e.getMessage());
         } catch (NumberFormatException e) {
             response.setError("Неверный формат ввода id");
+        } catch (OwnershipException e){
+            response.setError("Вы не можете модифицировать чужие объекты");
         }
         return response;
     }

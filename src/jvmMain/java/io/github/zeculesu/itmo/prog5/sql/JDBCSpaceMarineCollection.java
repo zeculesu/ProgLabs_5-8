@@ -50,12 +50,15 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     public int add(SpaceMarine o) {
         try (PreparedStatement ps = this.connection.prepareStatement(ADD_QUERY)) {
             fullQueryElem(ps, o);
+            ps.setString(11, o.getOwner());
 
-            int rowsAffected = ps.executeUpdate();
-
-            ResultSet generatedKeys = ps.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                return generatedKeys.getInt(1);
+            boolean hasResultSet = ps.execute();
+            if (hasResultSet) {
+                try (ResultSet rs = ps.getResultSet()) {
+                    if (rs.next()) {
+                        return rs.getInt("id");
+                    }
+                }
             }
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
@@ -248,7 +251,8 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
                 MeleeWeapon.getMeleeWeaponByName(resultSet.getString("meleeWeapon")),
                 new Chapter(
                         resultSet.getString("chapterName"),
-                        resultSet.getString("chapterParentLegion"))
+                        resultSet.getString("chapterParentLegion")),
+                resultSet.getString("owner")
         );
     }
 

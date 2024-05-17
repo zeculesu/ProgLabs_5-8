@@ -7,7 +7,8 @@ INSERT INTO collection (name,
                         weaponType,
                         meleeWeapon,
                         chapterName,
-                        chapterParentLegion)
-VALUES (?, ?, ?, ?, ?, CAST(? AS ASTARTESCATEGORY), CAST(? AS WEAPONTYPE), CAST(? AS MELEEWEAPON), ?, ?);
+                        chapterParentLegion,
+                        owner)
+VALUES (?, ?, ?, ?, ?, CAST(? AS ASTARTESCATEGORY), CAST(? AS WEAPONTYPE), CAST(? AS MELEEWEAPON), ?, ?, ?) RETURNING id;
 
 -- todo add owner

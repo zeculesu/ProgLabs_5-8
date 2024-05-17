@@ -4,12 +4,16 @@ import io.github.zeculesu.itmo.prog5.client.ConsoleCommandEnvironment;
 import io.github.zeculesu.itmo.prog5.data.AuthCheckSpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.CachedSpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.models.Response;
+import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.sql.JDBCSpaceMarineCollection;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,15 +25,14 @@ public class Server {
     private final int port;
     private final ConsoleCommandEnvironment environment;
 
-    private JDBCSpaceMarineCollection jdbcSpaceMarineCollection;
-    private InMemorySpaceMarineCollection inMemorySpaceMarineCollection;
-    private InMemorySpaceMarineCollection collectionSpaceMarine;
+    protected static JDBCSpaceMarineCollection jdbcSpaceMarineCollection;
+    protected static InMemorySpaceMarineCollection inMemorySpaceMarineCollection;
+    private static final Map<String, AuthCheckSpaceMarineCollection> clientCollections = new HashMap<>();
 
     private final byte[] receiveData = new byte[65507];
 
     public Server(ConsoleCommandEnvironment environment, int port) {
         this.environment = environment;
-        this.collectionSpaceMarine = new InMemorySpaceMarineCollection();
         this.port = port;
     }
 
@@ -60,7 +63,7 @@ public class Server {
                 DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
 
                 // Выполняем запрос клиента
-                Callable<Response> task = () -> RequestReading.requestRead(receivePacket, this.environment, this.jdbcSpaceMarineCollection);
+                Callable<Response> task = () -> RequestReading.requestRead(receivePacket, this.environment, clientCollections);
                 Future<Response> result = service.submit(task);
 
                 //отправляем ответ клиенту
@@ -68,7 +71,7 @@ public class Server {
             }
             service.shutdown();
         } catch (Exception e) {
-            run();
+            System.out.println(e);
         }
     }
 
@@ -92,8 +95,13 @@ public class Server {
 
     private void createCollection() {
         System.out.println("ИНИЦИАЛИЗАЦИЯ КОЛЛЕКЦИИ");
-        this.jdbcSpaceMarineCollection = new JDBCSpaceMarineCollection(environment.getConnection());
-        this.inMemorySpaceMarineCollection = new InMemorySpaceMarineCollection();
+        jdbcSpaceMarineCollection = new JDBCSpaceMarineCollection(environment.getConnection());
+        inMemorySpaceMarineCollection = new InMemorySpaceMarineCollection();
+
+        for (SpaceMarine o : jdbcSpaceMarineCollection.show()){
+            inMemorySpaceMarineCollection.add(o.getId(), o);
+        }
+
         //   df = AuthCheckSpaceMarineCollection(new CachedSpaceMarineCollection(inMemorySpaceMarineCollection, jdbcSpaceMarineCollection), "login");
     }
 }

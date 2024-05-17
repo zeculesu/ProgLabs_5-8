@@ -83,6 +83,15 @@ public class UDPClient {
         return (Response) objectInputStream.readObject();
     }
 
+    public Response sendRequest(Request request) throws SocketException, UnknownHostException, IOException, ClassNotFoundException {
+        createSocket();
+        byte[] sendData = castToByte(request);
+        sendPacket(sendData);
+        Response response = getResponse();
+        clientSocket.close();
+        return response;
+    }
+
     public void closeClientSocket(){
         this.clientSocket.close();
     }

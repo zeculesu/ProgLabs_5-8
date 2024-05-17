@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection{
+public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection {
     private SpaceMarineCollection origin;
     private String owner;
 
@@ -38,17 +38,20 @@ public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection{
 
     @Override
     public void update(int id, SpaceMarine o) throws ElementNotFound {
-        if (Objects.equals(o.getOwner(), owner)){
+        if (Objects.equals(o.getOwner(), owner)) {
             this.origin.update(id, o);
-        }
-        else{
+        } else {
             throw new OwnershipException();
         }
     }
 
     @Override
     public boolean removeById(int id) {
-        if (this.origin.findById(id).getOwner().equals(owner)){
+        SpaceMarine o = this.origin.findById(id);
+        if (o == null) {
+            return false;
+        }
+        if (o.getOwner().equals(owner)) {
             return this.origin.removeById(id);
         }
         throw new OwnershipException();
@@ -56,9 +59,12 @@ public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection{
 
     @Override
     public void clear() {
-        for (SpaceMarine o : this.origin){
-            if (o.getOwner().equals(owner)){
-                this.origin.removeById(o.getId());
+        Iterator<SpaceMarine> iterator = this.origin.iterator();
+        while (iterator.hasNext()) {
+            SpaceMarine element = iterator.next();
+            if (element.getOwner().equals(owner)) {
+                iterator.remove();
+                this.origin.removeById(element.getId());
             }
         }
     }
@@ -70,8 +76,11 @@ public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection{
 
     @Override
     public void removeLower(SpaceMarine other) {
-        for (SpaceMarine o : this.origin){
-            if (o.compareTo(other) < 0 && o.getOwner().equals(owner)){
+        Iterator<SpaceMarine> iterator = this.origin.iterator();
+        while (iterator.hasNext()) {
+            SpaceMarine o = iterator.next();
+            if (o.compareTo(other) < 0 && o.getOwner().equals(owner)) {
+                iterator.remove();
                 this.origin.removeById(o.getId());
             }
         }
@@ -79,11 +88,19 @@ public class AuthCheckSpaceMarineCollection implements SpaceMarineCollection{
 
     @Override
     public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon) {
-        for (SpaceMarine o : this.origin){
-            if (o.getMeleeWeapon() == meleeWeapon && o.getOwner().equals(owner)){
+        Iterator<SpaceMarine> iterator = this.origin.iterator();
+        while (iterator.hasNext()) {
+            SpaceMarine o = iterator.next();
+            if (o.getMeleeWeapon() == meleeWeapon && o.getOwner().equals(owner)) {
+                iterator.remove();
                 this.origin.removeById(o.getId());
             }
         }
+//        for (SpaceMarine o : this.origin) {
+//            if (o.getMeleeWeapon() == meleeWeapon && o.getOwner().equals(owner)) {
+//                this.origin.removeById(o.getId());
+//            }
+//        }
     }
 
     @Override

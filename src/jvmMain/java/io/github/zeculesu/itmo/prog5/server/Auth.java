@@ -19,6 +19,7 @@ public class Auth {
         Request request = new Request();
         request.setCommand("auth");
         request.setArg(login + " " + password);
+        request.setLogin(login);
 
         byte[] sendData = UDPClient.castToByte(request);
 
@@ -37,6 +38,7 @@ public class Auth {
         Request request = new Request();
         request.setCommand("check_uniq_login");
         request.setArg(login);
+        request.setLogin(login);
 
         byte[] sendData = UDPClient.castToByte(request);
 

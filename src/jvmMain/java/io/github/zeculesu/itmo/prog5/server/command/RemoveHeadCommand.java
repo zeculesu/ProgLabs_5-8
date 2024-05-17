@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.server.command;
 
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.error.OwnershipException;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.error.EmptyCollectionException;
 import io.github.zeculesu.itmo.prog5.models.Response;
@@ -23,6 +24,8 @@ public class RemoveHeadCommand extends AbstractCommand {
             response.setMessage("Элемент успешно удален");
         } catch (EmptyCollectionException e) {
             response.setError(e.getMessage());
+        } catch (OwnershipException e){
+            response.setError("Вы не можете модифицировать не свои объекты");
         }
         return response;
     }

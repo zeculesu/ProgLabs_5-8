@@ -147,7 +147,7 @@ public class CLientConsole implements CommunicatedClient {
                 } else {
                     Request request = readCommand(command);
                     if (request != null) {
-                        Response response = sendRequest(request);
+                        Response response = this.udpClient.sendRequest(request);
 
                         readStatus(response.getStatus(), request.getArg());
                         outputResponse(response);
@@ -188,6 +188,7 @@ public class CLientConsole implements CommunicatedClient {
                 return null;
             }
             request.setElem(element);
+            request.setLogin(this.login);
             return request;
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
         // todo this.environment.addCommandToHistory(token[0]);
@@ -195,15 +196,6 @@ public class CLientConsole implements CommunicatedClient {
             this.stateIO = StateIO.SCRIPT;
         }
         return null;
-    }
-
-    public Response sendRequest(Request request) throws SocketException, UnknownHostException, IOException, ClassNotFoundException {
-        udpClient.createSocket();
-        byte[] sendData = udpClient.castToByte(request);
-        udpClient.sendPacket(sendData);
-        Response response = udpClient.getResponse();
-        udpClient.clientSocket.close();
-        return response;
     }
 
     public void outputResponse(Response response) {

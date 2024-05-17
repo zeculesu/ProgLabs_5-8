@@ -84,7 +84,7 @@ public class InMemorySpaceMarineCollection implements SpaceMarineCollection {
         if (o == null) {
             return false;
         }
-        this.collectionSpaceMarine.remove(o);
+        this.collectionSpaceMarine.remove(id);
         return true;
     }
 
