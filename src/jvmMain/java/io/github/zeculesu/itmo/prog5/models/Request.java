@@ -8,6 +8,7 @@ public class Request implements Serializable {
     private SpaceMarine elem;
 
     private String login;
+    private String password;
 
     public String getCommand() {
         return command;
@@ -39,5 +40,13 @@ public class Request implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

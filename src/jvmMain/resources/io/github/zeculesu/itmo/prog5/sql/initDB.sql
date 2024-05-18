@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS collection;
+DROP TABLE IF EXISTS users;
 DROP type IF EXISTS ASTARTESCATEGORY;
 DROP type IF EXISTS MELEEWEAPON;
 DROP type IF EXISTS WEAPONTYPE;
@@ -20,7 +20,7 @@ CREATE TABLE collection(
     name                TEXT,
     coordinatesX        BIGINT,
     coordinatesY        FLOAT,
-    creationDate        DATE,
+    creationDate        TIMESTAMP,
     health              INT,
     category            ASTARTESCATEGORY,
     weaponType          WEAPONTYPE,

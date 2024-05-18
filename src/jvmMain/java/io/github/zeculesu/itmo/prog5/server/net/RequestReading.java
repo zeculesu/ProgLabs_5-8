@@ -56,6 +56,15 @@ public class RequestReading {
 
         }
 
+        // проверка на регистрацию
+        CommandAction comm = new AuthCommand();
+        Response response = comm.execute(collection, env, new String[]{request.getLogin() + " " + request.getPassword()});
+        if (response.getStatus() != 200) {
+            Response r = new Response();
+            r.setError("Такого пользователя нет в бд");
+            return r;
+        }
+
         env.addCommandToHistory(request.getCommand());
         CommandAction com = env.getCommandSetMap().findCommand(request.getCommand());
         if (com != null) {

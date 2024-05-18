@@ -7,11 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import ru.landgrafhomyak.utility.JavaResourceLoader;
 import sun.misc.Unsafe;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     private final Connection connection;
@@ -61,6 +59,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
                 }
             }
         } catch (SQLException e) {
+            System.out.println(e);
             Unsafe.getUnsafe().throwException(e);
             return 0;
         }
@@ -244,7 +243,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
                 new Coordinates(
                         resultSet.getLong("coordinatesX"),
                         resultSet.getFloat("coordinatesY")),
-                new Date(resultSet.getDate("creationDate").getTime()),
+                new Date(resultSet.getTimestamp("creationDate").getTime()),
                 resultSet.getInt("health"),
                 AstartesCategory.getCategoryByName(resultSet.getString("category")),
                 Weapon.getWeaponByName(resultSet.getString("weaponType")),
@@ -260,12 +259,22 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
         ps.setString(1, o.getName());
         ps.setLong(2, o.getCoordinates().getX());
         ps.setFloat(3, o.getCoordinates().getY());
-        ps.setDate(4, new java.sql.Date(o.getCreationDate().getTime()));
+        ps.setTimestamp(4, new Timestamp(o.getCreationDate().getTime()));
         ps.setInt(5, o.getHealth());
         ps.setString(6, o.getCategory().name());
         ps.setString(7, o.getWeaponType().name());
         ps.setString(8, o.getMeleeWeapon().name());
         ps.setString(9, o.getChapter().getName());
         ps.setString(10, o.getChapter().getParentLegion());
+    }
+
+    private final static String INIT_DB_QUERY = loadQuery("initDB.sql");
+    public void initDB(){
+        try (PreparedStatement ps = this.connection.prepareStatement(INIT_DB_QUERY)) {
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            Unsafe.getUnsafe().throwException(e);
+        }
     }
 }

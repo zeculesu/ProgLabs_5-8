@@ -28,6 +28,7 @@ import static kotlin.io.ConsoleKt.readlnOrNull;
  */
 public class CLientConsole implements CommunicatedClient {
     private String login;
+    private String password;
     private StateIO stateIO;
     private final Set<String> scriptQueue = new HashSet<>();
     private BufferedReader bufferReaderScript;
@@ -97,6 +98,7 @@ public class CLientConsole implements CommunicatedClient {
                 outputResponse(response);
                 if (response.getStatus() == 200){
                     this.login = login;
+                    this.password = password;
                     return true;
                 }
             } else if (answer.equals("2")) {
@@ -140,7 +142,6 @@ public class CLientConsole implements CommunicatedClient {
                     this.scriptQueue.clear();
                 } else if (command == null) {
                     console.println("Конец работы программы");
-                    //todo отправить серверу завершение
                     return;
                 } else if (command.isBlank()) {
                     console.println("Команда не введена");
@@ -189,9 +190,9 @@ public class CLientConsole implements CommunicatedClient {
             }
             request.setElem(element);
             request.setLogin(this.login);
+            request.setPassword(this.password);
             return request;
         } else console.println("Неизвестная команда. Введите 'help' для получения справки.");
-        // todo this.environment.addCommandToHistory(token[0]);
         if (this.stateIO == StateIO.CONSOLE_TO_SCRIPT) {
             this.stateIO = StateIO.SCRIPT;
         }

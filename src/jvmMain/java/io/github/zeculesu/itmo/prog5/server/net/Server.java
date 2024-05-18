@@ -15,6 +15,7 @@ import java.net.DatagramSocket;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -105,6 +106,12 @@ public class Server {
     private void createCollection() {
         System.out.println("ИНИЦИАЛИЗАЦИЯ КОЛЛЕКЦИИ");
         JDBCSpaceMarineCollection jdbcSpaceMarineCollection = new JDBCSpaceMarineCollection(environment.getConnection());
+        System.out.print("Надо создать таблицы заново (у/n): ");
+        if (Objects.equals(readlnOrNull(), "y")) {
+            jdbcSpaceMarineCollection.initDB();
+            System.out.println("Таблицы созданы");
+        }
+
         InMemorySpaceMarineCollection inMemorySpaceMarineCollection = new InMemorySpaceMarineCollection();
 
         for (SpaceMarine o : jdbcSpaceMarineCollection.show()) {

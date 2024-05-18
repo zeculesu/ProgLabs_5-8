@@ -17,7 +17,6 @@ public class ExitCommand extends AbstractCommand {
     @Override
     public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
         Response response = new Response();
-        // todo Добавить конкретно для каждого пользователя
         response.setStatus(400);
         new SaveCommand().execute(collectionSpaceMarine, env, args, element);
         response.setMessage("Конец работы программы");

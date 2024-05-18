@@ -54,7 +54,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
 
     @Override
     public String toString() {
-        DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:ss");
+        DateFormat df = new SimpleDateFormat("dd.MM.yyyy hh:mm");
         return "SpaceMarine{" +
                 "id=" + id +
                 ", name='" + name + '\'' +

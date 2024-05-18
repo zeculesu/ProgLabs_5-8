@@ -14,7 +14,6 @@ public class SendCommandSet extends AbstractCommand {
 
     @Override
     public Response execute(SpaceMarineCollection collectionSpaceMarine, ConsoleCommandEnvironment env, String[] args, SpaceMarine... element) {
-        //todo отправка команд
         SendedCommandResponse commands = new SendedCommandResponse();
         for (CommandAction comm : env.getCommandSetMap()){
             commands.addData(comm.getName(), comm.isAcceptsElement(), comm.isAcceptsArg());
