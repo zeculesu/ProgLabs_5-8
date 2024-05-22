@@ -12,9 +12,9 @@ import java.util.*;
 import java.util.Date;
 
 public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
-    private final Connection connection;
+    private final ConnectingDB connection;
 
-    public JDBCSpaceMarineCollection(Connection connection) {
+    public JDBCSpaceMarineCollection(ConnectingDB connection) {
         this.connection = connection;
     }
 
@@ -31,7 +31,8 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public List<SpaceMarine> show() {
         List<SpaceMarine> spaceMarines = new ArrayList<>();
-        try (PreparedStatement ps = this.connection.prepareStatement(SHOW)) {
+        try (Connection con = this.connection.connect()) {
+            PreparedStatement ps = con.prepareStatement(SHOW);
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 spaceMarines.add(createElem(resultSet));
@@ -46,7 +47,8 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public int add(SpaceMarine o) {
-        try (PreparedStatement ps = this.connection.prepareStatement(ADD_QUERY)) {
+        try (Connection con = this.connection.connect()) {
+            PreparedStatement ps = con.prepareStatement(ADD_QUERY);
             fullQueryElem(ps, o);
             ps.setString(11, o.getOwner());
 
@@ -59,7 +61,6 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e);
             Unsafe.getUnsafe().throwException(e);
             return 0;
         }
@@ -70,12 +71,15 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public void update(int id, SpaceMarine o) {
-        try (PreparedStatement ps = this.connection.prepareStatement(UPDATE_QUERY)) {
-            fullQueryElem(ps, o);
-            ps.setInt(11, id);
-
-            int rowsUpdated = ps.executeUpdate();
-            if (rowsUpdated <= 0) throw new ElementNotFound("Элемент с id=" + id + " не был найден");
+        try (Connection con = this.connection.connect()) {
+            try (PreparedStatement ps = con.prepareStatement(UPDATE_QUERY)) {
+                fullQueryElem(ps, o);
+                ps.setInt(11, id);
+                int rowsUpdated = ps.executeUpdate();
+                if (rowsUpdated <= 0) throw new ElementNotFound("Элемент с id=" + id + " не был найден");
+            } catch (SQLException e) {
+                con.rollback();
+            }
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
         }
@@ -85,10 +89,10 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public boolean removeById(int id) {
-        try (PreparedStatement ps = this.connection.prepareStatement(REMOVE_BY_ID_QUERY)) {
+        try (Connection con = this.connection.connect()) {
+            PreparedStatement ps = con.prepareStatement(REMOVE_BY_ID_QUERY);
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
-            // Проверяем количество измененных строк
             return rowsAffected > 0;
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
@@ -100,7 +104,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public void clear() {
-        try (PreparedStatement ps = this.connection.prepareStatement(CLEAR_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(CLEAR_QUERY)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             Unsafe.getUnsafe().throwException(e);
@@ -111,7 +115,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public SpaceMarine removeHead() {
-        try (PreparedStatement ps = this.connection.prepareStatement(REMOVE_HEAD_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(REMOVE_HEAD_QUERY)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     int id = rs.getInt("id");
@@ -140,7 +144,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public void removeLower(SpaceMarine o) {
-        try (PreparedStatement ps = this.connection.prepareStatement(REMOVE_LOWER_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(REMOVE_LOWER_QUERY)) {
             ps.setString(1, o.getName());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -152,7 +156,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public void removeAllByMeleeWeapon(MeleeWeapon meleeWeapon) {
-        try (PreparedStatement ps = this.connection.prepareStatement(REMOVE_BY_MELEEWEAPON_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(REMOVE_BY_MELEEWEAPON_QUERY)) {
             ps.setString(1, meleeWeapon.name());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -166,7 +170,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public List<SpaceMarine> filterStartsWithName(String name) {
         List<SpaceMarine> spaceMarines = new ArrayList<>();
-        try (PreparedStatement ps = this.connection.prepareStatement(FILTER_NAME_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(FILTER_NAME_QUERY)) {
             ps.setString(1, name + "%");
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
@@ -184,7 +188,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     @Override
     public String printFieldDescendingHealth() {
         StringJoiner result = new StringJoiner("\n");
-        try (PreparedStatement ps = this.connection.prepareStatement(HEALTH_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(HEALTH_QUERY)) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 int value = resultSet.getInt("health");
@@ -200,7 +204,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public int size() {
-        try (PreparedStatement ps = this.connection.prepareStatement(SIZE_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(SIZE_QUERY)) {
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
@@ -215,7 +219,7 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
 
     @Override
     public SpaceMarine findById(int id) {
-        try (PreparedStatement ps = this.connection.prepareStatement(FIND_BY_ID_QUERY)) {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(FIND_BY_ID_QUERY)) {
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 return createElem(resultSet);
@@ -269,8 +273,9 @@ public class JDBCSpaceMarineCollection implements SpaceMarineCollection {
     }
 
     private final static String INIT_DB_QUERY = loadQuery("initDB.sql");
-    public void initDB(){
-        try (PreparedStatement ps = this.connection.prepareStatement(INIT_DB_QUERY)) {
+
+    public void initDB() {
+        try (PreparedStatement ps = this.connection.connect().prepareStatement(INIT_DB_QUERY)) {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

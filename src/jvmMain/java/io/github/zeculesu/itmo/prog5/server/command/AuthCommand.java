@@ -6,6 +6,7 @@ import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.Auth;
 import io.github.zeculesu.itmo.prog5.sql.ConnectingDB;
+import io.github.zeculesu.itmo.prog5.sql.JDBCUsers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,18 +25,8 @@ public class AuthCommand extends AbstractCommand {
         String login = log_pas[0];
         String password = log_pas[1];
         try {
-            String query = "SELECT login FROM users WHERE login = ? AND password = ?";
-
-            PreparedStatement ps = env.getConnection().prepareStatement(query);
-
-            password = Auth.hash_password(password);
-
-            ps.setString(1, login);
-            ps.setString(2, password);
-
-            ResultSet resultSet = ps.executeQuery();
-
-            if (resultSet.next()) {
+            Connection connection = env.getConnection().connect();
+            if (JDBCUsers.auth(connection, login, password)) {
                 response.setStatus(200);
                 response.setMessage("Авторизация успешно пройдена");
                 return response;

@@ -1,6 +1,7 @@
 package io.github.zeculesu.itmo.prog5.client;
 
 import io.github.zeculesu.itmo.prog5.server.command.CommandSet;
+import io.github.zeculesu.itmo.prog5.sql.ConnectingDB;
 
 import java.io.BufferedReader;
 import java.sql.Connection;
@@ -40,7 +41,7 @@ public interface ConsoleCommandEnvironment {
 
     void clearScriptQueue();
 
-    Connection getConnection();
+    ConnectingDB getConnection();
 
     void setConnection(String url, String username, String password) throws SQLException;
 }

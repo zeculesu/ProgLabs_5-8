@@ -16,7 +16,7 @@ public class ConnectingDB {
         this.password = password;
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection connect() throws SQLException {
         return DriverManager.getConnection(this.jdbcUrl, this.username, this.password);
     }
 }

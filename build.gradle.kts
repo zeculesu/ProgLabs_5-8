@@ -21,9 +21,9 @@ kotlin {
         tasks.register<Jar>("fatJar"){
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             group = "build"
-            this.archiveBaseName = "proglab7serverw"
+            this.archiveBaseName = "proglab7client"
             manifest{
-                attributes["Main-Class"] = "io.github.zeculesu.itmo.prog5.MainServer"
+                attributes["Main-Class"] = "io.github.zeculesu.itmo.prog5.MainClient"
             }
             from(
                 compilations["main"].runtimeDependencyFiles

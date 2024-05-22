@@ -1,27 +1,25 @@
 add
-name1
+pups
+4 5
+500
+SUPPRESSOR
+BOLTGUN
+POWER_SWORD
+orden parent
+add
+twinki
 4 5
 500
 HELIX
 HEAVY_BOLTGUN
 POWER_SWORD
 orden parent
-info
 add
-name2
+slave
 4 5
 500
-HELIX
-HEAVY_BOLTGUN
-POWER_SWORD
-orden parent
-info
-add
-name3
-4 5
-500
-HELIX
-HEAVY_BOLTGUN
+LIBRARIAN
+MULTI_MELTA
 POWER_SWORD
 orden parent
 info

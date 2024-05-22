@@ -6,6 +6,7 @@ import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.server.Auth;
 import io.github.zeculesu.itmo.prog5.sql.ConnectingDB;
+import io.github.zeculesu.itmo.prog5.sql.JDBCUsers;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -28,19 +29,8 @@ public class RegisterCommand extends AbstractCommand {
         String password = log_pas[1];
 
         try{
-            Connection connection = env.getConnection();
-
-            String query = "INSERT INTO users (login, password) VALUES (?, ?)";
-
-            PreparedStatement ps = connection.prepareStatement(query);
-
-            password = Auth.hash_password(password);
-
-            ps.setString(1, login);
-            ps.setString(2, password);
-
-            ps.executeUpdate();
-
+            Connection connection = env.getConnection().connect();
+            JDBCUsers.register(connection, login, password);
             response.setMessage("Регистрация успешно пройдена");
         }
 

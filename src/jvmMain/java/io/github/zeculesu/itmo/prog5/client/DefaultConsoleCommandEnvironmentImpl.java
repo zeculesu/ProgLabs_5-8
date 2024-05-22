@@ -25,7 +25,7 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
     private final String fileNameCollection;
     private final List<String> commandHistory = new ArrayList<>();
 
-    private Connection connection;
+    private ConnectingDB connection;
 
     public DefaultConsoleCommandEnvironmentImpl(CommandSet commandSetMap, String fileNameCollection) {
         this.commandSetMap = commandSetMap;
@@ -97,12 +97,12 @@ public class DefaultConsoleCommandEnvironmentImpl implements ConsoleCommandEnvir
     }
 
     @Override
-    public Connection getConnection() {
+    public ConnectingDB getConnection() {
         return this.connection;
     }
 
     @Override
     public void setConnection(String url, String username, String password) throws SQLException {
-        this.connection = new ConnectingDB(url, username, password).getConnection();
+        this.connection = new ConnectingDB(url, username, password);
     }
 }

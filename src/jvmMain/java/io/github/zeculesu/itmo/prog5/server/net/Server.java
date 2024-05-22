@@ -5,6 +5,7 @@ import io.github.zeculesu.itmo.prog5.data.AuthCheckSpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.CachedSpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.InMemorySpaceMarineCollection;
 import io.github.zeculesu.itmo.prog5.data.SpaceMarineCollection;
+import io.github.zeculesu.itmo.prog5.models.Request;
 import io.github.zeculesu.itmo.prog5.models.Response;
 import io.github.zeculesu.itmo.prog5.models.SpaceMarine;
 import io.github.zeculesu.itmo.prog5.sql.JDBCSpaceMarineCollection;
@@ -16,6 +17,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.concurrent.*;
 
 import static kotlin.io.ConsoleKt.readlnOrNull;
@@ -55,29 +57,98 @@ public class Server {
         try {
             // Создаем сокет для приема данных на порту
             DatagramSocket serverSocket = new DatagramSocket(port);
-            ExecutorService service = Executors.newFixedThreadPool(4);
-
-            while (this.environment.isRun()) {
-                // получаем запрос от клиента
-                DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
-
-                // Выполняем запрос клиента
-                Callable<Response> task = () -> RequestReading.requestRead(receivePacket, this.environment, clientCollections);
-                Future<Response> result = service.submit(task);
+            ExecutorService readingService = Executors.newFixedThreadPool(4);
+            ExecutorService processingService = Executors.newFixedThreadPool(4);
+            Queue<Future<Request>> readRequestQueue = new ConcurrentLinkedQueue<>();
+            Queue<Request> processRequestQueue = new ConcurrentLinkedQueue<>();
+            Queue<Future<Response>> responseQueue = new ConcurrentLinkedQueue<>();
 
 
-                //отправляем ответ клиенту
-                Runnable sendingTesk = () -> {
+            // получаем запрос от клиента
+            DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
+
+            Runnable requestReader = () -> {
+                while (this.environment.isRun()) {
                     try {
-                        ResponseSending.responseSend(serverSocket, receivePacket, result.get());
-                    } catch (IOException | InterruptedException | ExecutionException e) {
-                        throw new RuntimeException(e);
+                        Callable<Request> readedRequest = () -> RequestReading.requestRead(receivePacket);
+                        Future<Request> result = readingService.submit(readedRequest);
+                        readRequestQueue.add(result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                };
-                Thread thread = new Thread(sendingTesk);
-                thread.start();
-            }
-            service.shutdown();
+                }
+            };
+
+            Runnable requestProcessor = () -> {
+                while (this.environment.isRun()) {
+                    try {
+                        Future<Request> futureRequest = readRequestQueue.poll();
+                        if (futureRequest != null && futureRequest.isDone()) {
+                            Request request = futureRequest.get();
+                            processRequestQueue.add(request);
+                        }
+                        Request request = processRequestQueue.poll();
+                        if (request != null) {
+                            Future<Response> resp = (Future<Response>) processingService.submit(() -> {
+                                RequestExecute.requestExecute(environment, clientCollections, request);
+                            });
+                            responseQueue.add(resp);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            Runnable responseSender = () -> {
+                while (this.environment.isRun()) {
+                    try {
+                        Future<Response> futureResponse = responseQueue.poll();
+                        if (futureResponse != null && futureResponse.isDone()) {
+                            Response response = futureResponse.get();
+                            //отправляем ответ клиенту
+                            Runnable sendingTask = () -> {
+                                try {
+                                    ResponseSending.responseSend(serverSocket, receivePacket, response);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            };
+                            Thread thread = new Thread(sendingTask);
+                            thread.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            // Запускаем потоки чтения и обработки запросов
+            Thread readerThread = new Thread(requestReader);
+            Thread processorThread = new Thread(requestProcessor);
+            Thread senderThread = new Thread(responseSender);
+
+            readerThread.start();
+            processorThread.start();
+            senderThread.start();
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                readingService.shutdown();
+                processingService.shutdown();
+                try {
+                    if (!readingService.awaitTermination(60, TimeUnit.SECONDS)) {
+                        readingService.shutdownNow();
+                    }
+                    if (!processingService.awaitTermination(60, TimeUnit.SECONDS)) {
+                        processingService.shutdownNow();
+                    }
+                } catch (InterruptedException ex) {
+                    readingService.shutdownNow();
+                    processingService.shutdownNow();
+                    Thread.currentThread().interrupt();
+                }
+                serverSocket.close();
+            }));
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -93,10 +164,15 @@ public class Server {
             System.out.print("Введите url (jdbc:postgresql://localhost:5432/SpaceMarines): ");
             String url = readlnOrNull();
             environment.setConnection(url, username, password);
+            if (!environment.getConnection().connect().isValid(5)) {
+                environment.getConnection().connect().close();
+                return false;
+            }
+            environment.getConnection().connect().close();
             System.out.println("База данных подключена");
             return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            //todo System.out.println(e.getMessage());
             System.out.println("Не удалось получить доступ к бд");
             System.out.println("Проверьте, что с базой данной всё в порядке и перезапустите сервер");
             return false;
