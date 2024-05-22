@@ -53,102 +53,122 @@ public class Server {
         System.exit(0);
     }
 
+//    public void run() {
+//        try {
+//            // Создаем сокет для приема данных на порту
+//            DatagramSocket serverSocket = new DatagramSocket(port);
+//            ExecutorService readingService = Executors.newFixedThreadPool(4);
+//            ExecutorService processingService = Executors.newFixedThreadPool(4);
+//            Queue<Future<Request>> readRequestQueue = new ConcurrentLinkedQueue<>();
+//            Queue<Request> processRequestQueue = new ConcurrentLinkedQueue<>();
+//            Queue<Future<Response>> responseQueue = new ConcurrentLinkedQueue<>();
+//
+//
+//            // получаем запрос от клиента
+//            DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
+//
+//            Runnable requestReader = () -> {
+//                while (this.environment.isRun()) {
+//                    try {
+//                        Callable<Request> readedRequest = () -> RequestReading.requestRead(receivePacket);
+//                        Future<Request> result = readingService.submit(readedRequest);
+//                        readRequestQueue.add(result);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//
+//            Runnable requestProcessor = () -> {
+//                while (this.environment.isRun()) {
+//                    try {
+//                        Future<Request> futureRequest = readRequestQueue.poll();
+//                        if (futureRequest != null && futureRequest.isDone()) {
+//                            Request request = futureRequest.get();
+//                            processRequestQueue.add(request);
+//                        }
+//                        Request request = processRequestQueue.poll();
+//                        if (request != null) {
+//                            Future<Response> resp = (Future<Response>) processingService.submit(() -> {
+//                                RequestExecute.requestExecute(environment, clientCollections, request);
+//                            });
+//                            responseQueue.add(resp);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//
+//            Runnable responseSender = () -> {
+//                while (this.environment.isRun()) {
+//                    try {
+//                        Future<Response> futureResponse = responseQueue.poll();
+//                        if (futureResponse != null && futureResponse.isDone()) {
+//                            Response response = futureResponse.get();
+//                            //отправляем ответ клиенту
+//                            Runnable sendingTask = () -> {
+//                                try {
+//                                    ResponseSending.responseSend(serverSocket, receivePacket, response);
+//                                } catch (IOException e) {
+//                                    throw new RuntimeException(e);
+//                                }
+//                            };
+//                            Thread thread = new Thread(sendingTask);
+//                            thread.start();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//
+//            // Запускаем потоки чтения и обработки запросов
+//            Thread readerThread = new Thread(requestReader);
+//            Thread processorThread = new Thread(requestProcessor);
+//            Thread senderThread = new Thread(responseSender);
+//
+//            readerThread.start();
+//            processorThread.start();
+//            senderThread.start();
+//
+//            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//                readingService.shutdown();
+//                processingService.shutdown();
+//                try {
+//                    if (!readingService.awaitTermination(60, TimeUnit.SECONDS)) {
+//                        readingService.shutdownNow();
+//                    }
+//                    if (!processingService.awaitTermination(60, TimeUnit.SECONDS)) {
+//                        processingService.shutdownNow();
+//                    }
+//                } catch (InterruptedException ex) {
+//                    readingService.shutdownNow();
+//                    processingService.shutdownNow();
+//                    Thread.currentThread().interrupt();
+//                }
+//                serverSocket.close();
+//            }));
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        }
+//    }
+
     public void run() {
         try {
             // Создаем сокет для приема данных на порту
             DatagramSocket serverSocket = new DatagramSocket(port);
-            ExecutorService readingService = Executors.newFixedThreadPool(4);
-            ExecutorService processingService = Executors.newFixedThreadPool(4);
-            Queue<Future<Request>> readRequestQueue = new ConcurrentLinkedQueue<>();
-            Queue<Request> processRequestQueue = new ConcurrentLinkedQueue<>();
-            Queue<Future<Response>> responseQueue = new ConcurrentLinkedQueue<>();
 
+            while (this.environment.isRun()) {
+                // получаем запрос от клиента
+                DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
 
-            // получаем запрос от клиента
-            DatagramPacket receivePacket = ConnectionReception.reception(serverSocket, this.receiveData);
-
-            Runnable requestReader = () -> {
-                while (this.environment.isRun()) {
-                    try {
-                        Callable<Request> readedRequest = () -> RequestReading.requestRead(receivePacket);
-                        Future<Request> result = readingService.submit(readedRequest);
-                        readRequestQueue.add(result);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            Runnable requestProcessor = () -> {
-                while (this.environment.isRun()) {
-                    try {
-                        Future<Request> futureRequest = readRequestQueue.poll();
-                        if (futureRequest != null && futureRequest.isDone()) {
-                            Request request = futureRequest.get();
-                            processRequestQueue.add(request);
-                        }
-                        Request request = processRequestQueue.poll();
-                        if (request != null) {
-                            Future<Response> resp = (Future<Response>) processingService.submit(() -> {
-                                RequestExecute.requestExecute(environment, clientCollections, request);
-                            });
-                            responseQueue.add(resp);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            Runnable responseSender = () -> {
-                while (this.environment.isRun()) {
-                    try {
-                        Future<Response> futureResponse = responseQueue.poll();
-                        if (futureResponse != null && futureResponse.isDone()) {
-                            Response response = futureResponse.get();
-                            //отправляем ответ клиенту
-                            Runnable sendingTask = () -> {
-                                try {
-                                    ResponseSending.responseSend(serverSocket, receivePacket, response);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            };
-                            Thread thread = new Thread(sendingTask);
-                            thread.start();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            // Запускаем потоки чтения и обработки запросов
-            Thread readerThread = new Thread(requestReader);
-            Thread processorThread = new Thread(requestProcessor);
-            Thread senderThread = new Thread(responseSender);
-
-            readerThread.start();
-            processorThread.start();
-            senderThread.start();
-
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                readingService.shutdown();
-                processingService.shutdown();
-                try {
-                    if (!readingService.awaitTermination(60, TimeUnit.SECONDS)) {
-                        readingService.shutdownNow();
-                    }
-                    if (!processingService.awaitTermination(60, TimeUnit.SECONDS)) {
-                        processingService.shutdownNow();
-                    }
-                } catch (InterruptedException ex) {
-                    readingService.shutdownNow();
-                    processingService.shutdownNow();
-                    Thread.currentThread().interrupt();
-                }
-                serverSocket.close();
-            }));
+                // Выполняем запрос клиента
+                Request request = RequestReading.requestRead(receivePacket);
+                Response response = RequestExecute.requestExecute(this.environment, clientCollections, request);
+                //отправляем ответ клиенту
+                ResponseSending.responseSend(serverSocket, receivePacket, response);
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
